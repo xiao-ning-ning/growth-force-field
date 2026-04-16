@@ -173,9 +173,22 @@ function createEmptyMap() {
 
 // ============ ID 生成 ============
 
-let idCounter = Date.now();
+const ID_COUNTER_FILE = path.join(BASE_DATA_DIR, '.id_counter');
+let idCounter = (() => {
+  try {
+    if (fs.existsSync(ID_COUNTER_FILE)) {
+      const n = parseInt(fs.readFileSync(ID_COUNTER_FILE, 'utf-8').trim(), 10);
+      if (!isNaN(n)) return n;
+    }
+  } catch (e) {}
+  return Date.now();
+})();
+function persistIdCounter() {
+  try { fs.writeFileSync(ID_COUNTER_FILE, String(idCounter), 'utf-8'); } catch (e) {}
+}
 function nextId(prefix) {
   idCounter++;
+  persistIdCounter();
   return `${prefix}_${idCounter.toString(36)}`;
 }
 

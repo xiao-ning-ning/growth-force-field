@@ -94,12 +94,23 @@ ${levers.map(d => `- [${d.id}] ${d.name}: ${d.description}`).join('\n')}
     const validDimIds = new Set(map.dimensions.map(d => d.id));
     const validBlindIds = new Set(map.blindSpots.map(b => b.id));
     const updates = [];
+    const skipped = [];
     for (const path of (result.paths || [])) {
       // 校验 targetId 存在
-      if (path.targetType === 'developing' && !validDimIds.has(path.targetId)) continue;
-      if (path.targetType === 'blindSpot' && !validBlindIds.has(path.targetId)) continue;
+      if (path.targetType === 'developing' && !validDimIds.has(path.targetId)) {
+        skipped.push({ name: path.targetName, reason: '目标维度不存在' });
+        continue;
+      }
+      if (path.targetType === 'blindSpot' && !validBlindIds.has(path.targetId)) {
+        skipped.push({ name: path.targetName, reason: '目标盲区不存在' });
+        continue;
+      }
       // 校验 leveragedFrom 中的 ID
       const validLevers = (path.leveragedFrom || []).filter(id => validDimIds.has(id));
+      if (validLevers.length === 0) {
+        skipped.push({ name: path.targetName, reason: '无可用杠杆维度' });
+        continue;
+      }
 
       const existing = map.developmentPaths.find(p => p.targetDimension === path.targetId);
       const pathData = {
@@ -119,6 +130,9 @@ ${levers.map(d => `- [${d.id}] ${d.name}: ${d.description}`).join('\n')}
         map.developmentPaths.push({ id, ...pathData });
         updates.push({ id, name: path.targetName, action: '新增' });
       }
+    }
+    if (skipped.length > 0) {
+      console.log('[paths] 跳过无效路径:', skipped.map(s => `${s.name}(${s.reason})`).join(', '));
     }
 
     await saveMap(req.userId, map);

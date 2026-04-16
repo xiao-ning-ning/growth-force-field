@@ -21,8 +21,16 @@ function saveUsers(users) {
   fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf-8');
 }
 
-function hashPassword(password) {
-  return crypto.scryptSync(password, 'growth-force-field-salt', 64).toString('hex');
+function genSalt() {
+  return crypto.randomBytes(16).toString('hex');
+}
+
+function hashPassword(password, salt) {
+  return crypto.scryptSync(password, salt, 64).toString('hex');
+}
+
+function hashWithUserSalt(password, user) {
+  return hashPassword(password, user.salt || 'growth-force-field-salt');
 }
 
 /**
@@ -32,11 +40,10 @@ function ensureAdmin() {
   let users = getUsers();
   if (!users) {
     users = {
-      admin: {
-        password: hashPassword('admin123456'),
-        role: 'admin',
-        createdAt: new Date().toISOString()
-      }
+      admin: (() => {
+        const salt = genSalt();
+        return { salt, password: hashPassword('admin123456', salt), role: 'admin', createdAt: new Date().toISOString() };
+      })()
     };
     saveUsers(users);
     console.log('\n  [auth] Default admin account created: admin / admin123456');
@@ -56,7 +63,7 @@ router.post('/login', (req, res) => {
     return res.status(401).json({ error: '用户名或密码错误' });
   }
   const user = users[username];
-  if (user.password !== hashPassword(password)) {
+  if (user.password !== hashWithUserSalt(password, user)) {
     return res.status(401).json({ error: '用户名或密码错误' });
   }
   // Set session
@@ -93,10 +100,11 @@ router.post('/change-password', (req, res) => {
   }
   const users = getUsers();
   const user = users[req.session.user.username];
-  if (user.password !== hashPassword(oldPassword)) {
+  if (user.password !== hashWithUserSalt(oldPassword, user)) {
     return res.status(401).json({ error: '旧密码错误' });
   }
-  user.password = hashPassword(newPassword);
+  user.salt = genSalt();
+  user.password = hashPassword(newPassword, user.salt);
   saveUsers(users);
   res.json({ success: true });
 });
@@ -137,8 +145,10 @@ router.post('/users', requireAdmin, (req, res) => {
   if (users[username]) {
     return res.status(409).json({ error: '用户名已存在' });
   }
+  const salt = genSalt();
   users[username] = {
-    password: hashPassword(password),
+    salt,
+    password: hashPassword(password, salt),
     role: role || 'user',
     createdAt: new Date().toISOString()
   };
@@ -185,7 +195,9 @@ router.post('/users/reset-password', requireAdmin, (req, res) => {
   if (!users[username]) {
     return res.status(404).json({ error: '用户不存在' });
   }
-  users[username].password = hashPassword(newPassword);
+  const salt = genSalt();
+  users[username].salt = salt;
+  users[username].password = hashPassword(newPassword, salt);
   saveUsers(users);
   res.json({ success: true });
 });

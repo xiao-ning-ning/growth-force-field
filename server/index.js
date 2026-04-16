@@ -44,9 +44,12 @@ setTimeout(() => {
   if (!fs.existsSync(usersDir)) fs.mkdirSync(usersDir, { recursive: true });
 
   if (!fs.existsSync(USERS_FILE)) {
-    const hash = crypto.scryptSync('admin123456', 'growth-force-field-salt', 64).toString('hex');
+    const crypto = require('crypto');
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = crypto.scryptSync('admin123456', salt, 64).toString('hex');
     const users = {
       admin: {
+        salt,
         password: hash,
         role: 'admin',
         createdAt: new Date().toISOString()

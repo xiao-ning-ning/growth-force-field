@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { loadMap, saveMap, createEmptyMap } = require('../store');
+const { loadMap, saveMap, createEmptyMap, nextId } = require('../store');
 
 // GET /api/map - 获取地图数据
 router.get('/', (req, res) => {
@@ -60,26 +60,41 @@ router.post('/import', async (req, res) => {
     }
 
     const map = loadMap(req.userId);
+    const idMap = {}; // old ID → new ID
 
     // Merge speakers
     for (const sp of (imported.speakers || [])) {
       if (!map.speakers.find(s => s.name === sp.name)) {
-        map.speakers.push(sp);
+        const newId = nextId('speaker');
+        idMap[sp.id] = newId;
+        map.speakers.push({ ...sp, id: newId });
       }
     }
 
     // Merge categories
     for (const cat of (imported.categories || [])) {
       if (!map.categories.find(c => c.name === cat.name)) {
-        map.categories.push(cat);
+        const newId = nextId('cat');
+        idMap[cat.id] = newId;
+        map.categories.push({ ...cat, id: newId });
       }
     }
 
-    // Merge dimensions (skip duplicates by name)
+    // Merge dimensions (skip duplicates by name, generate new IDs)
     let importedDimCount = 0;
     for (const dim of (imported.dimensions || [])) {
       if (!map.dimensions.find(d => d.name === dim.name)) {
-        map.dimensions.push(dim);
+        const newId = nextId('dim');
+        idMap[dim.id] = newId;
+        // Remap speakerId and category references
+        const newDim = { ...dim, id: newId };
+        if (dim.speakerId && idMap[dim.speakerId]) newDim.speakerId = idMap[dim.speakerId];
+        if (dim.category && idMap[dim.category]) newDim.category = idMap[dim.category];
+        // Remap relatedTo
+        if (Array.isArray(dim.relatedTo)) {
+          newDim.relatedTo = dim.relatedTo.map(rid => idMap[rid] || rid);
+        }
+        map.dimensions.push(newDim);
         importedDimCount++;
       }
     }
@@ -87,7 +102,11 @@ router.post('/import', async (req, res) => {
     // Merge sourceLog
     for (const log of (imported.sourceLog || [])) {
       if (!map.sourceLog.find(l => l.source === log.source && l.date === log.date)) {
-        map.sourceLog.push(log);
+        const newLog = { ...log };
+        if (Array.isArray(log.dimensionsAffected)) {
+          newLog.dimensionsAffected = log.dimensionsAffected.map(id => idMap[id] || id);
+        }
+        map.sourceLog.push(newLog);
       }
     }
 

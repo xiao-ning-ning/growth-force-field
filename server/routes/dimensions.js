@@ -72,12 +72,12 @@ router.put('/:id', async (req, res) => {
     if (!dim) return res.status(404).json({ error: '维度不存在' });
 
     const { name, status, description, category, confidence, relatedTo } = req.body;
-    if (name !== undefined) dim.name = name;
-    if (status !== undefined) dim.status = status;
-    if (description !== undefined) dim.description = description;
-    if (category !== undefined) dim.category = category;
-    if (confidence !== undefined) dim.confidence = confidence;
-    if (relatedTo !== undefined) dim.relatedTo = relatedTo;
+    if (name !== undefined) dim.name = String(name).slice(0, 200);
+    if (status !== undefined && ['possessed', 'developing'].includes(status)) dim.status = status;
+    if (description !== undefined) dim.description = String(description).slice(0, 500);
+    if (category !== undefined) dim.category = String(category).slice(0, 50);
+    if (confidence !== undefined && ['强', '中', '弱'].includes(confidence)) dim.confidence = confidence;
+    if (relatedTo !== undefined && Array.isArray(relatedTo)) dim.relatedTo = relatedTo.filter(id => typeof id === 'string');
 
     await saveMap(req.userId, map);
     res.json({ success: true, dimension: dim });

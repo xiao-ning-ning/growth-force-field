@@ -80,6 +80,7 @@ body {
   border: 1px solid var(--border); background: rgba(255,255,255,0.04);
   color: var(--text); font-size: 14px; outline: none;
   transition: border-color 0.2s;
+  -webkit-autofill-selected: transparent;
 }
 .login-field input:focus { border-color: var(--accent); }
 .login-error {
@@ -1598,7 +1599,7 @@ function renderHome(el) {
       <div class="guide-card" onclick="switchView('paths')">
         <div class="step-num s2">&#127919;</div>
         <h4>修炼路径</h4>
-        <p>${developing.length} 个己所向维度有具体修炼建议</p>
+        <p id="guide-paths-count">${(mapData?.developmentPaths || []).length} 个维度有具体修炼路径</p>
       </div>` : ''}
       ${blinds.length > 0 ? `
       <div class="guide-card" onclick="switchView('blindspots')">
@@ -1627,10 +1628,17 @@ function renderHome(el) {
       <div class="guide-card" onclick="switchView('paths')">
         <div class="step-num s3">3</div>
         <h4>修炼成长</h4>
-        <p>己所向维度和盲区都有具体修炼路径，利用己所能做杠杆</p>
+        <p id="guide-paths-count">加载中...</p>
       </div>
     </div>`}
   </div>`;
+
+  // 动态更新修炼路径数量
+  setTimeout(() => {
+    const pathsCount = (mapData?.developmentPaths || []).length;
+    const el = document.getElementById('guide-paths-count');
+    if (el) el.textContent = pathsCount + ' 个维度有具体修炼路径';
+  }, 0);
 
   // Radar chart inline — use categories as axes to match ability map
   const allCategories = (mapData.categories || []).filter(cat => (cat.dimIds || []).length > 0);
@@ -1690,7 +1698,7 @@ function renderHome(el) {
       const targetName = p.targetName;
       const outcome = p.expectedOutcome || '';
       html += `
-        <div class="upgrade-path" onclick="goToPath('${p.id}')">
+        <div class="upgrade-path" onclick="goToPath('${p.targetDimension}')">
           <div class="upgrade-from">${isBlind ? '&#128065; 盲区' : '&#127793; 待发展'}</div>
           <span style="font-size:13px;color:var(--text);font-weight:600">${esc(targetName)}</span>
           <div class="upgrade-arrow">&#10132;</div>
@@ -2007,14 +2015,14 @@ function showDimDetail(dimId) {
       <h4>&#127919; 升级路径</h4>
       <p><strong>当前缺口：</strong>${esc(upgradePath.currentGap)}</p>
       <p style="margin-top:6px"><strong>预期变化：</strong>${esc(upgradePath.expectedOutcome)}</p>
-      <p style="margin-top:6px"><strong>杠杆维度：</strong>${esc((upgradePath.leveragedFrom || []).map(id => getDimName(id)).join(' / '))}</p>
+      <p style="margin-top:6px"><strong>杠杆维度：</strong>${esc((upgradePath.leveragedFrom || []).map(id => getDimName(id))).join(' / ')}</p>
     </div>`;
   }
 
   if (d.relatedTo && d.relatedTo.length > 0) {
     html += `<div class="modal-section"><h4>关联维度</h4><div class="related-tags">`;
     d.relatedTo.forEach(rid => {
-      html += `<span class="related-tag" onclick="closeModal();setTimeout(()=>showDimDetail('${rid}'),100)">${getDimName(rid)}</span>`;
+      html += `<span class="related-tag" onclick="closeModal();setTimeout(()=>showDimDetail('${rid}'),100)">${esc(getDimName(rid))}</span>`;
     });
     html += '</div></div>';
   }
@@ -2137,7 +2145,7 @@ function updateDeleteBar() {
   bar.classList.toggle('visible', deleteQueue.length > 0);
   label.textContent = `待删除: ${deleteQueue.length} 个维度`;
   tags.innerHTML = deleteQueue.map(id =>
-    `<span class="delete-tag">${getDimName(id)}<span class="x" onclick="removeFromDelete('${id}')">&times;</span></span>`
+    `<span class="delete-tag">${esc(getDimName(id))}<span class="x" onclick="removeFromDelete('${id}')">&times;</span></span>`
   ).join('');
 }
 
@@ -2219,10 +2227,10 @@ function renderBlindspots(el) {
   let html = deleteBarHtml + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><h3 style="margin:0">感知盲区</h3><button class="btn primary" style="font-size:11px;padding:4px 12px" onclick="genBlindspots()">刷新盲区探测</button></div><div class="blinds-grid">';
   blinds.forEach(b => {
     const isSelected = blindDeleteQueue.includes(b.id);
-    html += `<div class="blind-card ${isSelected ? 'dim-selected' : ''}" data-blind-id="${b.id}" onclick="toggleBlindDelete('${b.id}', event)">
+    html += `<div class="blind-card ${isSelected ? 'dim-selected' : ''}" data-blind-id="${b.id}">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
         <span class="blind-confidence ${b.confidence}">置信度: ${esc(b.confidence)}</span>
-        <span class="dim-delete-btn" style="margin-left:auto" onclick="event.stopPropagation();toggleBlindDelete('${b.id}', event)">&#10005;</span>
+        <span class="dim-delete-btn" style="margin-left:auto" onclick="toggleBlindDelete('${b.id}', event)">&#10005;</span>
       </div>
       <h3>${esc(b.name)}</h3>
       <p>${esc(b.description)}</p>`;
@@ -2609,8 +2617,8 @@ function renderSettings(el) {
       </div>
       <div class="settings-card">
         <h3>修改密码</h3>
-        <div class="form-group"><label>当前密码</label><input class="form-input" type="password" id="oldPwd"></div>
-        <div class="form-group"><label>新密码（至少8位）</label><input class="form-input" type="password" id="newPwd"></div>
+        <div class="form-group"><label>当前密码</label><input class="form-input" type="password" id="oldPwd" autocomplete="current-password"></div>
+        <div class="form-group"><label>新密码（至少8位）</label><input class="form-input" type="password" id="newPwd" autocomplete="new-password"></div>
         <button class="btn primary" onclick="changePassword()">修改密码</button>
       </div>
     </div>`;
@@ -2701,8 +2709,8 @@ async function loadUserMgmt() {
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
         <h4 style="font-size:13px;margin-bottom:10px;color:var(--text2)">添加新用户</h4>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <input class="form-input" id="newUser" placeholder="用户名（字母/数字/下划线）" style="flex:1;min-width:120px">
-          <input class="form-input" type="password" id="newUserPwd" placeholder="密码（至少8位）" style="flex:1;min-width:120px">
+          <input class="form-input" id="newUser" placeholder="用户名（字母/数字/下划线）" style="flex:1;min-width:120px" autocomplete="new-username">
+          <input class="form-input" type="password" id="newUserPwd" placeholder="密码（至少8位）" style="flex:1;min-width:120px" autocomplete="new-password">
           <button class="btn primary" style="padding:8px 16px" onclick="addUser()">添加</button>
         </div>
       </div>`;
