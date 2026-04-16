@@ -33,6 +33,8 @@
 
 上传录音文本 → AI 行为分析 → 生成能力图谱 → 设计修炼路径
 
+---
+
 ## 快速开始
 
 ### 0. 安装 Node.js
@@ -60,6 +62,7 @@ curl -L "https://nodejs.org/dist/v22.14.0/node-v22.14.0-x64.msi" -o node.msi && 
 ### 1. 安装依赖
 
 ```bash
+git clone https://github.com/xiao-ning-ning/growth-force-field.git
 cd growth-force-field
 npm install
 ```
@@ -92,6 +95,8 @@ OPENAI_TIMEOUT=300000
 
 有新版发布后，双击 `update.bat` 即可自动下载最新版本并重启。你的数据（data/ 目录）会在更新前自动备份，更新后自动还原。
 
+---
+
 ## 功能
 
 ### 仪表盘
@@ -107,7 +112,7 @@ OPENAI_TIMEOUT=300000
 
 ### 核心组合
 识别维度之间的协同关系，命名组合（如"手术刀式管理""温度护城河"），分析适用场景和稀缺性。动态门槛：只有证据数达到一定量的维度才能参与组合，确保组合质量。
-<img width="1918" height="1173" alt="核心组合" src="https://github.com/user-attachments/assets/f591a948-9e0a-4199-b30d-67fed97b5c15" />
+<img width="1918" height="1173" alt="核心组合" src="https://github.com/user-attachments/assets/f591a948-9e0a-4199-b30d-67fed97b5a5" />
 
 ### 盲区探测
 分析"应该出现但没出现"的能力感知，基于已有维度的触发模式推理盲区。
@@ -120,6 +125,8 @@ OPENAI_TIMEOUT=300000
 ### 成长时间线
 按时间顺序展示认知地图的增长过程，维度标签区分已具备/待发展。
 
+---
+
 ## 技术架构
 
 - **前端**：单 HTML 文件，深色主题，零构建
@@ -128,12 +135,14 @@ OPENAI_TIMEOUT=300000
 - **数据**：本地 JSON 文件，按用户分目录存储
 - **认证**：多用户 session + cookie，管理员可增删用户
 
+---
+
 ## 项目介绍 PPT
 
 启动后在「设置」页面可查看完整项目介绍 PPT，包含产品流程、部署步骤等详细说明。
 
+---
+
 ## License
 
 [Apache 2.0](LICENSE)
-
-
