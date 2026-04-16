@@ -44,6 +44,8 @@ OPENAI_API_KEY=sk-your-api-key
 OPENAI_BASE_URL=https://api.openai.com/v1
 OPENAI_MODEL=gpt-4o
 PORT=3000
+HOST=0.0.0.0
+OPENAI_TIMEOUT=300000
 ```
 
 支持的 OpenAI 兼容接口：
@@ -55,13 +57,7 @@ PORT=3000
 
 ### 3. 启动服务
 
-```bash
-npm start
-```
-
-浏览器打开 http://localhost:3000 即可使用。
-
-或双击 `start.bat` 即可运行，自动打开浏览器
+双击 `start.bat` 即可运行，自动打开浏览器。首次运行需要配置 `.env` 中的 API 信息。
 
 ### 更新程序
 
@@ -73,27 +69,24 @@ npm start
 <img width="1918" height="1992" alt="PixPin_2026-04-15_15-32-18" src="https://github.com/user-attachments/assets/d5774426-76d6-4af3-9464-014bb5cc42e8" />
 
 ### 分析录音
-粘贴录音转写文本，AI 自动提取行为特征和能力维度。支持增量更新——每次新录音都会在已有地图基础上生长。
-<img width="1190" height="540" alt="PixPin_2026-04-15_15-32-29" src="https://github.com/user-attachments/assets/ee175c23-8502-432c-a3bd-2b22f97b1e4a" />
+上传录音文本文件（.txt），支持拖拽上传。AI 自动提取行为特征和能力维度。每次分析在已有地图基础上增量生长。
+<img width="1190" height="540" alt="分析录音" src="https://github.com/user-attachments/assets/ee175c23-8502-432c-a3bd-2b22f97b1e4a" />
 
 ### 能力图谱
-左右分栏展示已具备和待发展维度，按分类折叠聚合。点击维度查看详情、证据链、关联维度。
-<img width="1918" height="1992" alt="PixPin_2026-04-15_15-32-46" src="https://github.com/user-attachments/assets/6211fedf-e3be-436b-b27e-10e90ac9f7f8" />
+按五大分类（战略与诊断、管控与绩效、人心与温度、知识与赋能、制度与设计）左右分栏展示已具备和待发展维度。点击维度查看详情、证据链、关联维度，支持内联编辑证据引用。
+<img width="1918" height="1992" alt="能力图谱" src="https://github.com/user-attachments/assets/6211fedf-e3be-436b-b27e-10e90ac9f7f8" />
 
 ### 核心组合
-识别维度之间的协同关系，命名组合（如"手术刀式管理""温度护城河"），分析适用场景和稀缺性。
-<img width="1918" height="1173" alt="PixPin_2026-04-15_15-32-54" src="https://github.com/user-attachments/assets/f591a948-9e0a-4199-b30d-67fed97b5c15" />
+识别维度之间的协同关系，命名组合（如"手术刀式管理""温度护城河"），分析适用场景和稀缺性。动态门槛：只有证据数达到一定量的维度才能参与组合，确保组合质量。
+<img width="1918" height="1173" alt="核心组合" src="https://github.com/user-attachments/assets/f591a948-9e0a-4199-b30d-67fed97b5c15" />
 
 ### 盲区探测
 分析"应该出现但没出现"的能力感知，基于已有维度的触发模式推理盲区。
-<img width="1918" height="1077" alt="PixPin_2026-04-15_15-33-02" src="https://github.com/user-attachments/assets/706dc596-33dc-4a79-9368-e0070eba5deb" />
+<img width="1918" height="1077" alt="盲区探测" src="https://github.com/user-attachments/assets/706dc596-33dc-4a79-9368-e0070eba5deb" />
 
 ### 修炼路径
 针对待发展维度和盲区，设计可落地的修炼步骤，每步标注利用哪个已具备维度作为杠杆。
-<img width="1918" height="1992" alt="PixPin_2026-04-15_15-33-10" src="https://github.com/user-attachments/assets/d674f017-282d-4316-a3af-c70280bd9466" />
-
-### 手动纠错
-在维度详情中直接编辑证据引用文本，修正录音转写中的同音字、漏字等错误，修改前原文可追溯还原。
+<img width="1918" height="1992" alt="修炼路径" src="https://github.com/user-attachments/assets/d674f017-282d-4316-a3af-c70280bd9466" />
 
 ### 成长时间线
 按时间顺序展示认知地图的增长过程，维度标签区分已具备/待发展。
@@ -103,7 +96,8 @@ npm start
 - **前端**：单 HTML 文件，深色主题，零构建
 - **后端**：Node.js + Express
 - **AI**：OpenAI 兼容接口（JSON mode）
-- **数据**：本地 JSON 文件
+- **数据**：本地 JSON 文件，按用户分目录存储
+- **认证**：多用户 session + cookie，管理员可增删用户
 
 ## License
 
