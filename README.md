@@ -112,7 +112,7 @@ OPENAI_TIMEOUT=300000
 
 ### 核心组合
 识别维度之间的协同关系，命名组合（如"手术刀式管理""温度护城河"），分析适用场景和稀缺性。动态门槛：只有证据数达到一定量的维度才能参与组合，确保组合质量。
-<img width="1918" height="1173" alt="核心组合" src="https://github.com/user-attachments/assets/f591a948-9e0a-4199-b30d-67fed97b5a5" />
+<img width="1918" height="1173" alt="核心组合" src="https://github.com/user-attachments/assets/f591a948-9e0a-4199-b30d-67fed97b5c15" />
 
 ### 盲区探测
 分析"应该出现但没出现"的能力感知，基于已有维度的触发模式推理盲区。
