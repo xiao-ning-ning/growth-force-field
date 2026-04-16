@@ -14,7 +14,7 @@
   --card2: #181a28;
   --card3: #1e2033;
   --border: #1f2140;
-  --border-light: #2a2d52;
+  --border-light: #3d4270;
   --text: #f0f0f5;
   --text2: #b8b8c8;
   --text3: #7a7a90;
@@ -169,9 +169,13 @@ body {
   margin-bottom: 2px;
   position: relative;
 }
-.nav-item:hover { background: rgba(124,108,240,0.06); color: var(--text2); }
+.nav-item:hover {
+  background: rgba(124,108,240,0.08);
+  color: var(--text2);
+  transform: translateX(2px);
+}
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(124,108,240,0.12), rgba(124,108,240,0.04));
+  background: linear-gradient(135deg, rgba(124,108,240,0.14), rgba(124,108,240,0.06));
   color: var(--accent2);
   font-weight: 600;
 }
@@ -186,7 +190,9 @@ body {
   background: var(--accent);
   box-shadow: 0 0 12px var(--glow-accent);
 }
-.nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+.nav-item .icon { font-size: 16px; width: 20px; text-align: center; transition: transform 0.2s; }
+.nav-item:hover .icon { transform: scale(1.15); }
+.nav-item.active .icon { filter: drop-shadow(0 0 4px var(--accent)); }
 
 .sidebar-footer {
   padding: 16px 22px;
@@ -599,12 +605,17 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
   background: linear-gradient(135deg, var(--card), rgba(17,18,28,0.8));
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: var(--transition);
+  transition: var(--transition), background 0.2s ease, transform 0.2s ease;
   font-size: 13px;
   font-weight: 600;
   color: var(--text2);
   user-select: none;
   border: 1px solid transparent;
+}
+.category-header:hover {
+  background: linear-gradient(135deg, rgba(124,108,240,0.08), var(--card));
+  color: var(--text);
+  transform: translateX(2px);
 }
 .category-header:hover {
   background: var(--card2);
@@ -644,19 +655,19 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
 }
 
 .dim-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--card), var(--card2));
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
   margin-bottom: 6px;
   cursor: pointer;
-  transition: var(--transition);
   position: relative;
+  transition: var(--transition), transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
 .dim-card:hover {
-  border-color: var(--border-light);
-  background: var(--card2);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  border-color: rgba(124,108,240,0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(124,108,240,0.12);
 }
 .dim-card.possessed { border-left: 3px solid var(--green); }
 .dim-card.developing { border-left: 3px solid var(--orange); }
@@ -830,12 +841,12 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
 
 .combo-card {
   background: linear-gradient(160deg, var(--card), var(--card2));
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
   padding: 26px;
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
+  transition: var(--transition), transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
 .combo-card::before {
   content: '';
@@ -845,9 +856,9 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
   background: linear-gradient(90deg, var(--accent), var(--green), transparent);
 }
 .combo-card:hover {
-  border-color: var(--border-light);
+  border-color: rgba(0,206,201,0.4);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,206,201,0.15);
 }
 .combo-name { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 700; margin-bottom: 10px; }
 .combo-dims { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
@@ -885,12 +896,18 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
 
 .blind-card {
   background: linear-gradient(160deg, var(--card), var(--card2));
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
   padding: 26px;
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
+  transition: var(--transition), transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  cursor: pointer;
+}
+.blind-card:hover {
+  border-color: rgba(248,113,113,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(248,113,113,0.15);
 }
 .blind-card::before {
   content: '';
@@ -910,6 +927,12 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
 .blind-confidence.强 { background: rgba(255,118,117,0.15); color: var(--red); }
 .blind-confidence.中 { background: rgba(253,203,110,0.15); color: var(--orange); }
 .blind-confidence.弱 { background: rgba(253,203,110,0.08); color: var(--orange); }
+.dim-delete-btn { font-size: 14px; color: var(--text3); cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: all 0.2s; line-height: 1; opacity: 0; pointer-events: none; }
+.dim-card:hover .dim-delete-btn,
+.blind-card:hover .dim-delete-btn { opacity: 1; pointer-events: auto; }
+.dim-delete-btn:hover { color: var(--red); background: rgba(255,100,100,0.1); }
+.dim-selected { outline: 2px solid var(--red) !important; background: rgba(255,100,100,0.06) !important; }
+.blind-card:hover .dim-selected { outline: 2px solid var(--red) !important; }
 .blind-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
 .blind-card p { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 12px; }
 .blind-evidence-card {
@@ -931,9 +954,15 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
 
 .path-card {
   background: linear-gradient(160deg, var(--card), var(--card2));
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
   padding: 26px;
+  transition: var(--transition), transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+.path-card:hover {
+  border-color: rgba(45,212,191,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(45,212,191,0.15);
 }
 .path-header { margin-bottom: 16px; }
 .path-header h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
@@ -1177,6 +1206,8 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
 let mapData = null;
 let currentView = 'home';
 let deleteQueue = [];
+let selectedPathId = null; // 首页升级潜力点击后，滚动到对应路径
+let blindDeleteQueue = [];
 
 // ============ MAIN APP HTML ============
 const mainAppHTML = `
@@ -1341,6 +1372,19 @@ async function loadMap() {
   return mapData;
 }
 
+function updateSidebarCounts() {
+  const dims = mapData?.dimensions || [];
+  const possessed = dims.filter(d => d.status === 'possessed').length;
+  const developing = dims.filter(d => d.status === 'developing').length;
+  const updateCount = (id, n) => { const el = document.getElementById(id); if (el) el.textContent = n; };
+  updateCount('navCountPossessed', possessed);
+  updateCount('navCountDeveloping', developing);
+  updateCount('navCountCombos', (mapData?.combinations || []).length);
+  updateCount('navCountBlinds', (mapData?.blindSpots || []).length);
+  updateCount('navCountPaths', (mapData?.developmentPaths || []).length);
+  updateCount('navCountTimeline', (mapData?.sourceLog || []).length);
+}
+
 // ============ NAVIGATION ============
 
 function goToDimension(dimId) {
@@ -1362,6 +1406,11 @@ function goToDimension(dimId) {
       setTimeout(() => { card.style.boxShadow = ''; }, 2000);
     }
   }, 300);
+}
+
+function goToPath(pathId) {
+  selectedPathId = pathId;
+  switchView('paths');
 }
 
 function goToBlindspot(blindId) {
@@ -1641,7 +1690,7 @@ function renderHome(el) {
       const targetName = p.targetName;
       const outcome = p.expectedOutcome || '';
       html += `
-        <div class="upgrade-path" onclick="switchView('paths')">
+        <div class="upgrade-path" onclick="goToPath('${p.id}')">
           <div class="upgrade-from">${isBlind ? '&#128065; 盲区' : '&#127793; 待发展'}</div>
           <span style="font-size:13px;color:var(--text);font-weight:600">${esc(targetName)}</span>
           <div class="upgrade-arrow">&#10132;</div>
@@ -2161,21 +2210,28 @@ function renderBlindspots(el) {
     return;
   }
 
-  let html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><h3 style="margin:0">感知盲区</h3><button class="btn primary" style="font-size:11px;padding:4px 12px" onclick="genBlindspots()">刷新盲区探测</button></div><div class="blinds-grid">';
+  const deleteBarHtml = `<div class="delete-bar" id="blindDeleteBar" style="${blindDeleteQueue.length === 0 ? 'display:none' : ''}">
+    <span class="delete-bar-label" id="blindDeleteLabel">待删除: ${blindDeleteQueue.length} 个盲区</span>
+    <div id="blindDeleteTags"></div>
+    <button class="btn danger" onclick="applyBlindDelete()">确认删除</button>
+  </div>`;
+
+  let html = deleteBarHtml + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><h3 style="margin:0">感知盲区</h3><button class="btn primary" style="font-size:11px;padding:4px 12px" onclick="genBlindspots()">刷新盲区探测</button></div><div class="blinds-grid">';
   blinds.forEach(b => {
-    html += `<div class="blind-card" data-blind-id="${b.id}">
-      <span class="blind-confidence ${b.confidence}">置信度: ${esc(b.confidence)}</span>
+    const isSelected = blindDeleteQueue.includes(b.id);
+    html += `<div class="blind-card ${isSelected ? 'dim-selected' : ''}" data-blind-id="${b.id}" onclick="toggleBlindDelete('${b.id}', event)">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span class="blind-confidence ${b.confidence}">置信度: ${esc(b.confidence)}</span>
+        <span class="dim-delete-btn" style="margin-left:auto" onclick="event.stopPropagation();toggleBlindDelete('${b.id}', event)">&#10005;</span>
+      </div>
       <h3>${esc(b.name)}</h3>
       <p>${esc(b.description)}</p>`;
 
-    // Evidence cards
     (b.evidence || []).forEach(ev => {
       html += `<div class="blind-evidence-card"><b>场景:</b> ${esc(ev.context)}<br><b>缺口:</b> ${esc(ev.gap)}</div>`;
     });
 
-    // Related dimensions
     if (b.relatedDimensions && b.relatedDimensions.length > 0) {
-      // relatedDimensions can be string (space-separated) or array
       const relIds = Array.isArray(b.relatedDimensions) ? b.relatedDimensions : (typeof b.relatedDimensions === 'string' ? b.relatedDimensions.split(' ').filter(Boolean) : []);
       html += `<div class="blind-related"><span class="blind-related-label">关联: </span>`;
       relIds.forEach(id => {
@@ -2191,6 +2247,43 @@ function renderBlindspots(el) {
   });
   html += '</div>';
   el.innerHTML = html;
+}
+
+function toggleBlindDelete(blindId, event) {
+  event.stopPropagation();
+  const idx = blindDeleteQueue.indexOf(blindId);
+  if (idx === -1) {
+    blindDeleteQueue.push(blindId);
+  } else {
+    blindDeleteQueue.splice(idx, 1);
+  }
+  const bar = document.getElementById('blindDeleteBar');
+  if (bar) {
+    if (blindDeleteQueue.length === 0) {
+      bar.style.display = 'none';
+    } else {
+      bar.style.display = 'flex';
+      document.getElementById('blindDeleteLabel').textContent = '待删除: ' + blindDeleteQueue.length + ' 个盲区';
+    }
+  }
+  // Update card styles
+  document.querySelectorAll('.blind-card').forEach(card => {
+    const id = card.dataset.blindId;
+    card.classList.toggle('dim-selected', blindDeleteQueue.includes(id));
+  });
+}
+
+async function applyBlindDelete() {
+  if (blindDeleteQueue.length === 0) return;
+  try {
+    const result = await api('/api/blindspots/delete', 'POST', { blindIds: blindDeleteQueue });
+    mapData = result.map;
+    blindDeleteQueue = [];
+    toast('删除成功', 'success');
+    renderView('blindspots');
+  } catch (e) {
+    toast(e.message, 'error');
+  }
 }
 
 async function genBlindspots() {
@@ -2229,7 +2322,7 @@ function renderPaths(el) {
     const leveragedFrom = Array.isArray(p.leveragedFrom) ? p.leveragedFrom : (typeof p.leveragedFrom === 'string' ? p.leveragedFrom.split(' ').filter(Boolean) : []);
     const steps = Array.isArray(p.steps) ? p.steps : [];
 
-    html += `<div class="path-card">
+    html += `<div class="path-card" id="path-${p.id}">
       <div class="path-header">
         <h3>${isBlind ? '&#128065; ' : '&#127793; '}${esc(p.targetName)}</h3>
         <div class="path-gap">${esc(p.currentGap)}</div>
@@ -2262,6 +2355,15 @@ function renderPaths(el) {
   });
   html += '</div>';
   el.innerHTML = html;
+  if (selectedPathId) {
+    const target = document.getElementById('path-' + selectedPathId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.style.boxShadow = '0 0 0 2px var(--orange), 0 0 20px rgba(253,203,110,0.3)';
+      setTimeout(() => { target.style.boxShadow = ''; }, 2000);
+    }
+    selectedPathId = null;
+  }
 }
 
 async function genPaths() {

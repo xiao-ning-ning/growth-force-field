@@ -111,4 +111,24 @@ ${existingBlinds.length > 0 ? existingBlinds.map(b => `- [${b.id}] ${b.name} (�
   }
 });
 
+// POST /api/blindspots/delete - 删除盲区
+router.post('/delete', async (req, res) => {
+  try {
+    const { blindIds } = req.body;
+    if (!blindIds || blindIds.length === 0) {
+      return res.status(400).json({ error: '请指定要删除的盲区 ID' });
+    }
+
+    const map = loadMap(req.userId);
+    map.blindSpots = map.blindSpots.filter(b => !blindIds.includes(b.id));
+    // 同步删除对应的修炼路径
+    map.developmentPaths = map.developmentPaths.filter(p => !blindIds.includes(p.targetDimension));
+    syncBlindSpotsToRadarAxes(map);
+    await saveMap(req.userId, map);
+    res.json({ success: true, map });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
