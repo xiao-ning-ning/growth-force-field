@@ -4,6 +4,42 @@ const router = express.Router();
 const { callLLM, loadMap, saveMap, nextId, syncBlindSpotsToRadarAxes } = require('../store');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+
+// 保存成长记录快照
+function saveGrowthRecord(req, map, speaker, source) {
+  const userId = req.userId || req.session?.user?.username;
+  if (!userId) return;
+  const DATA_DIR = path.join(__dirname, '../../data/growth-records');
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  const filePath = path.join(DATA_DIR, `${userId}.json`);
+  let data = { userId, records: [], lastUpdated: null };
+  if (fs.existsSync(filePath)) {
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch {}
+  }
+
+  // 构建维度快照
+  const dimensions = {};
+  map.dimensions.forEach(d => {
+    dimensions[d.id] = d.status;
+  });
+
+  const record = {
+    id: crypto.randomUUID(),
+    timestamp: new Date().toISOString(),
+    source: source || '未知来源',
+    speaker: speaker || '未知',
+    dimensions,
+    summary: map.summary || '',
+    keyFindings: [],
+    completedPaths: (map.developmentPaths || []).filter(p => p.completed).map(p => p.id),
+    currentPaths: (map.developmentPaths || []).map(p => ({ id: p.id, name: p.targetName })),
+  };
+
+  data.records.push(record);
+  data.lastUpdated = record.timestamp;
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+}
 
 // 五大固定分类
 const FIXED_CATEGORIES = [
@@ -153,6 +189,9 @@ ${existingDimsSummary.length > 0 ? existingDimsSummary.map(d =>
     const updates = processAnalysisResult(map, result, speakerName, sourceName, date);
 
     await saveMap(req.userId, map);
+
+    // 自动保存成长记录快照
+    saveGrowthRecord(req, map, speakerName, sourceName);
 
     res.json({
       success: true,

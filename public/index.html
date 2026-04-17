@@ -1257,6 +1257,57 @@ textarea.form-input { min-height: 300px; resize: vertical; line-height: 1.7; }
   margin-top: 20px;
   justify-content: flex-end;
 }
+
+/* timeline */
+.timeline { display:flex;flex-direction:column;gap:0;padding-left:24px;border-left:2px solid var(--border);margin-left:8px }
+.timeline-item { position:relative;padding:16px 0 16px 28px }
+.timeline-item::before{content:'';position:absolute;left:-7px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.timeline-dot{display:none}
+.timeline-date{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.timeline-source{font-size:12px;color:var(--text3);margin-bottom:8px}
+.timeline-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.timeline-tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:12px;cursor:pointer}
+.timeline-tag.possessed{background:var(--glow-green);color:var(--green);border:1px solid rgba(45,212,191,0.3)}
+.timeline-tag.developing{background:rgba(251,191,36,0.1);color:var(--orange);border:1px solid rgba(251,191,36,0.25)}
+.timeline-tag.blind{background:var(--glow-red);color:var(--red);border:1px solid rgba(248,113,113,0.3)}
+.timeline-summary{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* track */
+.track-wrap { max-width:1100px }
+.track-loading { color:var(--text3);padding:16px;font-size:13px }
+.track-admin-panel { background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:32px }
+.track-admin-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:16px }
+.track-admin-header h3 { margin:0;font-size:16px }
+.track-timeline { overflow-x:auto }
+.track-dim-table-wrap { overflow-x:auto;margin-bottom:24px }
+.track-dim-table { width:100%;border-collapse:collapse;font-size:13px;min-width:600px }
+.track-dim-table th { padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--text2);white-space:nowrap;font-weight:600 }
+.track-dim-table td { padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle }
+.track-date-col { min-width:80px;font-size:11px }
+.track-dim-name { font-weight:600;color:var(--text);cursor:pointer }
+.track-dim-name:hover { color:var(--accent) }
+.track-state { border-radius:10px;text-align:center;font-size:12px;padding:4px 8px;white-space:nowrap }
+.track-state.possessed { background:rgba(45,212,191,0.12);color:var(--green) }
+.track-state.developing { background:rgba(251,191,36,0.1);color:var(--orange) }
+.track-state.blind { background:rgba(248,113,113,0.1);color:var(--red) }
+.track-state.no_data { background:var(--card3);color:var(--text3) }
+.track-state.changed { font-weight:700 }
+.track-change-arrow { font-size:10px;color:var(--accent);margin-top:2px }
+.track-records { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px }
+.track-record-card { background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px }
+.track-record-header { display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px }
+.track-record-date { font-size:13px;font-weight:700;color:var(--accent) }
+.track-record-source { font-size:12px;color:var(--text3) }
+.track-record-badge { background:rgba(45,212,191,0.1);color:var(--green);border:1px solid rgba(45,212,191,0.25);border-radius:10px;padding:2px 8px;font-size:11px;margin-left:auto }
+.track-record-findings { margin-bottom:10px }
+.track-finding { font-size:12px;color:var(--text2);line-height:1.6;padding:2px 0 }
+.track-record-summary { font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:10px }
+.track-record-dims { display:flex;flex-wrap:wrap;gap:6px }
+.track-record-tag { display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px }
+.track-record-tag.possessed { background:rgba(45,212,191,0.12);color:var(--green) }
+.track-record-tag.developing { background:rgba(251,191,36,0.1);color:var(--orange) }
+.track-record-tag.blind { background:rgba(248,113,113,0.1);color:var(--red) }
+
 </style>
 </head>
 <body>
@@ -1290,7 +1341,7 @@ const mainAppHTML = `
       <div class="nav-item" data-view="combos"><span class="icon">&#9889;</span><span>核心组合</span></div>
       <div class="nav-item" data-view="blindspots"><span class="icon">&#128065;</span><span>盲区探测</span></div>
       <div class="nav-item" data-view="paths"><span class="icon">&#127793;</span><span>修炼路径</span></div>
-      <div class="nav-item" data-view="timeline"><span class="icon">&#128197;</span><span>成长时间线</span></div>
+      <div class="nav-item" data-view="timeline"><span class="icon">&#128200;</span><span>成长轨迹</span></div>
       <div class="nav-item" data-view="settings"><span class="icon">&#9881;</span><span>设置</span></div>
     </div>
     <div class="sidebar-queue" id="sidebarQueue">
@@ -1401,7 +1452,7 @@ function renderLoadingProgress(key) {
 
 const viewTitles = {
   home: '首页', analyze: '分析录音', map: '能力图谱', combos: '核心组合',
-  blindspots: '盲区探测', paths: '修炼路径', timeline: '成长时间线',
+  blindspots: '盲区探测', paths: '修炼路径', timeline: '成长轨迹',
   settings: '设置',
 };
 
@@ -2469,29 +2520,174 @@ async function genPaths() {
 }
 
 // ============ TIMELINE VIEW ============
-function renderTimeline(el) {
-  const logs = (mapData?.sourceLog || []).slice().reverse();
-  if (logs.length === 0) {
-    el.innerHTML = `<div class="empty-state"><div class="icon">&#128197;</div><h3>还没有成长记录</h3><p>分析录音后，时间线会自动记录成长过程</p></div>`;
-    return;
+async function renderTimeline(el) {
+  const isAdmin = window.currentUser?.role === 'admin';
+
+  let adminPanel = '';
+  if (isAdmin) {
+    adminPanel = `
+      <div class="track-admin-panel">
+        <div class="track-admin-header">
+          <h3>管理员看板</h3>
+          <div class="track-user-selector" id="trackUserSelector">
+            <span style="font-size:13px;color:var(--text3);margin-right:8px">查看用户:</span>
+            <select id="trackUserSelect" class="form-input" style="width:auto;min-width:140px;padding:6px 10px;font-size:13px" onchange="loadAdminTrackView()">
+              <option value="">全部用户</option>
+            </select>
+          </div>
+        </div>
+        <div id="trackAdminContent"></div>
+      </div>`;
   }
 
-  let html = '<div class="timeline">';
-  logs.forEach(log => {
-    const dimIds = log.dimensionsAffected || [];
-    html += `<div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-date">${esc(log.date)}</div>
-      <div class="timeline-source">${esc(log.source)} &middot; ${esc(log.speaker)}</div>
-      <div class="timeline-tags">${dimIds.map(id => {
-        const dim = getDimById(id);
-        return dim ? `<span class="timeline-tag ${dim.status}" onclick="showDimDetail('${id}')">${esc(dim.name)}</span>` : '';
-      }).join('')}</div>
-      <div class="timeline-summary">${esc(log.summary)}</div>
+  el.innerHTML = `
+    <div class="track-wrap">
+      ${adminPanel}
+      <div class="track-my-section">
+        <h2 style="margin-bottom:20px">&#128200; 我的成长轨迹</h2>
+        <div id="trackMyContent" class="track-loading">加载中...</div>
+      </div>
     </div>`;
-  });
-  html += '</div>';
-  el.innerHTML = html;
+
+  if (isAdmin) {
+    loadAdminUsers();
+  }
+  loadMyTrack();
+}
+
+async function loadAdminUsers() {
+  try {
+    const res = await api('/api/growth-records/all');
+    const sel = document.getElementById('trackUserSelect');
+    res.forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u.userId;
+      opt.textContent = `${u.username}${u.role === 'admin' ? ' (管理员)' : ''} (${u.recordCount}条记录)`;
+      sel.appendChild(opt);
+    });
+  } catch (e) { console.error(e); }
+}
+
+function loadAdminTrackView() {
+  const userId = document.getElementById('trackUserSelect').value;
+  const container = document.getElementById('trackAdminContent');
+  if (!userId) {
+    container.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:16px">请选择一位用户查看成长轨迹</div>';
+    return;
+  }
+  loadUserTrack(container, userId, true);
+}
+
+async function loadMyTrack() {
+  const el = document.getElementById('trackMyContent');
+  await loadUserTrack(el, null, false);
+}
+
+async function loadUserTrack(el, userId, showAdmin) {
+  el.innerHTML = '<div style="color:var(--text3);padding:16px">加载中...</div>';
+  try {
+    let records;
+    if (userId) {
+      const res = await api(`/api/growth-records/user/${userId}`);
+      records = res.records || [];
+    } else {
+      const res = await api('/api/growth-records');
+      records = res.records || [];
+    }
+
+    if (records.length === 0) {
+      el.innerHTML = `<div class="empty-state"><div class="icon">&#128200;</div><h3>还没有成长轨迹</h3><p>分析录音后，成长轨迹会自动记录你的能力变化</p></div>`;
+      return;
+    }
+
+    const dimStateOrder = { possessed: 3, developing: 2, blind: 1, no_data: 0 };
+
+    // Build dimension timeline
+    const allDimIds = new Set();
+    records.forEach(r => Object.keys(r.dimensions || {}).forEach(id => allDimIds.add(id)));
+
+    // Filter dims that have changed at least once
+    const changedDims = [];
+    allDimIds.forEach(id => {
+      const states = records.map(r => r.dimensions?.[id]).filter(Boolean);
+      const unique = [...new Set(states)];
+      if (unique.length > 1) changedDims.push({ id, states });
+    });
+
+    let html = `
+      <div class="track-timeline">
+        <div class="track-dim-table-wrap">
+          <table class="track-dim-table">
+            <thead>
+              <tr>
+                <th>维度</th>
+                ${records.map((r, i) => `<th class="track-date-col">${fmtDate(r.timestamp)}<div style="font-size:10px;color:var(--text3)">${esc(r.speaker)}</div></th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${changedDims.map(({ id, states }) => {
+                const dim = getDimById(id);
+                const name = dim ? dim.name : id;
+                return `<tr>
+                  <td class="track-dim-name" onclick="showDimDetail('${id}')">${esc(name)}</td>
+                  ${states.map((state, i) => {
+                    const prev = i > 0 ? states[i - 1] : null;
+                    const changed = prev && prev !== state;
+                    const cls = `track-state ${state || 'no_data'}${changed ? ' changed' : ''}`;
+                    const arrow = changed ? `<div class="track-change-arrow">${getChangeArrow(prev, state)}</div>` : '';
+                    return `<td class="${cls}">${getStateLabel(state)}${arrow}</td>`;
+                  }).join('')}
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div class="track-records">
+          ${records.slice().reverse().map(r => `
+            <div class="track-record-card">
+              <div class="track-record-header">
+                <span class="track-record-date">${fmtDate(r.timestamp)}</span>
+                <span class="track-record-source">${esc(r.source)} &middot; ${esc(r.speaker)}</span>
+                ${r.completedPaths?.length ? `<span class="track-record-badge">&#127793; ${r.completedPaths.length}个路径完成</span>` : ''}
+              </div>
+              ${r.keyFindings?.length ? `<div class="track-record-findings">${r.keyFindings.map(f => `<div class="track-finding">&#9679; ${esc(f)}</div>`).join('')}</div>` : ''}
+              <div class="track-record-summary">${esc(r.summary || '（无摘要）')}</div>
+              <div class="track-record-dims">
+                ${Object.entries(r.dimensions || {}).filter(([,s]) => s && s !== 'no_data').map(([id, state]) => {
+                  const dim = getDimById(id);
+                  return `<span class="track-record-tag ${state}">${dim ? esc(dim.name) : id}</span>`;
+                }).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+
+    el.innerHTML = html;
+  } catch (e) {
+    el.innerHTML = `<div style="color:var(--red);padding:16px">加载失败: ${esc(e.message || '未知错误')}</div>`;
+  }
+}
+
+function getStateLabel(state) {
+  if (state === 'possessed') return '&#10003; 已具备';
+  if (state === 'developing') return '&#8634; 待发展';
+  if (state === 'blind') return '&#128065; 盲区';
+  return '—';
+}
+
+function getChangeArrow(from, to) {
+  const order = { possessed: 3, developing: 2, blind: 1, no_data: 0 };
+  const f = order[from] ?? 0;
+  const t = order[to] ?? 0;
+  if (t > f) return '&#9650;';
+  if (t < f) return '&#9660;';
+  return '';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  return iso.slice(0, 10).replace(/-/g, '/');
 }
 
 

@@ -107,6 +107,7 @@ app.use('/api/dimensions', require('./routes/dimensions'));
 app.use('/api/combinations', require('./routes/combinations'));
 app.use('/api/blindspots', require('./routes/blindspots'));
 app.use('/api/paths', require('./routes/paths'));
+app.use('/api/growth-records', require('./routes/growth-records'));
 
 // Global error handler
 app.use((err, req, res, next) => {
