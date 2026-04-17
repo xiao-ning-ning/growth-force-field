@@ -142,4 +142,23 @@ router.get('/user/:userId', (req, res) => {
   res.json(data);
 });
 
+// DELETE /api/growth-records/:recordId - delete a specific record
+router.delete('/:recordId', (req, res) => {
+  const userId = req.session.user?.id || req.session.user?.username;
+  if (!userId) return res.status(401).json({ error: '未登录' });
+
+  const data = readUserRecords(userId);
+  const recordIndex = data.records.findIndex(r => r.id === req.params.recordId);
+  
+  if (recordIndex === -1) {
+    return res.status(404).json({ error: '记录不存在' });
+  }
+
+  data.records.splice(recordIndex, 1);
+  data.lastUpdated = data.records.length > 0 ? data.records[data.records.length - 1].timestamp : null;
+  
+  writeUserRecords(data);
+  res.json({ success: true });
+});
+
 module.exports = router;
