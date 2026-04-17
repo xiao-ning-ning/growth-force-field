@@ -131,14 +131,6 @@ router.get('/user/:userId', (req, res) => {
   });
 });
 
-// GET /api/growth-records/user/:userId - admin: specific user's records
-router.get('/user/:userId', (req, res) => {
-  if (req.session.user?.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
-  const userId = req.params.userId;
-  const data = readUserRecords(userId);
-  res.json(data);
-});
-
 // DELETE /api/growth-records/:recordId - delete a specific record
 router.delete('/:recordId', (req, res) => {
   const userId = req.session.user?.id || req.session.user?.username;

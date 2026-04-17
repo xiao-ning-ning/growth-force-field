@@ -1,6 +1,7 @@
 const OpenAI = require('openai');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 
 const MODEL = process.env.OPENAI_MODEL || 'gpt-4o';
 

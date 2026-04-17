@@ -22,9 +22,25 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
+// SESSION_SECRET 自动生成（仅 .env 缺失时）
+if (!process.env.SESSION_SECRET) {
+  const crypto = require('crypto');
+  const secret = crypto.randomBytes(32).toString('hex');
+  const line = 'SESSION_SECRET=' + secret;
+  const envLine = '\n' + line + '\n';
+  if (fs.existsSync(envPath)) {
+    const current = fs.readFileSync(envPath, 'utf-8');
+    if (!current.includes('SESSION_SECRET')) {
+      fs.appendFileSync(envPath, envLine);
+      console.log('[info] SESSION_SECRET 已自动生成并写入 .env');
+    }
+  }
+  process.env.SESSION_SECRET = secret;
+}
+
 // Session middleware (memory store, simple for local use)
 app.use(require('express-session')({
-  secret: process.env.SESSION_SECRET || 'growth-force-field-session-secret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
@@ -38,17 +54,21 @@ const { router: authRouter } = require('./routes/auth');
 
 // Boot: create admin if needed
 setTimeout(() => {
-  const crypto = require('crypto');
   const USERS_FILE = path.join(__dirname, '..', 'data', 'users.json');
   const usersDir = path.dirname(USERS_FILE);
   if (!fs.existsSync(usersDir)) fs.mkdirSync(usersDir, { recursive: true });
 
   if (!fs.existsSync(USERS_FILE)) {
-    const crypto = require('crypto');
+    const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
+    const ADMIN_PWD = process.env.ADMIN_PASSWORD;
+    if (!ADMIN_PWD) {
+      console.error('[fatal] 首次启动需要配置 ADMIN_PASSWORD，请先编辑 .env 文件');
+      process.exit(1);
+    }
     const salt = crypto.randomBytes(16).toString('hex');
-    const hash = crypto.scryptSync('admin123456', salt, 64).toString('hex');
+    const hash = crypto.scryptSync(ADMIN_PWD, salt, 64).toString('hex');
     const users = {
-      admin: {
+      [ADMIN_USER]: {
         salt,
         password: hash,
         role: 'admin',
@@ -56,8 +76,8 @@ setTimeout(() => {
       }
     };
     fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf-8');
-    console.log('\n  [auth] Default admin account created: admin / admin123456');
-    console.log('  [auth] Please change the password after first login!\n');
+    console.log(`\n  [auth] 管理员账号已创建: ${ADMIN_USER}`);
+    console.log('  [auth] 请妥善保管密码并定期更换\n');
   }
 }, 0);
 
