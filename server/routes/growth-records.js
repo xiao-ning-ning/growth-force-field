@@ -77,32 +77,29 @@ router.post('/', (req, res) => {
 router.get('/all', (req, res) => {
   if (req.session.user?.role !== 'admin') return res.status(403).json({ error: '需要管理员权限' });
 
-  ensureDir();
-  const files = fs.readdirSync(DATA_DIR).filter(f => f.endsWith('.json'));
-  const users = files.map(file => {
-    const userId = file.replace('.json', '');
-    const data = readUserRecords(userId);
-    // Load user info from users.json
-    const usersPath = path.join(__dirname, '../../data/users.json');
-    let username = userId;
-    let role = 'user';
-    if (fs.existsSync(usersPath)) {
-      try {
-        const usersData = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
-        const userEntry = Object.entries(usersData).find(([k]) => k === userId);
-        if (userEntry) { username = userEntry[0]; role = userEntry[1].role || 'user'; }
-      } catch {}
+  // 从 users.json 获取用户列表，而非从 growth-records 目录遍历（删除用户后目录文件不会被自动清理）
+  const usersPath = path.join(__dirname, '../../data/users.json');
+  let users = [];
+  
+  if (fs.existsSync(usersPath)) {
+    try {
+      const usersData = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+      users = Object.entries(usersData).map(([userId, userInfo]) => {
+        const data = readUserRecords(userId);
+        return {
+          userId,
+          username: userInfo.username || userId,
+          role: userInfo.role || 'user',
+          recordCount: data.records?.length || 0,
+          firstRecord: data.records?.[0]?.timestamp || null,
+          lastRecord: data.records?.[data.records.length - 1]?.timestamp || null,
+          lastUpdated: data.lastUpdated,
+        };
+      });
+    } catch (e) {
+      console.error('读取用户列表失败:', e);
     }
-    return {
-      userId,
-      username,
-      role,
-      recordCount: data.records.length,
-      firstRecord: data.records[0]?.timestamp || null,
-      lastRecord: data.records[data.records.length - 1]?.timestamp || null,
-      lastUpdated: data.lastUpdated,
-    };
-  });
+  }
 
   res.json(users);
 });
