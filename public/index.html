@@ -1272,6 +1272,7 @@ let mapData = null;
 let currentView = 'home';
 let deleteQueue = [];
 let selectedPathId = null; // 首页升级潜力点击后，滚动到对应路径
+let expandPossessedOnMap = false; // 首页点击已具备后，自动展开所有分组
 let blindDeleteQueue = [];
 
 // ============ MAIN APP HTML ============
@@ -1496,6 +1497,11 @@ function switchView(view) {
   renderView(view);
 }
 
+function navigateToMapExpandPossessed() {
+  expandPossessedOnMap = true;
+  switchView('map');
+}
+
 async function renderView(view) {
   const content = document.getElementById('content');
 
@@ -1713,7 +1719,7 @@ function renderHome(el) {
       <div class="home-section-header">
         <h3>&#128200; 能力全景</h3>
         <div class="home-stats">
-          <span class="stat-badge possessed" onclick="switchView('map')">${possessed.length} 已具备</span>
+          <span class="stat-badge possessed" onclick="navigateToMapExpandPossessed()">${possessed.length} 已具备</span>
           <span class="stat-badge developing" onclick="switchView('map')">${developing.length} 待发展</span>
           <span class="stat-badge combo" onclick="switchView('combos')">${combos.length} 组合</span>
           <span class="stat-badge blind" onclick="switchView('blindspots')">${blinds.length} 盲区</span>
@@ -1988,7 +1994,7 @@ function renderMap(el) {
 
   // Possessed column
   html += '<div class="map-col"><div class="map-col-header possessed"><h3>已具备</h3><span class="count">' + possessed.length + '</span></div>';
-  html += renderCategoryPanels(possessedByCat, 'possessed');
+  html += renderCategoryPanels(possessedByCat, 'possessed', expandPossessedOnMap);
   html += '</div>';
 
   // Developing column
@@ -2004,6 +2010,10 @@ function renderMap(el) {
 
   el.innerHTML = html;
   deleteQueue = [];
+  // 如果是首页点击跳转，展开后清除标记
+  if (expandPossessedOnMap) {
+    expandPossessedOnMap = false;
+  }
 }
 
 function groupByCategory(dims) {
