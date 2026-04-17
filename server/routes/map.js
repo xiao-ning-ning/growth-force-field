@@ -5,7 +5,12 @@ const { loadMap, saveMap, createEmptyMap, nextId } = require('../store');
 // GET /api/map - 获取地图数据
 router.get('/', (req, res) => {
   try {
-    const map = loadMap(req.userId);
+    // 支持admin查询指定用户的地图
+    let targetUserId = req.userId;
+    if (req.query.userId && req.session.user?.role === 'admin') {
+      targetUserId = req.query.userId;
+    }
+    const map = loadMap(targetUserId);
     res.json(map);
   } catch (e) {
     res.status(500).json({ error: '加载地图数据失败' });
