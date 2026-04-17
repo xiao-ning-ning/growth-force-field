@@ -312,24 +312,6 @@ function processAnalysisResult(map, result, speakerName, sourceName, date) {
       }
     }
     
-    // 强制补充待发展维度：如果分析结果中没有任何待发展能力，自动添加一个泛化的待发展
-    const hasDeveloping = result.newDimensions.some(d => d.status === 'developing');
-    if (!hasDeveloping) {
-      const genericDev = {
-        name: speakerName + '的成长空间',
-        status: 'developing',
-        categoryName: '人心与温度',
-        description: '待发展的能力维度，需基于更多录音补充观察',
-        evidence: {
-          source: sourceLabel,
-          speaker: speakerName,
-          quote: '【自动补充】本次录音中未观察到明确的待发展信号，泛化推断',
-          interpretation: '建议补充更多场景录音以精确定位'
-        },
-        confidence: '弱'
-      };
-      result.newDimensions.push(genericDev);
-    }
   }
 
   // 处理已更新维度
