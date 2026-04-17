@@ -2640,8 +2640,8 @@ function renderSettings(el) {
       </div>
       <div class="settings-card">
         <h3>修改密码</h3>
-        <div class="form-group"><label>当前密码</label><input class="form-input" type="password" id="oldPwd" autocomplete="current-password"></div>
-        <div class="form-group"><label>新密码（至少8位）</label><input class="form-input" type="password" id="newPwd" autocomplete="new-password"></div>
+        <div class="form-group"><label>当前密码</label><input class="form-input" type="password" id="oldPwd" autocomplete="off"></div>
+        <div class="form-group"><label>新密码（至少8位）</label><input class="form-input" type="password" id="newPwd" autocomplete="off"></div>
         <button class="btn primary" onclick="changePassword()">修改密码</button>
       </div>
     </div>`;
@@ -2732,8 +2732,8 @@ async function loadUserMgmt() {
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
         <h4 style="font-size:13px;margin-bottom:10px;color:var(--text2)">添加新用户</h4>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <input class="form-input" id="newUser" placeholder="用户名（字母/数字/下划线）" style="flex:1;min-width:120px" autocomplete="new-username">
-          <input class="form-input" type="password" id="newUserPwd" placeholder="密码（至少8位）" style="flex:1;min-width:120px" autocomplete="new-password">
+          <input class="form-input" id="newUser" placeholder="用户名（字母/数字/下划线）" style="flex:1;min-width:120px" autocomplete="off">
+          <input class="form-input" type="password" id="newUserPwd" placeholder="密码（至少8位）" style="flex:1;min-width:120px" autocomplete="off">
           <button class="btn primary" style="padding:8px 16px" onclick="addUser()">添加</button>
         </div>
       </div>`;
@@ -2856,11 +2856,11 @@ function showLoginPage() {
         <form id="loginForm" class="login-form">
           <div class="login-field">
             <label>用户名</label>
-            <input type="text" id="loginUser" autocomplete="username" placeholder="请输入用户名" required>
+            <input type="text" id="loginUser" autocomplete="off" placeholder="请输入用户名" required>
           </div>
           <div class="login-field">
             <label>密码</label>
-            <input type="password" id="loginPass" autocomplete="current-password" placeholder="请输入密码" required>
+            <input type="password" id="loginPass" autocomplete="off" placeholder="请输入密码" required>
           </div>
           <div id="loginError" class="login-error" style="display:none"></div>
           <button type="submit" id="loginBtn">登 录</button>
