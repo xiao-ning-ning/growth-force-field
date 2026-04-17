@@ -109,6 +109,19 @@ app.use('/api/blindspots', require('./routes/blindspots'));
 app.use('/api/paths', require('./routes/paths'));
 app.use('/api/growth-records', require('./routes/growth-records'));
 
+// 里程碑API
+const MILESTONES_FILE = path.join(__dirname, '..', 'data', 'gff_milestones.json');
+app.get('/api/milestones', (req, res) => {
+  if (!req.userId) return res.status(401).json({ error: '请先登录' });
+  const userMilestonesFile = MILESTONES_FILE;
+  if (fs.existsSync(userMilestonesFile)) {
+    const data = fs.readFileSync(userMilestonesFile, 'utf-8');
+    res.json(JSON.parse(data));
+  } else {
+    res.json([]);
+  }
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('[server] Unhandled error:', err);
