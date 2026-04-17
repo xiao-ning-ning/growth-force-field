@@ -154,10 +154,59 @@ router.delete('/:recordId', (req, res) => {
     return res.status(404).json({ error: '记录不存在' });
   }
 
+  // 获取要删除的记录中的 possessed 维度
+  const deletedRecord = data.records[recordIndex];
+  const deletedPossessedDims = Object.entries(deletedRecord.dimensions || {})
+    .filter(([, status]) => status === 'possessed')
+    .map(([dimId]) => dimId);
+
+  // 删除记录
   data.records.splice(recordIndex, 1);
   data.lastUpdated = data.records.length > 0 ? data.records[data.records.length - 1].timestamp : null;
   
   writeUserRecords(data);
+
+  // 同步更新 cognition-map
+  if (deletedPossessedDims.length > 0) {
+    const mapPath = path.join(__dirname, '../../data/admin/cognition-map.json');
+    // 根据用户确定 map 文件路径
+    const userMapPath = path.join(__dirname, '../../data', userId, 'cognition-map.json');
+    let finalMapPath = null;
+    
+    if (fs.existsSync(userMapPath)) {
+      finalMapPath = userMapPath;
+    } else if (userId === 'admin' && fs.existsSync(mapPath)) {
+      finalMapPath = mapPath;
+    }
+    
+    if (finalMapPath) {
+      try {
+        const mapData = JSON.parse(fs.readFileSync(finalMapPath, 'utf-8'));
+        
+        // 检查每个被删除的 possessed 维度是否还被其他记录支持
+        deletedPossessedDims.forEach(dimId => {
+          const stillPossessed = data.records.some(r => 
+            r.dimensions && r.dimensions[dimId] === 'possessed'
+          );
+          
+          if (!stillPossessed) {
+            // 没有其他记录支持 possessed，降级为 no_data
+            const dim = mapData.dimensions?.find(d => d.id === dimId);
+            if (dim && dim.status === 'possessed') {
+              dim.status = 'no_data';
+              // 移除证据
+              dim.evidence = [];
+            }
+          }
+        });
+        
+        fs.writeFileSync(finalMapPath, JSON.stringify(mapData, null, 2), 'utf-8');
+      } catch (e) {
+        console.error('更新cognition-map失败:', e);
+      }
+    }
+  }
+  
   res.json({ success: true });
 });
 
