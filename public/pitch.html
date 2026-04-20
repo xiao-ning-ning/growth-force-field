@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -15,11 +15,11 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
 .slide-content{z-index:1;width:100%;max-width:1100px;position:relative}
 
 /* nav */
-.nav{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;z-index:100}
+.nav{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;z-index:9999;padding:8px 16px;border-radius:24px;background:rgba(6,7,11,0.85);border:1px solid #1f2140}
 .nav-btn{width:44px;height:44px;border-radius:50%;border:1px solid #3d4270;background:#11121c;color:#b8b8c8;cursor:pointer;font-size:18px;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
 .nav-btn:hover{border-color:#7c6cf0;background:#1f2140;color:#fff}
 .nav-btn:disabled{opacity:0.3;cursor:not-allowed}
-.page-num{font-size:13px;color:#7a7a90;min-width:60px;text-align:center}
+.page-num{font-size:13px;color:#7a7a90;min-width:60px;text-align:center;user-select:none}
 
 /* progress bar */
 .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#7c6cf0,#2dd4bf);z-index:9999;transition:width 0.3s}
@@ -193,21 +193,42 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
 .badge-y{background:rgba(251,191,36,0.1);color:#fbbf24}
 .badge-r{background:rgba(248,113,113,0.1);color:#f87171}
 
-/* radar mini canvas */
-.radar-wrap{display:flex;align-items:center;gap:32px;margin-top:28px}
-.radar-canvas{border-radius:12px;background:#11121c;border:1px solid #1f2140}
-.radar-legend{min-width:200px}
-.radar-legend-item{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px}
-.radar-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.radar-legend .axis-name{color:#f0f0f5;font-weight:600}
-.radar-legend .axis-count{margin-left:auto;font-size:11px;color:#7a7a90}
+/* keyboard hint */
+.kbd-hint{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);font-size:12px;color:#3d4270;display:flex;align-items:center;gap:8px;z-index:100;pointer-events:none;user-select:none}
+.kbd-hint kbd{background:#1f2140;border:1px solid #3d4270;border-radius:4px;padding:1px 6px;font-family:inherit;font-size:11px;color:#7a7a90}
 
-/* track mini chart */
-.track-mini{background:#11121c;border:1px solid #1f2140;border-radius:12px;padding:16px;margin-top:20px}
-.track-title{font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:12px}
-.track-chart{height:80px;position:relative}
-.track-line{position:absolute;inset:0}
-.track-meta{display:flex;gap:16px;margin-top:10px;font-size:12px;color:#7a7a90}
+/* ====== S2 new: Pain Story ====== */
+.pain-story{display:grid;grid-template-columns:1fr 340px;gap:40px;margin-top:36px;align-items:start}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#f87171,#fbbf24,#2dd4bf)}
+.tl{position:relative;margin-bottom:28px;padding-left:28px}
+.tl:last-child{margin-bottom:0}
+.tl-dot{position:absolute;left:-32px;top:6px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.tl-dot-old{background:rgba(248,113,113,0.15);border:2px solid #f87171;color:#f87171}
+.tl-dot-now{background:rgba(251,191,36,0.15);border:2px solid #fbbf24;color:#fbbf24}
+.tl-dot-turn{background:rgba(45,212,191,0.15);border:2px solid #2dd4bf;color:#2dd4bf}
+.tl-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.tl-label-red{color:#f87171}
+.tl-label-yellow{color:#fbbf24}
+.tl-label-cyan{color:#2dd4bf}
+.tl-title{font-size:15px;font-weight:700;color:#f0f0f5;margin-bottom:6px}
+.tl-desc{font-size:13px;color:#7a7a90;line-height:1.7}
+.tl-sub{font-size:12px;color:#5a5a70;margin-top:6px;line-height:1.6}
+
+/* right highlight box */
+.turn-box{background:#11121c;border:1px solid #1f2140;border-radius:14px;overflow:hidden;position:sticky;top:80px}
+.turn-header{padding:18px 20px 14px;border-bottom:1px solid #1f2140}
+.turn-eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.turn-title{font-size:15px;font-weight:700;color:#f0f0f5;line-height:1.4}
+.turn-body{padding:16px 20px}
+.turn-body p{font-size:12px;color:#7a7a90;line-height:1.8;margin-bottom:14px}
+.turn-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.turn-stat{background:#0d0e16;border:1px solid #1f2140;border-radius:10px;padding:12px;text-align:center}
+.turn-stat-num{font-size:22px;font-weight:900;color:#2dd4bf;line-height:1}
+.turn-stat-lbl{font-size:10px;color:#5a5a70;margin-top:4px}
+.turn-quote{background:#0d0e16;border-left:3px solid #2dd4bf;padding:10px 14px;border-radius:0 8px 8px 0}
+.turn-quote p{font-size:12px;font-style:italic;color:#d8d4ff;line-height:1.7;margin:0}
+.turn-quote cite{display:block;font-size:10px;color:#5a5a70;margin-top:6px;font-style:normal}
 </style>
 </head>
 <body>
@@ -223,68 +244,76 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
     <p class="s1-sub">让管理者的软性能力，从"感觉"变成"证据"</p>
     <p class="s1-tagline">上传一段会议录音，AI 分析你的行为模式<br>3 分钟看见盲区，量化核心优势，设计最小改变最大效果的修炼路径</p>
     <div class="s1-actions">
-      <a class="btn-pri" href="https://github.com/xiao-ning-ning/growth-force-field" target="_blank">&#9734; 开源地址</a>
+
     </div>
   </div>
 </div>
 
-<!-- S2: 管理者三大困惑 -->
+<!-- S2: 管理者困境叙事 -->
 <div class="slide" id="s1">
-  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 80% 80%,rgba(248,113,113,0.08),transparent 60%)"></div>
+  <div class="slide-bg" style="background:radial-gradient(ellipse 70% 60% at 30% 50%,rgba(248,113,113,0.04),rgba(45,212,191,0.03),transparent)"></div>
   <div class="slide-content">
-    <div class="sec-label">管理者三大困惑</div>
-    <h2 class="sec-title">评估下属软性能力，你靠什么？</h2>
-    <p class="sec-sub">业务结果看数据，软性能力就只能靠"感觉"了吗？</p>
-    <div class="pain-row">
-      <div class="pain-item">
-        <div class="pain-icon">&#128679;</div>
-        <div class="pain-q">述职季</div>
-        <div class="pain-ans">下属洋洋洒洒写了 20 页PPT，但哪些是真正具备的能力，哪些只是背了话术？</div>
-      </div>
-      <div class="pain-item">
-        <div class="pain-icon">&#128678;</div>
-        <div class="pain-q">晋升决策</div>
-        <div class="pain-ans">凭印象打分，靠上级推荐信。两个候选人业绩相当，软性能力谁更强？说不清。</div>
-      </div>
-      <div class="pain-item">
-        <div class="pain-icon">&#128203;</div>
-        <div class="pain-q">培训资源</div>
-        <div class="pain-ans">花了大把钱送管理层上课，但培训内容有没有内化？学了和没学有什么区别？</div>
-      </div>
-    </div>
-  </div>
-</div>
+    <div class="sec-label">问题与时机</div>
+    <h2 class="sec-title">管理者靠"看"来判断能力的时代，正在失效</h2>
+    <p class="sec-sub">软性能力无法靠 KPI 量化，曾经依赖的"现场观察"基础也已崩塌——但 AI 让这件事今天可以做到。</p>
 
-<!-- S_why: 为什么是现在 -->
-<div class="slide" id="s_why">
-  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(251,191,36,0.05),transparent)"></div>
-  <div class="slide-content">
-    <div class="sec-label">为什么是现在</div>
-    <h2 class="sec-title">管理者靠观察做判断的时代，正在失效</h2>
-    <p class="sec-sub">远程办公常态化、扁平化管理流行，管理者亲眼看到下属做事的机会越来越少。判断一个人"软性能力"的方式，已经过时了。</p>
-    <div class="why-grid">
-      <div class="why-card why-card-orange">
-        <div class="why-icon">&#128188;</div>
-        <h3>观察机会锐减</h3>
-        <p>混合办公常态下，管理者与下属的实际互动频率大幅下降，靠"我看你做事"来判断能力的基础已经不存在了。</p>
+    <div class="pain-story">
+      <!-- 左侧：时间线叙事 -->
+      <div class="timeline">
+        <div class="tl">
+          <div class="tl-dot tl-dot-old">&#8212;</div>
+          <div class="tl-label tl-label-red">10年前</div>
+          <div class="tl-title">你可以观察下属做事</div>
+          <div class="tl-desc">会议里、走廊上、项目复盘中，你亲眼看见他怎么处理冲突、怎么对待下属、怎么做决策。</div>
+          <div class="tl-sub">靠"在场感"做判断——这是当时可行的方式。</div>
+        </div>
+        <div class="tl">
+          <div class="tl-dot tl-dot-now">!</div>
+          <div class="tl-label tl-label-yellow">现在</div>
+          <div class="tl-title">你的观察机会正在消失</div>
+          <div class="tl-desc">混合办公常态下，管理者与下属的实际互动频率大幅下降，"我看你做事"来判断能力的基础已经不存在了。</div>
+        </div>
+        <div class="tl">
+          <div class="tl-dot tl-dot-now">?</div>
+          <div class="tl-label tl-label-yellow">结果</div>
+          <div class="tl-title">评估凭印象，培训靠感觉</div>
+          <div class="tl-desc">没有客观行为记录，绩效面谈各执一词。晋升靠上级推荐信，培训花了钱但没有证据证明效果。</div>
+          <div class="tl-sub">述职季：下属写了 20 页 PPT，哪些是真正具备的能力，哪些只是背了话术？</div>
+        </div>
+        <div class="tl">
+          <div class="tl-dot tl-dot-turn">&#10003;</div>
+          <div class="tl-label tl-label-cyan">转折</div>
+          <div class="tl-title">LLM 让这件事今天可以做到</div>
+          <div class="tl-desc">从一段对话中提取行为模式、量化能力倾向——AI 成熟度已到拐点，行为驱动的评估不再是空想。</div>
+        </div>
       </div>
-      <div class="why-card why-card-purple">
-        <div class="why-icon">&#128640;</div>
-        <h3>评估标准主观化</h3>
-        <p>没有客观行为记录，绩效面谈时管理者和员工对"能力好不好"各执一词，晋升决策靠印象、靠关系、靠上级推荐信。</p>
-      </div>
-      <div class="why-card why-card-red">
-        <div class="why-icon">&#128679;</div>
-        <h3>培训投入无感知</h3>
-        <p>花了钱送管理层上课，但培训后能力有没有提升？能不能落地到日常行为？没有证据，只有感受。</p>
-      </div>
-      <div class="why-card why-card-cyan">
-        <div class="why-icon">&#127793;</div>
-        <h3>AI 成熟度已到拐点</h3>
-        <p>LLM 可以从一段对话中提取行为模式、量化能力倾向——这件事，今天已经可以做到。</p>
+
+      <!-- 右侧：高亮时机 -->
+      <div class="turn-box">
+        <div class="turn-header">
+          <div class="turn-eyebrow">&#127793; AI 拐点</div>
+          <div class="turn-title">LLM 可以从一段对话中提取行为模式、量化能力倾向</div>
+        </div>
+        <div class="turn-body">
+          <p>过去靠人眼观察，现在靠 AI 从真实对话中还原行为——这不是概念，是今天已经可以落地的能力。</p>
+          <div class="turn-stat-row">
+            <div class="turn-stat">
+              <div class="turn-stat-num">5min</div>
+              <div class="turn-stat-lbl">上传一段录音</div>
+            </div>
+            <div class="turn-stat">
+              <div class="turn-stat-num">3min</div>
+              <div class="turn-stat-lbl">生成能力图谱</div>
+            </div>
+          </div>
+          <div class="turn-quote">
+            <p>"战略和策略要分清楚，不能混淆。供应商的问题需要再讨论。"</p>
+            <cite>— 述职录音 · AI 预处理后</cite>
+          </div>
+          <p style="margin-top:12px;font-size:11px;color:#5a5a70;line-height:1.6">每条结论背后有原文可查，行为驱动评估，数据本地存储。</p>
+        </div>
       </div>
     </div>
-    <p style="margin-top:24px;font-size:14px;color:#d8d4ff;text-align:center;font-weight:600">不是要不要用 AI 做管理者评估，是谁先用谁知道</p>
   </div>
 </div>
 
@@ -338,6 +367,25 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
       <div class="dim-pill" style="background:rgba(248,113,113,0.06);border-color:rgba(248,113,113,0.2);color:#f87171">&#128065; 盲区：主动寻求反馈</div>
     </div>
     <p style="margin-top:24px;font-size:13px;color:#7a7a90">点击维度卡片查看详情，支持手动编辑引用原文、还原初始值，数据全程本地存储</p>
+    <div style="margin-top:24px">
+      <div style="font-size:12px;font-weight:700;color:#f0f0f5;margin-bottom:12px">行为证据示例：不是 AI 生成的评语，是说话人亲口说出来的原话</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="background:#11121c;border:1px solid #1f2140;border-radius:12px;padding:16px">
+          <div style="font-size:11px;font-weight:700;color:#2dd4bf;margin-bottom:8px">正面证据</div>
+          <div style="font-size:12px;font-style:italic;color:#d8d4ff;line-height:1.7;margin-bottom:8px">"我让采购同步在找备选供应商了"</div>
+          <div style="font-size:11px;color:#7a7a90">述职录音 · 张三 · 2026-03-15</div>
+        </div>
+        <div style="background:#11121c;border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:16px">
+          <div style="font-size:11px;font-weight:700;color:#f87171;margin-bottom:8px">负面证据</div>
+          <div style="font-size:12px;font-style:italic;color:#f87171;line-height:1.7;margin-bottom:8px">"那批货爆了之后我才反应过来……"</div>
+          <div style="font-size:11px;color:#7a7a90">2025Q4 述职 · 张三 · 2025-12-20</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:12px 16px;background:#11121c;border:1px solid #1f2140;border-radius:12px;font-size:12px;line-height:1.8">
+        <span style="color:#f87171">&#10007; "该员工沟通能力强" —— 这是评价，不是证据</span><br>
+        <span style="color:#2dd4bf">&#10003; "我已经协调好了" —— 这是证据，可引用、可追溯、可还原</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -351,7 +399,6 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
     <div style="margin-top:20px;background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:20px">
       <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:4px">示例：某管理者"战略与诊断"维度</div>
       <div style="font-size:12px;color:#7a7a90;margin-bottom:18px">基于 3 条录音中涉及供应链风险讨论的行为提取</div>
-      <!-- 证据列表 -->
       <div class="star-demo" style="padding:12px 16px">
         <div style="font-size:12px;color:#7a7a90;min-width:60px">证据 1</div>
         <div style="font-size:12px;color:#2dd4bf;flex:0 0 220px">"我已经让采购同步在找备选供应商了"</div>
@@ -370,13 +417,11 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
         <div class="star-bar"><div class="star-pos" style="width:66.7%"></div><div class="star-neg" style="width:33.3%"></div></div>
         <div style="font-size:12px;font-weight:700;color:#f87171">-1</div>
       </div>
-      <!-- 条形图图例说明 -->
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid #1f2140;display:flex;align-items:center;gap:16px;font-size:12px;color:#7a7a90">
         <span>条形：</span>
         <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:8px;background:#2dd4bf;border-radius:4px"></div>正面证据占比</div>
         <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:8px;background:#f87171;border-radius:4px"></div>负面证据占比</div>
       </div>
-      <!-- 综合星级 -->
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid #1f2140;display:flex;align-items:center;gap:12px">
         <div style="font-size:13px;color:#7a7a90">综合星级</div>
         <div style="font-size:32px;font-weight:900;color:#2dd4bf">+1</div>
@@ -419,7 +464,6 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
     <div class="sec-label">录音预处理</div>
     <h2 class="sec-title">分析前先纠错，证据引用更准确</h2>
     <p class="sec-sub">录音转写的 ASR 错误、语气词、断句问题，都会影响证据质量。成长力场在分析前先做一轮 AI 预处理。</p>
-    <!-- 同一段对话的前后对比 -->
     <div style="margin-top:24px;background:#11121c;border:1px solid #1f2140;border-radius:14px;overflow:hidden">
       <div style="padding:14px 20px;border-bottom:1px solid #1f2140;display:flex;gap:0">
         <div style="flex:1;font-size:12px;font-weight:700;color:#7a7a90;text-align:center">预处理前</div>
@@ -541,87 +585,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
   </div>
 </div>
 
-<!-- S10: 雷达图与成长轨迹 -->
-<div class="slide" id="s_radar">
-  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(45,212,191,0.05),transparent)"></div>
-  <div class="slide-content">
-    <div class="sec-label">可视化</div>
-    <h2 class="sec-title">五维能力，一眼看穿全局</h2>
-    <p class="sec-sub">雷达图快速定位强项与缺口，成长轨迹追踪能力变化趋势。</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px">
-      <!-- 雷达图示例 -->
-      <div style="background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:24px">
-        <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:16px">能力雷达图 · 某管理者</div>
-        <div style="display:flex;gap:20px;align-items:center">
-          <!-- 雷达SVG，5边形，5条轴各自着色 -->
-          <svg width="160" height="160" viewBox="-30 -30 260 260" style="flex-shrink:0">
-            <!-- 背景网格（半径50/80/110，对应r=0.45/0.73/1.0） -->
-            <polygon points="100,50 143,75 143,125 100,150 57,125 57,75" fill="none" stroke="#1f2140" stroke-width="1"/>
-            <polygon points="100,20 165,60 165,140 100,180 35,140 35,60" fill="none" stroke="#1f2140" stroke-width="1"/>
-            <polygon points="100,55 138,70 138,130 100,145 62,130 62,70" fill="none" stroke="#1f2140" stroke-width="1"/>
-            <!-- 能力填充（半径约r=0.78，对应坐标r=78） -->
-            <polygon points="100,22 163,60 153,138 63,133 37,60" fill="rgba(108,92,231,0.12)" stroke="#6c5ce7" stroke-width="2"/>
-            <!-- 轴线，各用对应分类颜色 -->
-            <line x1="100" y1="100" x2="100" y2="50" stroke="#6c5ce7" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="143" y2="75" stroke="#a29bfe" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="143" y2="125" stroke="#00cec9" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="57" y2="125" stroke="#55efc4" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="57" y2="75" stroke="#fd79a8" stroke-width="1.5" opacity="0.7"/>
-            <!-- 轴标签（全部在界内） -->
-            <text x="100" y="42" text-anchor="middle" fill="#6c5ce7" font-size="9" font-weight="700">战略</text>
-            <text x="150" y="72" text-anchor="start" fill="#a29bfe" font-size="9" font-weight="700">管控</text>
-            <text x="150" y="130" text-anchor="start" fill="#00cec9" font-size="9" font-weight="700">人心</text>
-            <text x="50" y="130" text-anchor="end" fill="#55efc4" font-size="9" font-weight="700">知识</text>
-            <text x="50" y="72" text-anchor="end" fill="#fd79a8" font-size="9" font-weight="700">制度</text>
-          </svg>
-          <div style="flex:1">
-            <div style="font-size:12px;color:#7a7a90;margin-bottom:10px">五大分类能力分布</div>
-            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#6c5ce7;vertical-align:middle;margin-right:6px"></span>战略与诊断 <span style="color:#6c5ce7;font-weight:700">强</span></div>
-            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#a29bfe;vertical-align:middle;margin-right:6px"></span>管控与绩效 <span style="color:#a29bfe;font-weight:700">中</span></div>
-            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#00cec9;vertical-align:middle;margin-right:6px"></span>人心与温度 <span style="color:#00cec9;font-weight:700">强</span></div>
-            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#55efc4;vertical-align:middle;margin-right:6px"></span>知识与赋能 <span style="color:#55efc4;font-weight:700">弱</span></div>
-            <div style="font-size:12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#fd79a8;vertical-align:middle;margin-right:6px"></span>制度与设计 <span style="color:#fd79a8;font-weight:700">缺口</span></div>
-          </div>
-        </div>
-      </div>
-      <!-- 成长轨迹示例 -->
-      <div style="background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:24px">
-        <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:16px">成长轨迹 · 某维度</div>
-        <div style="position:relative;height:120px">
-          <!-- SVG折线图 -->
-          <svg width="100%" height="120" viewBox="0 0 280 120" preserveAspectRatio="none" style="position:absolute;inset:0">
-            <!-- 网格线 -->
-            <line x1="0" y1="40" x2="280" y2="40" stroke="#1f2140" stroke-width="1"/>
-            <line x1="0" y1="80" x2="280" y2="80" stroke="#1f2140" stroke-width="1"/>
-            <!-- 面积填充 -->
-            <path d="M0,100 L56,90 L112,75 L168,55 L224,35 L280,20 L280,120 L0,120 Z" fill="rgba(45,212,191,0.08)"/>
-            <!-- 折线 -->
-            <polyline points="0,100 56,90 112,75 168,55 224,35 280,20" fill="none" stroke="#2dd4bf" stroke-width="2.5"/>
-            <!-- 数据点 -->
-            <circle cx="0" cy="100" r="4" fill="#2dd4bf"/>
-            <circle cx="56" cy="90" r="4" fill="#2dd4bf"/>
-            <circle cx="112" cy="75" r="4" fill="#2dd4bf"/>
-            <circle cx="168" cy="55" r="4" fill="#2dd4bf"/>
-            <circle cx="224" cy="35" r="4" fill="#2dd4bf"/>
-            <circle cx="280" cy="20" r="5" fill="#2dd4bf" stroke="#fff" stroke-width="2"/>
-            <!-- X轴标签 -->
-            <text x="0" y="115" text-anchor="middle" fill="#3d4270" font-size="9">3月</text>
-            <text x="112" y="115" text-anchor="middle" fill="#3d4270" font-size="9">5月</text>
-            <text x="224" y="115" text-anchor="middle" fill="#3d4270" font-size="9">7月</text>
-          </svg>
-          <!-- Y轴标签 -->
-          <div style="position:absolute;left:0;top:0;font-size:9px;color:#3d4270;writing-mode:vertical-rl;transform:rotate(180deg)">已具备能力数量</div>
-        </div>
-        <div style="margin-top:10px;display:flex;gap:16px;font-size:11px;color:#7a7a90;justify-content:space-between">
-          <span>起点：2个</span><span>终点：5个</span><span style="color:#2dd4bf;font-weight:600">+3 成长</span>
-        </div>
-      </div>
-    </div>
-    <p style="margin-top:20px;font-size:13px;color:#7a7a90">雷达图快速定位全局强项与短板；成长轨迹追踪维度能力变化，用证据记录每一次成长。</p>
-  </div>
-</div>
-
-<!-- S_comp: 竞品对比 -->
+<!-- S10: 竞品对比 -->
 <div class="slide" id="s_comp">
   <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(124,108,240,0.05),transparent)"></div>
   <div class="slide-content">
@@ -676,67 +640,96 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
         </tr>
       </tbody>
     </table>
-    <p style="margin-top:20px;font-size:13px;color:#7a7a90;text-align:center">填补"行为驱动评估"的空白——不是替代 HR 系统，而是互补</p>
   </div>
 </div>
 
 <!-- S11: 部署 -->
 <div class="slide" id="s5">
-  <div class="slide-bg"></div>
+  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(124,108,240,0.06),transparent)"></div>
   <div class="slide-content">
     <div class="sec-label">部署</div>
     <h2 class="sec-title">零门槛，三步完成</h2>
-    <div class="steps-v">
-      <div class="step-v" data-n="1">
-        <h3>配置 .env API Key</h3>
-        <p>支持 OpenAI / MiniMax / DeepSeek / Ollama，任意 OpenAI 兼容接口均可。</p>
+
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:40px;margin-top:36px;align-items:start">
+      <!-- 左侧：步骤 -->
+      <div class="steps-v">
+        <div class="step-v" data-n="1">
+          <h3>配置 .env API Key</h3>
+          <p>支持 OpenAI / MiniMax / DeepSeek / Ollama，任意 OpenAI 兼容接口均可。</p>
+        </div>
+        <div class="step-v" data-n="2">
+          <h3>双击 start.bat 启动</h3>
+          <p>Node.js 本地服务，无需安装任何依赖，零构建，浏览器即开即用。</p>
+        </div>
+        <div class="step-v" data-n="3">
+          <h3>拖拽上传录音开始分析</h3>
+          <p>无需培训，无需配置，全自动完成。</p>
+        </div>
       </div>
-      <div class="step-v" data-n="2">
-        <h3>双击 start.bat 启动</h3>
-        <p>Node.js 本地服务，无需安装任何依赖，零构建，浏览器即开即用。</p>
-      </div>
-      <div class="step-v" data-n="3">
-        <h3>拖拽上传录音开始分析</h3>
-        <p>无需培训，无需配置，全自动完成。</p>
+
+      <!-- 右侧：能力特性 -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#7a7a90;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px">产品能力</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#11121c;border:1px solid #1f2140;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(45,212,191,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="font-size:14px">&#9745;</span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#f0f0f5">开源 Apache 2.0</div>
+              <div style="font-size:11px;color:#5a5a70;margin-top:2px">源码公开，可审计、可定制</div>
+            </div>
+          </div>
+          <div style="background:#11121c;border:1px solid #1f2140;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(124,108,240,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="font-size:14px">&#9745;</span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#f0f0f5">多用户账号体系</div>
+              <div style="font-size:11px;color:#5a5a70;margin-top:2px">团队成员独立数据，互不干扰</div>
+            </div>
+          </div>
+          <div style="background:#11121c;border:1px solid #1f2140;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(251,191,36,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="font-size:14px">&#9745;</span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#f0f0f5">一键更新 update.bat</div>
+              <div style="font-size:11px;color:#5a5a70;margin-top:2px">本地运行，数据不出公司网络</div>
+            </div>
+          </div>
+          <div style="background:#11121c;border:1px solid #1f2140;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(124,108,240,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="font-size:14px">&#9745;</span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#f0f0f5">浏览器免登录</div>
+              <div style="font-size:11px;color:#5a5a70;margin-top:2px">局域网直接访问，零账号门槛</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="tags">
-      <span class="tag tag-g">&#9745; 开源 Apache 2.0</span>
-      <span class="tag tag-p">&#9745; 多用户账号体系</span>
-      <span class="tag tag-y">&#9745; 一键更新 update.bat</span>
-      <span class="tag tag-p">&#9745; 浏览器免登录</span>
+
+    <div style="margin-top:40px;padding-top:28px;border-top:1px solid #1f2140;text-align:center">
+      <div style="font-size:13px;font-weight:700;color:#2dd4bf">先知己之所能，方知己之所向</div>
+      <div style="font-size:13px;color:#5a5a70;margin-top:6px">成长力场 · 让管理评估有据可依</div>
     </div>
   </div>
 </div>
 
-<!-- S11: CTA -->
-<div class="slide" id="s6">
-  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(124,108,240,0.12),transparent)"></div>
-  <div class="slide-content cta">
-    <div class="tags-row">
-      <span class="tag-item">开源免费</span>
-      <span class="tag-item">本地部署</span>
-      <span class="tag-item">数据自主</span>
-      <span class="tag-item">3 分钟上手</span>
-    </div>
-    <h2>先知己之所能，方知己之所向</h2>
-    <p>成长力场 · 让管理评估有据可依</p>
-    <a class="btn-pri cta-main" href="https://github.com/xiao-ning-ning/growth-force-field" target="_blank">&#9734; 查看源码</a>
-  </div>
-</div>
-
-</div>
+</div><!-- end ppt -->
 
 <div class="nav">
   <button class="nav-btn" id="prevBtn" onclick="prevSlide()">&#8592;</button>
-  <span class="page-num" id="pageNum">1 / 14</span>
+  <span class="page-num" id="pageNum"></span>
   <button class="nav-btn" id="nextBtn" onclick="nextSlide()">&#8594;</button>
 </div>
 
 <div class="kbd-hint"><kbd>&#8592;</kbd> <kbd>&#8594;</kbd> 或 <kbd>Space</kbd> 翻页</div>
 
 <script>
-var slides = document.querySelectorAll('.slide');
+var slides = Array.from(document.querySelectorAll('.slide')).filter(function(s) { return getComputedStyle(s).display !== 'none'; });
 var dots = document.getElementById('dots');
 var current = 0;
 var total = slides.length;
