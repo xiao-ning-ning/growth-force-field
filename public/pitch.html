@@ -323,7 +323,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
   <div class="slide-content">
     <div class="sec-label">产品</div>
     <h2 class="sec-title">从一段文字，到可行动的成长路径</h2>
-    <p class="sec-sub">全流程 AI 驱动，结论附原文证据，支持本地部署</p>
+    <p class="sec-sub">全流程 AI 驱动，结论附原文证据，支持本地部署和自定义维度 Schema</p>
     <div class="flow">
       <div class="flow-step">
         <div class="flow-icon">&#128196;</div>
@@ -585,6 +585,85 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
   </div>
 </div>
 
+<!-- S_custom: 自定义维度 -->
+<div class="slide" id="s_custom">
+  <div class="slide-bg" style="background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(45,212,191,0.04),rgba(124,108,240,0.03),transparent)"></div>
+  <div class="slide-content">
+    <div class="sec-label">自定义 Schema</div>
+    <h2 class="sec-title">上传 Excel，AI 按你的标准分析</h2>
+    <p class="sec-sub">不满足于通用框架？上传自定义能力维度表，AI 严格按照你的维度定义生成分析结果。</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:36px">
+      <!-- 左侧：上传方式说明 -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#2dd4bf;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px">&#128196; Excel 上传自定义 Schema</div>
+        <div style="background:#11121c;border:1px solid rgba(45,212,191,0.2);border-radius:14px;padding:24px">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#2dd4bf;margin-bottom:4px">下载 Excel 模板</div>
+              <div style="font-size:12px;color:#7a7a90;line-height:1.7">系统提供带示例的模板，包含 5 列必填字段</div>
+            </div>
+            <div style="border-top:1px solid #1f2140;padding-top:12px">
+              <div style="font-size:12px;font-weight:700;color:#2dd4bf;margin-bottom:4px">填写自定义维度</div>
+              <div style="font-size:12px;color:#7a7a90;line-height:1.7">每个维度定义一级分类、名称、描述，以及"已具备/待发展"的判断标准</div>
+            </div>
+            <div style="border-top:1px solid #1f2140;padding-top:12px">
+              <div style="font-size:12px;font-weight:700;color:#2dd4bf;margin-bottom:4px">上传并生效</div>
+              <div style="font-size:12px;color:#7a7a90;line-height:1.7">上传后 AI 严格按照自定义维度分析，后续录音均基于该 Schema 运行</div>
+            </div>
+            <div style="border-top:1px solid #1f2140;padding-top:12px">
+              <div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:4px">删除恢复自由分析</div>
+              <div style="font-size:12px;color:#7a7a90;line-height:1.7">删除自定义 Schema 后，系统恢复 AI 自由生成模式，不再受维度约束</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：Excel 模板示例 -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#7a7a90;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px">&#128203; Excel 模板格式（5 列必填）</div>
+        <div style="background:#11121c;border:1px solid #1f2140;border-radius:14px;overflow:hidden">
+          <!-- 表头 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:#1a1b28;border-bottom:1px solid #1f2140">
+            <div style="padding:10px 12px;font-size:10px;font-weight:700;color:#5a5a70;text-align:center;border-right:1px solid #1f2140">一级分类</div>
+            <div style="padding:10px 12px;font-size:10px;font-weight:700;color:#5a5a70;text-align:center;border-right:1px solid #1f2140">子维度名称</div>
+            <div style="padding:10px 12px;font-size:10px;font-weight:700;color:#5a5a70;text-align:center;border-right:1px solid #1f2140">维度定义</div>
+            <div style="padding:10px 12px;font-size:10px;font-weight:700;color:#5a5a70;text-align:center;border-right:1px solid #1f2140">已具备标准</div>
+            <div style="padding:10px 12px;font-size:10px;font-weight:700;color:#5a5a70;text-align:center">待发展标准</div>
+          </div>
+          <!-- 示例行1 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;border-bottom:1px solid #1f2140">
+            <div style="padding:10px 12px;font-size:11px;color:#7a7a90;border-right:1px solid #1f2140;line-height:1.5">战略与诊断</div>
+            <div style="padding:10px 12px;font-size:11px;color:#f0f0f5;border-right:1px solid #1f2140;line-height:1.5">格局视野</div>
+            <div style="padding:10px 12px;font-size:11px;color:#7a7a90;border-right:1px solid #1f2140;line-height:1.5">站在更高维度看问题</div>
+            <div style="padding:10px 12px;font-size:11px;color:#2dd4bf;border-right:1px solid #1f2140;line-height:1.5">主动跳出当前视角</div>
+            <div style="padding:10px 12px;font-size:11px;color:#f87171;line-height:1.5">被追问才意识到</div>
+          </div>
+          <!-- 示例行2 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;border-bottom:1px solid #1f2140">
+            <div style="padding:10px 12px;font-size:11px;color:#7a7a90;border-right:1px solid #1f2140;line-height:1.5">人心与温度</div>
+            <div style="padding:10px 12px;font-size:11px;color:#f0f0f5;border-right:1px solid #1f2140;line-height:1.5">关系建立</div>
+            <div style="padding:10px 12px;font-size:11px;color:#7a7a90;border-right:1px solid #1f2140;line-height:1.5">主动建立信任和影响力</div>
+            <div style="padding:10px 12px;font-size:11px;color:#2dd4bf;border-right:1px solid #1f2140;line-height:1.5">成员愿意主动交流</div>
+            <div style="padding:10px 12px;font-size:11px;color:#f87171;line-height:1.5">倾向就事论事</div>
+          </div>
+          <!-- 示例行3 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr">
+            <div style="padding:10px 12px;font-size:11px;color:#7a7a90;border-right:1px solid #1f2140;line-height:1.5">管控与绩效</div>
+            <div style="padding:10px 12px;font-size:11px;color:#f0f0f5;border-right:1px solid #1f2140;line-height:1.5">风险预见</div>
+            <div style="padding:10px 12px;font-size:11px;color:#7a7a90;border-right:1px solid #1f2140;line-height:1.5">提前识别并准备方案</div>
+            <div style="padding:10px 12px;font-size:11px;color:#2dd4bf;border-right:1px solid #1f2140;line-height:1.5">主动预警</div>
+            <div style="padding:10px 12px;font-size:11px;color:#f87171;line-height:1.5">事后才反应</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding:12px 16px;background:#11121c;border:1px solid #1f2140;border-radius:10px;font-size:12px;color:#5a5a70;text-align:center">
+          判断标准越具体，AI 分析越准确
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- S10: 竞品对比 -->
 <div class="slide" id="s_comp">
   <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(124,108,240,0.05),transparent)"></div>
@@ -637,6 +716,13 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
           <td style="color:#f87171">&#10007; SaaS 云端</td>
           <td style="color:#f87171">&#10007; SaaS 云端</td>
           <td style="color:#2dd4bf">&#10003; 无数据风险</td>
+        </tr>
+        <tr>
+          <td class="dim-name">维度自定义</td>
+          <td style="color:#2dd4bf">&#10003; 完全自定义 Schema</td>
+          <td style="color:#f87171">&#10007; 固定问卷模板</td>
+          <td style="color:#f87171">&#10007; 固定绩效维度</td>
+          <td style="color:#f87171">&#10007; 无维度体系</td>
         </tr>
       </tbody>
     </table>
