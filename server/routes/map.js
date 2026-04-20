@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const router = express.Router();
 const { loadMap, saveMap, createEmptyMap, nextId } = require('../store');
 
@@ -37,6 +39,13 @@ router.post('/reset', async (req, res) => {
   try {
     const map = createEmptyMap();
     await saveMap(req.userId, map);
+
+    // 同时清除成长轨迹记录
+    const recordsPath = path.join(__dirname, '../../data/growth-records', `${req.userId}.json`);
+    if (fs.existsSync(recordsPath)) {
+      fs.unlinkSync(recordsPath);
+    }
+
     res.json(map);
   } catch (e) {
     res.status(500).json({ error: '重置数据失败' });
