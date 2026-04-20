@@ -125,6 +125,51 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
 .tags-row{display:flex;gap:12px;justify-content:center;margin-bottom:36px}
 .tag-item{background:#11121c;border:1px solid #1f2140;border-radius:20px;padding:8px 18px;font-size:13px;color:#b8b8c8}
 
+/* dim cards preview */
+.dim-preview{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.dim-pill{
+  padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  border:1px solid;transition:all 0.2s;cursor:default
+}
+.dim-pill-possessed{background:rgba(45,212,191,0.08);border-color:rgba(45,212,191,0.25);color:#2dd4bf}
+.dim-pill-developing{background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.25);color:#fbbf24}
+
+/* star rating */
+.star-demo{display:flex;align-items:center;gap:8px;margin-top:20px;background:#11121c;border:1px solid #1f2140;border-radius:12px;padding:16px 20px}
+.star-label{font-size:13px;color:#7a7a90;min-width:60px}
+.star-bar{flex:1;height:6px;background:#1f2140;border-radius:3px;overflow:hidden;max-width:200px}
+.star-fill{height:100%;border-radius:3px;transition:width 0.3s}
+.star-val{font-size:14px;font-weight:700;min-width:40px;text-align:right}
+.star-plus{color:#2dd4bf}
+.star-minus{color:#f87171}
+
+/* blindspot card */
+.blind-preview{background:#11121c;border:1px solid rgba(248,113,113,0.2);border-radius:14px;padding:20px;margin-top:24px;border-left:3px solid #f87171}
+.blind-preview-title{font-size:14px;font-weight:700;color:#f87171;margin-bottom:8px}
+.blind-preview p{font-size:13px;color:#7a7a90;line-height:1.7}
+
+/* preprocess compare */
+.pre-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.pre-box{background:#11121c;border:1px solid #1f2140;border-radius:12px;padding:20px}
+.pre-box h4{font-size:13px;font-weight:700;margin-bottom:10px}
+.pre-box ul{list-style:none;padding:0;margin:0}
+.pre-box li{font-size:12px;color:#7a7a90;line-height:1.8;padding-left:14px;position:relative}
+.pre-box li::before{content:'—';position:absolute;left:0;color:#3d4270}
+.pre-before li{color:#7a7a90}
+.pre-after li{color:#2dd4bf}
+
+/* team grid */
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+.team-card{background:#11121c;border:1px solid #1f2140;border-radius:12px;padding:16px;text-align:center}
+.team-avatar{width:36px;height:36px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.team-name{font-size:13px;font-weight:600;color:#f0f0f5}
+.team-role{font-size:11px;color:#7a7a90;margin-top:2px}
+.team-badges{display:flex;gap:4px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.badge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:600}
+.badge-g{background:rgba(45,212,191,0.12);color:#2dd4bf}
+.badge-y{background:rgba(251,191,36,0.1);color:#fbbf24}
+.badge-r{background:rgba(248,113,113,0.1);color:#f87171}
+
 /* kbd hint */
 .kbd-hint{position:fixed;bottom:32px;right:24px;font-size:11px;color:#3d4270;z-index:100}
 kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6px;font-family:inherit}
@@ -202,7 +247,177 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
   </div>
 </div>
 
-<!-- S4: 核心价值 -->
+<!-- S4: 能力图谱 -->
+<div class="slide" id="s_map">
+  <div class="slide-bg" style="background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(45,212,191,0.05),transparent 60%)"></div>
+  <div class="slide-content">
+    <div class="sec-label">能力图谱</div>
+    <h2 class="sec-title">所有维度，按五大分类聚合</h2>
+    <p class="sec-sub">已具备 / 待发展 / 盲区，三类能力一目了然。每条证据附原文，可追溯、可编辑、可还原。</p>
+    <div class="dim-preview">
+      <div class="dim-pill dim-pill-possessed">&#128994; 战略与诊断：风险预见</div>
+      <div class="dim-pill dim-pill-possessed">&#128994; 人心与温度：跨部门协调</div>
+      <div class="dim-pill dim-pill-possessed">&#128994; 管控与绩效：结果追踪</div>
+      <div class="dim-pill dim-pill-developing">&#128993; 知识与赋能：经验萃取</div>
+      <div class="dim-pill dim-pill-developing">&#128993; 制度与设计：机制建设</div>
+    </div>
+    <div class="dim-preview" style="margin-top:16px">
+      <div class="dim-pill" style="background:rgba(248,113,113,0.06);border-color:rgba(248,113,113,0.2);color:#f87171">&#128065; 盲区：主动寻求反馈</div>
+    </div>
+    <p style="margin-top:24px;font-size:13px;color:#7a7a90">点击维度卡片查看详情，支持手动编辑引用原文、还原初始值，数据全程本地存储</p>
+  </div>
+</div>
+
+<!-- S5: 星级评分 -->
+<div class="slide" id="s_stars">
+  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(251,191,36,0.05),transparent)"></div>
+  <div class="slide-content">
+    <div class="sec-label">星级评分</div>
+    <h2 class="sec-title">每条证据带极性，维度星级由行为决定</h2>
+    <p class="sec-sub">不是主观打分，是从行为证据中量化累加。每条证据 +1（正面）或 -1（负面），星级反映真实行为倾向。</p>
+    <div style="margin-top:24px;background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:20px">
+      <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:4px">示例维度：战略与诊断</div>
+      <div style="font-size:12px;color:#7a7a90;margin-bottom:16px">基于 3 条录音分析得出</div>
+      <div class="star-demo">
+        <div class="star-label">证据 1</div>
+        <div style="font-size:12px;color:#7a7a90;flex:0 0 200px">主动预判供应商断供风险，提前备货</div>
+        <div class="star-bar"><div class="star-fill" style="width:100%;background:#2dd4bf"></div></div>
+        <div class="star-val star-plus">+1</div>
+      </div>
+      <div class="star-demo" style="margin-top:8px">
+        <div class="star-label">证据 2</div>
+        <div style="font-size:12px;color:#7a7a90;flex:0 0 200px">提前识别渠道冲突，制定分货规则</div>
+        <div class="star-bar"><div class="star-fill" style="width:100%;background:#2dd4bf"></div></div>
+        <div class="star-val star-plus">+1</div>
+      </div>
+      <div class="star-demo" style="margin-top:8px">
+        <div class="star-label">证据 3</div>
+        <div style="font-size:12px;color:#7a7a90;flex:0 0 200px">未识别物流瓶颈，导致爆仓事故</div>
+        <div class="star-bar"><div class="star-fill" style="width:100%;background:#f87171"></div></div>
+        <div class="star-val star-minus">-1</div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid #1f2140;display:flex;align-items:center;gap:12px">
+        <div style="font-size:13px;color:#7a7a90">综合星级</div>
+        <div style="font-size:28px;font-weight:900;color:#2dd4bf">+2</div>
+        <div style="font-size:13px;color:#2dd4bf;background:rgba(45,212,191,0.1);padding:2px 10px;border-radius:10px">已具备</div>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:#7a7a90">星级 = 0 时该维度不展示；支持自定义 Schema 模式，按预设维度打分</p>
+  </div>
+</div>
+
+<!-- S6: 盲区探测 -->
+<div class="slide" id="s_blind">
+  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(248,113,113,0.06),transparent)"></div>
+  <div class="slide-content">
+    <div class="sec-label">盲区探测</div>
+    <h2 class="sec-title">AI 推理"你应该有，但你自己没意识到"的能力</h2>
+    <p class="sec-sub">不是从录音中直接提取，而是基于行为模式反推——如果这段对话涉及某类问题却未被提及，说明相关能力存在感知盲区。</p>
+    <div class="blind-preview">
+      <div class="blind-preview-title">&#128065; 感知盲区：主动寻求反馈</div>
+      <p>对话中涉及团队内部协作问题，但说话人未提及任何主动寻求反馈的行为。该维度应有自我改进的意识支撑，而录音中未见相关证据。</p>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <div class="tag tag-y">关联维度：跨部门协调</div>
+        <div class="tag tag-y">关联维度：人心与温度</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:12px">
+      <div class="blind-preview" style="flex:1">
+        <div class="blind-preview-title">&#128065; 感知盲区：战略风险预警</div>
+        <p>涉及供应商管理话题，但未提及任何风险预见或备选方案讨论。说明相关能力可能处于未激活状态。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S7: 录音预处理 -->
+<div class="slide" id="s_preprocess">
+  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(103,232,249,0.04),transparent)"></div>
+  <div class="slide-content">
+    <div class="sec-label">录音预处理</div>
+    <h2 class="sec-title">分析前先纠错，证据引用更准确</h2>
+    <p class="sec-sub">录音转写的 ASR 错误、语气词、断句问题，都会影响证据质量。成长力场在分析前先做一轮 AI 预处理。</p>
+    <div class="pre-compare">
+      <div class="pre-box pre-before">
+        <h4 style="color:#7a7a90">预处理前</h4>
+        <ul>
+          <li>那个……就是说……嗯嗯……</li>
+          <li>我觉得我们可能应该大概需要</li>
+          <li>我觉得他就是那样的那样的那种人</li>
+          <li>战略和策论要分清楚不能混淆</li>
+        </ul>
+      </div>
+      <div class="pre-box pre-after">
+        <h4 style="color:#2dd4bf">预处理后</h4>
+        <ul>
+          <li>我觉得我们可能需要……</li>
+          <li>我觉得他就是那种人</li>
+          <li>战略和策略要分清楚</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+      <div class="tag tag-p">&#9745; ASR 同音错字修正</div>
+      <div class="tag tag-p">&#9745; 语气词删减</div>
+      <div class="tag tag-p">&#9745; 重复句子合并</div>
+      <div class="tag tag-p">&#9745; 断句标点修正</div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:#7a7a90">预处理不改变语义，只提升可读性。分析阶段仍基于净化后文本，保留说话人原始表达风格。</p>
+  </div>
+</div>
+
+<!-- S8: 团队管理视角 -->
+<div class="slide" id="s_team">
+  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(124,108,240,0.05),transparent)"></div>
+  <div class="slide-content">
+    <div class="sec-label">团队管理</div>
+    <h2 class="sec-title">一个页面，纵览全团队成长动态</h2>
+    <p class="sec-sub">管理员无需切换账号，在同一界面查看所有成员的能力图谱、成长折线、盲区分布，制定针对性辅导计划。</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#7c6cf0,#a78bfa)">&#9794;</div>
+        <div class="team-name">周鑫磊</div>
+        <div class="team-role">高级设计师</div>
+        <div class="team-badges">
+          <span class="badge badge-g">&#9733;+3</span>
+          <span class="badge badge-y">&#9733;-1</span>
+          <span class="badge badge-r">&#128065;1</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#2dd4bf,#34d399)">&#9792;</div>
+        <div class="team-name">郑晨榕</div>
+        <div class="team-role">视觉设计师</div>
+        <div class="team-badges">
+          <span class="badge badge-g">&#9733;+5</span>
+          <span class="badge badge-r">&#128065;2</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">&#9792;</div>
+        <div class="team-name">张叶</div>
+        <div class="team-role">UI 设计师</div>
+        <div class="team-badges">
+          <span class="badge badge-g">&#9733;+2</span>
+          <span class="badge badge-y">&#9733;-2</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#f87171,#ef4444)">&#9794;</div>
+        <div class="team-name">徐光静</div>
+        <div class="team-role">交互设计师</div>
+        <div class="team-badges">
+          <span class="badge badge-g">&#9733;+4</span>
+          <span class="badge badge-y">&#9733;-1</span>
+          <span class="badge badge-r">&#128065;1</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:13px;color:#7a7a90">管理员可查看每位成员的五维能力成长折线图，对比不同成员在同一时期的能力分布，制定个性化辅导策略。</p>
+  </div>
+</div>
+
+<!-- S9: 核心价值 -->
 <div class="slide" id="s4">
   <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(124,108,240,0.06),transparent)"></div>
   <div class="slide-content">
@@ -243,7 +458,7 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
   </div>
 </div>
 
-<!-- S6: 部署 -->
+<!-- S10: 部署 -->
 <div class="slide" id="s5">
   <div class="slide-bg"></div>
   <div class="slide-content">
@@ -267,11 +482,12 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
       <span class="tag tag-g">&#9745; 开源 Apache 2.0</span>
       <span class="tag tag-p">&#9745; 多用户账号体系</span>
       <span class="tag tag-y">&#9745; 一键更新 update.bat</span>
+      <span class="tag tag-p">&#9745; 浏览器免登录</span>
     </div>
   </div>
 </div>
 
-<!-- S7: CTA -->
+<!-- S11: CTA -->
 <div class="slide" id="s6">
   <div class="slide-bg" style="background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(124,108,240,0.12),transparent)"></div>
   <div class="slide-content cta">
@@ -291,7 +507,7 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
 
 <div class="nav">
   <button class="nav-btn" id="prevBtn" onclick="prevSlide()">&#8592;</button>
-  <span class="page-num" id="pageNum">1 / 6</span>
+  <span class="page-num" id="pageNum">1 / 12</span>
   <button class="nav-btn" id="nextBtn" onclick="nextSlide()">&#8594;</button>
 </div>
 
