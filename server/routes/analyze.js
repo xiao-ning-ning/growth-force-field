@@ -111,6 +111,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     const existingDimsSummary = map.dimensions.map(d => ({
       id: d.id, name: d.name, status: d.status, category: d.category,
       evidenceCount: d.evidence.length, description: d.description,
+      starCount: d.starCount || 0,
     }));
 
     // ========== 分支：自定义 schema 模式 ==========
@@ -138,17 +139,25 @@ router.post('/', upload.single('file'), async (req, res) => {
 ## 分析原则
 
 1. **证据驱动，不预设维度**: 维度是从行为中长出来的，不是预设的框架
-2. **已具备和待发展都要有证据**: 待发展不是主观评价，而是从行为中观察到的信号
-3. **原文引用必须有**: 每条证据必须附原文引用
-4. **解读要有判断力**: 不是简单复述原话，而是点出原话背后展现的能力或能力缺口
-5. **confidence 要诚实**: 单次证据="弱"，两次以上="中"，三次以上且跨场景="强"
-6. **维度命名要精准**: 用"战略拆解力"而非"规划能力"，用"温和的残酷"而非"决策力"
-7. **待发展不是否定**: 待发展维度是用来看见潜力和缺口
-8. **金字塔原则**: 不同维度之间必须有清晰边界，不能描述重叠。如果两个维度的核心内涵高度相似，必须只保留一个，或明确说明区分点
-9. **去重校验**: 在输出前自检——逐对比较所有维度的 description 和核心内涵，去除描述雷同的维度，保留信息量最大的那个
-10. **层次分明**: 高层次维度（如战略视野）与低层次维度（如具体操作技能）要区分清楚，不能混为一谈
-11. **必须有待发展维度**: 每次分析必须输出至少 1 个 developing 状态的能力维度。如果实在找不出缺口，输出 1 个泛化的待发展维度（如"战略视野待发展"、"团队管理待发展"等）。待发展是帮助用户看见成长空间，不是批评。
-12. **待发展要有行为依据**: 待发展能力必须基于录音文本中的行为观察，不能主观臆造
+2. **原文引用必须有**: 每条证据必须附原文引用
+3. **解读要有判断力**: 不是简单复述原话，而是点出原话背后展现的能力或能力缺口
+4. **维度命名要精准**: 用"战略拆解力"而非"规划能力"，用"温和的残酷"而非"决策力"
+5. **金字塔原则**: 不同维度之间必须有清晰边界，不能描述重叠。如果两个维度的核心内涵高度相似，必须只保留一个，或明确说明区分点
+6. **去重校验**: 在输出前自检——逐对比较所有维度的 description 和核心内涵，去除描述雷同的维度，保留信息量最大的那个
+7. **层次分明**: 高层次维度（如战略视野）与低层次维度（如具体操作技能）要区分清楚，不能混为一谈
+
+## 星星评分机制（核心）
+
+每条证据有极性：
+- **+1星（正面）**：行为展现了正向能力，如成功解决问题、推动协作、主动承担责任、展现领导力等
+- **-1星（负面）**：行为暴露了能力缺口或盲点，如沟通不畅、决策失误、回避责任、缺乏规划等
+
+维度星级 = 该维度所有证据的极性之和：
+- 星级 > 0 → **已具备（possessed）**
+- 星级 < 0 → **待发展（developing）**
+- 星级 = 0 → **该维度被移除**（正面负面相互抵消，不归类）
+
+正负面证据都要找，两者都要有行为依据。
 
 ## 五大能力分类（必须且只能使用这 5 个分类）
 
@@ -169,11 +178,11 @@ router.post('/', upload.single('file'), async (req, res) => {
   "newDimensions": [
     {
       "name": "维度名称",
-      "status": "possessed|developing",
       "categoryName": "分类名称",
       "categoryIcon": "emoji图标",
       "description": "一句话定义该维度的核心内涵",
       "evidence": {
+        "polarity": "+1|-1",
         "source": "来源名称",
         "speaker": "说话人",
         "quote": "原文引用",
@@ -187,13 +196,13 @@ router.post('/', upload.single('file'), async (req, res) => {
     {
       "dimensionId": "已有维度ID",
       "newEvidence": {
+        "polarity": "+1|-1",
         "source": "来源名称",
         "speaker": "说话人",
         "quote": "原文引用",
         "interpretation": "AI对这段行为的解读"
       },
-      "confidenceChange": "强|中|弱|不变",
-      "statusChange": "possessed|developing|不变"
+      "confidenceChange": "强|中|弱|不变"
     }
   ],
   "mergeSuggestions": [
@@ -220,12 +229,19 @@ ${existingDimsSummary.length > 0 ? existingDimsSummary.map(d =>
   `- [${d.id}] ${d.name} (${d.status}, ${d.evidenceCount}条证据): ${d.description}`
 ).join('\n') : '（暂无已有维度，这是首次分析）'}
 
+## 已有维度及星级（共 ${map.dimensions.length} 个，供去重和星级累加参考）
+${existingDimsSummary.length > 0 ? existingDimsSummary.map(d =>
+  `- [${d.id}] ${d.name} (星级: ${d.starCount}, ${d.evidenceCount}条证据): ${d.description}`
+).join('\n') : '（暂无已有维度，这是首次分析）'}
+
 请深度分析上述文本中"${speakerName}"的行为模式，提取能力维度。`;
 
     const result = await callLLM(systemPrompt, userPrompt);
 
     // 处理分析结果，更新地图
     const updates = processAnalysisResult(map, result, speakerName, sourceName, date);
+
+    await saveMap(req.userId, map);
 
     await saveMap(req.userId, map);
 
@@ -275,12 +291,24 @@ function buildSchemaPrompt(schema, transcript, speakerName, sourceName, date, ex
 
   const systemPrompt = `你是"成长力场"的能力分析引擎，严格按照给定的维度定义从文本中提取行为证据。
 
+## 星星评分机制（核心）
+
+每条证据有极性：
+- **+1星（正面）**：行为展现了正向能力，如成功解决问题、推动协作、主动承担责任等
+- **-1星（负面）**：行为暴露了能力缺口或盲点，如沟通不畅、决策失误、回避责任等
+
+维度星级 = 该维度所有证据的极性之和：
+- 星级 > 0 → **已具备（possessed）**
+- 星级 < 0 → **待发展（developing）**
+- 星级 = 0 → **移除该维度**（正面负面相互抵消，不归类）
+
 ## 核心原则
 
 1. **严格匹配，不自由发挥**：只分析以下预定义维度，不得自行创造新维度
 2. **无证据不输出**：某个维度在文本中没有对应行为证据时，直接跳过，不要虚构
 3. **原文引用必须有**：每条证据必须附原文引用
-4. **待发展要有行为依据**：待发展能力必须基于文本中的行为观察，不能主观臆造
+4. **正负面都要找**：既找正面证据（+1），也找负面证据（-1），两者都要有行为依据
+5. **解读要揭示原因**：解释为什么这段话是正面的或负面的
 
 ## 预定义能力维度
 
@@ -294,17 +322,15 @@ ${dimDescriptions}
     {
       "dimensionId": "维度ID",
       "dimensionName": "维度名称",
-      "status": "possessed|developing",
-      "categoryName": "分类名称",
-      "categoryIcon": "图标",
       "evidence": {
+        "polarity": "+1|-1",
         "quote": "原文引用（完整原句）",
-        "interpretation": "AI解读：这段话为什么体现该维度"
+        "interpretation": "AI解读：这段话为什么是正面/负面的能力体现"
       },
-      "confidence": "强|中|弱"
+      "confidence": "强|中|弱（基于证据来源数量，而非极性）"
     }
   ],
-  "summary": "本次分析的简短摘要"
+  "summary": "本次分析的简短摘要（说明各维度的星级变化）"
 }`;
 
   const userPrompt = `## 待分析的录音转写文本
@@ -316,12 +342,12 @@ ${dimDescriptions}
 ### 文本内容
 ${transcript}
 
-## 已有维度（共 ${map.dimensions.length} 个，供去重参考）
+## 已有维度及星级（共 ${map.dimensions.length} 个，供去重和星级累加参考）
 ${existingDimsSummary.length > 0 ? existingDimsSummary.map(d =>
-  `- [${d.id}] ${d.name} (${d.status}, ${d.evidenceCount}条证据): ${d.description}`
+  `- [${d.id}] ${d.name} (星级: ${d.starCount || 0}, ${d.evidenceCount}条证据): ${d.description}`
 ).join('\n') : '（暂无已有维度）'}
 
-请严格按照预定义维度逐一判断，输出匹配的维度及其证据。`;
+请严格按照预定义维度逐一判断，输出匹配的维度及其证据（含极性标注）。`;
 
   return { system: systemPrompt, user: userPrompt };
 }
@@ -330,7 +356,7 @@ ${existingDimsSummary.length > 0 ? existingDimsSummary.map(d =>
  * 处理 schema 模式分析结果
  */
 function processSchemaResult(map, result, speakerName, sourceName, date) {
-  const updates = { newDims: [], updatedDims: [], mergeSuggestions: [], radarAxesChanges: [] };
+  const updates = { newDims: [], updatedDims: [], removedDims: [], mergeSuggestions: [], radarAxesChanges: [] };
   const sourceDate = date || new Date().toISOString().split('T')[0];
   const sourceLabel = sourceName || '未命名录音';
 
@@ -344,8 +370,10 @@ function processSchemaResult(map, result, speakerName, sourceName, date) {
   const matchedDims = result.matchedDimensions || [];
 
   for (const matched of matchedDims) {
+    const polarity = matched.evidence?.polarity === '-1' ? -1 : 1;
+
     // 在已有维度中查找雷同（同名）
-    const existing = map.dimensions.find(d => d.name === matched.dimensionName || d.name === matched.dimensionName);
+    const existing = map.dimensions.find(d => d.name === matched.dimensionName);
 
     if (existing) {
       // 追加证据
@@ -356,20 +384,40 @@ function processSchemaResult(map, result, speakerName, sourceName, date) {
         corrected: false,
         interpretation: matched.evidence?.interpretation || '',
         date: sourceDate,
+        polarity: polarity,
       });
-      if (matched.confidence && matched.confidence !== '不变') {
-        existing.confidence = matched.confidence;
+
+      // 重新计算星级
+      existing.starCount = existing.evidence.reduce((sum, ev) => sum + (ev.polarity || 1), 0);
+
+      // 更新置信度（基于证据数量）
+      const evidenceCount = existing.evidence.length;
+      existing.confidence = evidenceCount >= 3 ? '强' : evidenceCount >= 2 ? '中' : '弱';
+
+      // 重新计算状态
+      if (existing.starCount > 0) {
+        existing.status = 'possessed';
+      } else if (existing.starCount < 0) {
+        existing.status = 'developing';
+      } else {
+        // 星级归零，移除该维度
+        map.dimensions = map.dimensions.filter(d => d.id !== existing.id);
+        updates.removedDims.push({ id: existing.id, name: existing.name });
+        updates.updatedDims.push({ id: existing.id, name: existing.name, action: '星级归零，移除' });
+        continue;
       }
-      updates.updatedDims.push({ id: existing.id, name: existing.name, action: '追加证据' });
+
+      updates.updatedDims.push({ id: existing.id, name: existing.name, action: '追加证据，星级' + existing.starCount });
     } else {
       // 创建新维度
-      const category = map.categories.find(c => c.name === matched.categoryName);
       const dimId = nextId('dim');
+      const status = polarity > 0 ? 'possessed' : 'developing';
+
       const dim = {
         id: dimId,
         name: matched.dimensionName,
-        status: matched.status || 'possessed',
-        category: category ? category.id : '',
+        status: status,
+        category: '',
         speakerId: speaker.id,
         description: '',
         evidence: [{
@@ -379,12 +427,14 @@ function processSchemaResult(map, result, speakerName, sourceName, date) {
           corrected: false,
           interpretation: matched.evidence?.interpretation || '',
           date: sourceDate,
+          polarity: polarity,
         }],
         relatedTo: [],
         confidence: matched.confidence || '弱',
+        starCount: polarity,
       };
       map.dimensions.push(dim);
-      updates.newDims.push({ id: dimId, name: dim.name, status: dim.status });
+      updates.newDims.push({ id: dimId, name: dim.name, status: dim.status, starCount: dim.starCount });
     }
   }
 
@@ -397,17 +447,32 @@ function processSchemaResult(map, result, speakerName, sourceName, date) {
     source: sourceLabel,
     speaker: speakerName,
     dimensionsAffected: [...updates.newDims.map(d => d.id), ...updates.updatedDims.map(d => d.id)],
-    summary: result.summary || `本次分析匹配 ${matchedDims.length} 个维度`,
+    summary: result.summary || `本次分析匹配 ${matchedDims.length} 个维度，新增 ${updates.newDims.length} 个，移除 ${updates.removedDims.length} 个`,
   });
 
   return updates;
 }
 
 /**
+ * 计算维度的星级和状态
+ */
+function recalcDimension(dim) {
+  dim.starCount = dim.evidence.reduce((sum, ev) => sum + (ev.polarity || 1), 0);
+  if (dim.starCount > 0) {
+    dim.status = 'possessed';
+  } else if (dim.starCount < 0) {
+    dim.status = 'developing';
+  }
+  // starCount === 0 时不设置 status，交给调用方处理移除
+  const evidenceCount = dim.evidence.length;
+  dim.confidence = evidenceCount >= 3 ? '强' : evidenceCount >= 2 ? '中' : '弱';
+}
+
+/**
  * 处理分析结果，将新维度和更新写入地图
  */
 function processAnalysisResult(map, result, speakerName, sourceName, date) {
-  const updates = { newDims: [], updatedDims: [], mergeSuggestions: [], radarAxesChanges: [] };
+  const updates = { newDims: [], updatedDims: [], removedDims: [], mergeSuggestions: [], radarAxesChanges: [] };
   const sourceDate = date || new Date().toISOString().split('T')[0];
   const sourceLabel = sourceName || '未命名录音';
 
@@ -425,6 +490,9 @@ function processAnalysisResult(map, result, speakerName, sourceName, date) {
   // 处理新维度
   if (result.newDimensions) {
     for (const newDim of result.newDimensions) {
+      // 极性：默认 +1
+      const polarity = newDim.evidence?.polarity === '-1' ? -1 : 1;
+
       // 雷同检测：检查是否与已有维度雷同（同名 或 description 高度相似）
       const similarDim = map.dimensions.find(d => {
         if (d.name === newDim.name) return true;
@@ -433,22 +501,28 @@ function processAnalysisResult(map, result, speakerName, sourceName, date) {
         }
         return false;
       });
-      
+
       if (similarDim) {
         // 雷同：追加证据到已有维度
-        const ev = newDim.evidence;
         similarDim.evidence.push({
-          source: ev.source || sourceLabel,
-          speaker: ev.speaker || speakerName,
-          quote: ev.quote,
+          source: newDim.evidence?.source || sourceLabel,
+          speaker: newDim.evidence?.speaker || speakerName,
+          quote: newDim.evidence?.quote || '',
           corrected: false,
-          interpretation: ev.interpretation,
+          interpretation: newDim.evidence?.interpretation || '',
           date: sourceDate,
+          polarity: polarity,
         });
-        if (newDim.confidence && newDim.confidence !== '不变') {
-          similarDim.confidence = newDim.confidence;
+        recalcDimension(similarDim);
+
+        // 星级归零则移除
+        if (similarDim.starCount === 0) {
+          map.dimensions = map.dimensions.filter(d => d.id !== similarDim.id);
+          updates.removedDims.push({ id: similarDim.id, name: similarDim.name });
+          updates.updatedDims.push({ id: similarDim.id, name: similarDim.name, action: '星级归零，移除' });
+        } else {
+          updates.updatedDims.push({ id: similarDim.id, name: similarDim.name, action: '追加证据，星级' + similarDim.starCount });
         }
-        updates.updatedDims.push({ id: similarDim.id, name: similarDim.name, action: '雷同合并(追加证据)' });
         continue;
       }
 
@@ -473,24 +547,32 @@ function processAnalysisResult(map, result, speakerName, sourceName, date) {
       const dim = {
         id: dimId,
         name: newDim.name,
-        status: newDim.status || 'possessed',
+        status: polarity > 0 ? 'possessed' : 'developing',
         category: category ? category.id : '',
         speakerId: speaker.id,
-        description: newDim.description,
+        description: newDim.description || '',
         evidence: [{
-          source: newDim.evidence.source || sourceLabel,
-          speaker: newDim.evidence.speaker || speakerName,
-          quote: newDim.evidence.quote,
+          source: newDim.evidence?.source || sourceLabel,
+          speaker: newDim.evidence?.speaker || speakerName,
+          quote: newDim.evidence?.quote || '',
           corrected: false,
-          interpretation: newDim.evidence.interpretation,
+          interpretation: newDim.evidence?.interpretation || '',
           date: sourceDate,
+          polarity: polarity,
         }],
         relatedTo: relatedIds,
         confidence: newDim.confidence || '弱',
+        starCount: polarity,
       };
 
+      // 星级为零则不创建（单条证据的正负抵消）
+      if (dim.starCount === 0) {
+        updates.removedDims.push({ id: dimId, name: newDim.name, action: '星级归零，不创建' });
+        continue;
+      }
+
       map.dimensions.push(dim);
-      updates.newDims.push({ id: dimId, name: dim.name, status: dim.status });
+      updates.newDims.push({ id: dimId, name: dim.name, status: dim.status, starCount: dim.starCount });
 
       // 更新关联维度的 relatedTo
       for (const rid of relatedIds) {
@@ -500,7 +582,6 @@ function processAnalysisResult(map, result, speakerName, sourceName, date) {
         }
       }
     }
-    
   }
 
   // 处理已更新维度
@@ -510,25 +591,29 @@ function processAnalysisResult(map, result, speakerName, sourceName, date) {
       if (!dim) continue;
 
       if (upd.newEvidence) {
+        const polarity = upd.newEvidence.polarity === '-1' ? -1 : 1;
         dim.evidence.push({
           source: upd.newEvidence.source || sourceLabel,
           speaker: upd.newEvidence.speaker || speakerName,
           quote: upd.newEvidence.quote,
           corrected: false,
-          interpretation: upd.newEvidence.interpretation,
+          interpretation: upd.newEvidence.interpretation || '',
           date: sourceDate,
+          polarity: polarity,
         });
-      }
+        recalcDimension(dim);
 
-      if (upd.confidenceChange && upd.confidenceChange !== '不变') {
-        dim.confidence = upd.confidenceChange;
+        // 星级归零则移除
+        if (dim.starCount === 0) {
+          map.dimensions = map.dimensions.filter(d => d.id !== dim.id);
+          updates.removedDims.push({ id: dim.id, name: dim.name });
+          updates.updatedDims.push({ id: dim.id, name: dim.name, action: '星级归零，移除' });
+        } else {
+          updates.updatedDims.push({ id: dim.id, name: dim.name, action: '追加证据，星级' + dim.starCount });
+        }
+      } else {
+        updates.updatedDims.push({ id: dim.id, name: dim.name, action: '更新' });
       }
-
-      if (upd.statusChange && upd.statusChange !== '不变') {
-        dim.status = upd.statusChange;
-      }
-
-      updates.updatedDims.push({ id: dim.id, name: dim.name, action: '更新' });
     }
   }
 
@@ -551,7 +636,7 @@ function processAnalysisResult(map, result, speakerName, sourceName, date) {
     source: sourceLabel,
     speaker: speakerName,
     dimensionsAffected: affectedDimIds,
-    summary: result.summary || `本次分析新增${updates.newDims.length}个维度，更新${updates.updatedDims.length}个维度`,
+    summary: result.summary || `本次分析新增${updates.newDims.length}个维度，更新${updates.updatedDims.length}个维度，移除${updates.removedDims.length}个维度`,
   });
 
   return updates;

@@ -114,6 +114,22 @@ function loadMap(username) {
     }
     // Sync category from categories[].dimIds → dimensions[].category
     syncCategoryToDimensions(parsed);
+
+    // 数据迁移：v3 → v4，补 starCount 和 evidence.polarity
+    if ((parsed.version || 0) < 4) {
+      console.log('[store] Migrating map to v4: adding starCount');
+      for (const dim of parsed.dimensions) {
+        if (dim.starCount === undefined) {
+          // 旧证据没有 polarity，默认 +1
+          for (const ev of dim.evidence) {
+            if (ev.polarity === undefined) ev.polarity = 1;
+          }
+          dim.starCount = dim.evidence.reduce((sum, ev) => sum + (ev.polarity || 1), 0);
+        }
+      }
+      parsed.version = 4;
+    }
+
     return parsed;
   } catch (e) {
     console.error(`[store] Failed to load map: ${e.message}`);
@@ -168,7 +184,7 @@ function saveMap(username, map) {
 
 function createEmptyMap() {
   return {
-    version: 3,
+    version: 4,
     owner: '',
     lastUpdated: new Date().toISOString().split('T')[0],
     speakers: [],
