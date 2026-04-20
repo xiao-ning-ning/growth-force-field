@@ -123,12 +123,11 @@ router.get('/template', (req, res) => {
 
   const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
-  // RFC 5987 编码：Express header 只接受 ASCII，用 filename* 传非 ASCII 名称
-  const filename = '成长力场-能力维度模板.xlsx';
-  const encoded = encodeURIComponent(filename);
+  // RFC 5987：filename 参数值必须是 ASCII，filename* 传非 ASCII
+  const encoded = encodeURIComponent('成长力场-能力维度模板.xlsx');
   res.set({
     'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'Content-Disposition': `attachment; filename="${filename}"; filename*=UTF-8''${encoded}`,
+    'Content-Disposition': `attachment; filename="schema-template.xlsx"; filename*=UTF-8''${encoded}`,
     'Content-Length': buf.length,
   });
   res.send(buf);
