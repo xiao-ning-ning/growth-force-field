@@ -76,40 +76,9 @@ router.get('/', (req, res) => {
 router.get('/template', (req, res) => {
   if (!req.userId) return res.status(401).json({ error: '请先登录' });
 
-  // 示例数据行（引导用户填写）
-  const sampleData = [
-    {
-      '一级分类': '战略与诊断',
-      '子维度名称': '格局视野',
-      '维度定义': '能站在更高维度看问题，看到局部与整体的关系，在复杂局面中判断优先级',
-      '已具备判断标准': '能主动跳出当前视角，从上级或全局利益出发分析问题',
-      '待发展判断标准': '在被追问时能意识到还有更高视角，但主动调用不足',
-    },
-    {
-      '一级分类': '战略与诊断',
-      '子维度名称': '风险预见',
-      '维度定义': '能提前识别潜在风险，并准备应对方案，而非等问题爆发才反应',
-      '已具备判断标准': '主动提及风险预案，或在问题发生前有预警动作',
-      '待发展判断标准': '能事后分析风险原因，但事前预判能力弱',
-    },
-    {
-      '一级分类': '人心与温度',
-      '子维度名称': '关系建立',
-      '维度定义': '能主动与团队成员建立信任，善于通过日常互动积累影响力',
-      '已具备判断标准': '团队成员愿意主动与其交流，有跨部门人脉积累',
-      '待发展判断标准': '倾向于就事论事，主动社交行为较少',
-    },
-  ];
-
-  // 留两行空模板供用户填写
-  const emptyTemplate = [
-    { '一级分类': '', '子维度名称': '', '维度定义': '', '已具备判断标准': '', '待发展判断标准': '' },
-    { '一级分类': '', '子维度名称': '', '维度定义': '', '已具备判断标准': '', '待发展判断标准': '' },
-  ];
-
   const wb = XLSX.utils.book_new();
 
-  // Sheet1：填写说明
+  // Sheet1：填写说明（aoa_to_sheet 需要数组的数组）
   const readmeData = [
     ['成长力场 - 自定义能力维度模板'],
     [],
@@ -117,19 +86,30 @@ router.get('/template', (req, res) => {
     ['1. 每一行填写一个子维度，同一"一级分类"下的维度会自动归类'],
     ['2. 所有字段均为必填，请勿留空'],
     ['3. "维度定义"供 AI 理解该维度的含义，描述越具体分析越准确'],
-    ['4. "已具备"和"待发展"标准用于 AI 判断行为属于哪个等级，建议用"能/会..."描述已具备，用"...不足/需要..."描述待发展'],
+    ['4. "已具备"和"待发展"标准用于 AI 判断行为属于哪个等级'],
     ['5. 填写完成后，删除示例行（前三行），保留您自己的数据'],
     ['6. 上传后将覆盖原有的自定义维度配置'],
     [],
-    ['示例（请删除以下示例行后上传）'],
+    ['以下为示例（请删除示例行后上传）'],
   ];
   const readmeSheet = XLSX.utils.aoa_to_sheet(readmeData);
-  readmeSheet['!cols'] = [{ wch: 50 }, { wch: 40 }];
+  readmeSheet['!cols'] = [{ wch: 55 }];
   XLSX.utils.book_append_sheet(wb, readmeSheet, '必读说明');
 
-  // Sheet2：维度模板（用户填写区）
-  const headerRow = ['一级分类', '子维度名称', '维度定义', '已具备判断标准', '待发展判断标准'];
-  const templateSheet = XLSX.utils.aoa_to_sheet([headerRow, ...sampleData, ...emptyTemplate]);
+  // Sheet2：维度模板（aoa_to_sheet 需要数组的数组）
+  const headers = ['一级分类', '子维度名称', '维度定义', '已具备判断标准', '待发展判断标准'];
+  const sampleRows = [
+    ['战略与诊断', '格局视野', '能站在更高维度看问题，看到局部与整体的关系，在复杂局面中判断优先级', '能主动跳出当前视角，从上级或全局利益出发分析问题', '在被追问时能意识到还有更高视角，但主动调用不足'],
+    ['战略与诊断', '风险预见', '能提前识别潜在风险，并准备应对方案，而非等问题爆发才反应', '主动提及风险预案，或在问题发生前有预警动作', '能事后分析风险原因，但事前预判能力弱'],
+    ['人心与温度', '关系建立', '能主动与团队成员建立信任，善于通过日常互动积累影响力', '团队成员愿意主动与其交流，有跨部门人脉积累', '倾向于就事论事，主动社交行为较少'],
+  ];
+  const emptyRows = [
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+  ];
+
+  const templateData = [headers, ...sampleRows, ...emptyRows];
+  const templateSheet = XLSX.utils.aoa_to_sheet(templateData);
   templateSheet['!cols'] = [
     { wch: 15 },
     { wch: 15 },
@@ -137,8 +117,8 @@ router.get('/template', (req, res) => {
     { wch: 40 },
     { wch: 40 },
   ];
-  // 设置单元格样式提示（表头加粗）
-  templateSheet['A1'].s = { font: { bold: true } };
+  // 表头行高亮（通过 !ref + A1 表示第一行为表头）
+  templateSheet['!rows'] = [{ hpt: 20, halign: 'center', bold: true }, null, null, null, null];
   XLSX.utils.book_append_sheet(wb, templateSheet, '能力维度模板');
 
   const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
