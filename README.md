@@ -32,6 +32,8 @@
 ### 1. AI 行为分析
 从会议记录、述职自评、访谈纪要中识别真实行为模式，量化已具备、待发展、盲区。每条结论都附**原文引用**，结论可追溯。
 
+**星级评分**：每条证据标注正面（+1星）或负面（-1星），星级累加决定能力归属——正星→已具备，负星→待发展，星级归零→维度移除。双向流动，动态升降。
+
 ### 2. 能力图谱
 五维全局概览，看到能力全貌和各维度之间的关联。
 
@@ -77,10 +79,11 @@ git clone https://github.com/xiao-ning-ning/growth-force-field.git
 配置 API Key：编辑项目根目录 `.env` 文件，填入以下内容：
 ```env
 OPENAI_API_KEY=sk-your-api-key
-OPENAI_BASE_URL=https://api.openai.com/v1
-OPENAI_MODEL=gpt-4o
+OPENAI_BASE_URL=https://api.deepseek.com
+OPENAI_MODEL=deepseek-chat
 ```
-支持 OpenAI / DeepSeek / 月之暗面 / 本地 Ollama（任意 OpenAI 兼容接口均可）。
+
+**模型推荐**：建议优先使用 **DeepSeek**（性价比高、中文理解好、JSON 输出稳定）。支持 OpenAI / DeepSeek / 月之暗面 / 本地 Ollama（任意 OpenAI 兼容接口均可）。
 
 ---
 
