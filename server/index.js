@@ -120,7 +120,7 @@ app.get('/api/open-env', (req, res) => {
 // Protected API routes
 app.use('/api/map', require('./routes/map'));
 app.use('/api/analyze', require('./routes/analyze'));
-app.use('/api/correct', require('./routes/correct'));
+
 app.use('/api/evidence', require('./routes/evidence'));
 app.use('/api/merge', require('./routes/merge'));
 app.use('/api/dimensions', require('./routes/dimensions'));

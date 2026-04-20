@@ -8,8 +8,8 @@
 
 开源免费 · 数据本地存储 · 无需注册
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue)
-[![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org/)
 
 ---
 
@@ -54,11 +54,11 @@
 ## 差异化
 
 | | 成长力场 | 传统评估 | 在线 AI 平台 |
-|---|---|---|
-| 证据链 | **每条结论附原文 | 无 | 无 |
-| 数据存储 | **本地**，不出公司 | 云端或纸质 |
-| 持续积累 | **增量生长**，不是每次重新分析 | 一次性的 |
-| 多用户管理 | **支持**，管理员可查看团队 | 不支持 |
+|---|---|---|---|---|
+| 证据链 | **每条结论附原文引用** | 无 | 无 |
+| 数据存储 | **本地**，不出公司 | 云端或纸质 | 云端 |
+| 持续积累 | **增量生长**，不是每次重新分析 | 一次性 | 一次性 |
+| 多用户管理 | **支持**，管理员可查看团队 | 不支持 | 不支持 |
 
 ---
 

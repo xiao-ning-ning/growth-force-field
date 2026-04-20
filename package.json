@@ -7,6 +7,30 @@
     "start": "node server/index.js",
     "dev": "node --watch server/index.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiao-ning-ning/growth-force-field"
+  },
+  "keywords": [
+    "management",
+    "capability",
+    "ai-analysis",
+    "leadership",
+    "growth",
+    "competency",
+    "成长力场",
+    "管理者能力",
+    "AI"
+  ],
+  "author": "xiao-ning-ning",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/xiao-ning-ning/growth-force-field/issues"
+  },
+  "homepage": "https://github.com/xiao-ning-ning/growth-force-field#readme",
   "dependencies": {
     "express": "^4.18.2",
     "express-session": "^1.19.0",
