@@ -509,25 +509,25 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
         <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:16px">能力雷达图 · 某管理者</div>
         <div style="display:flex;gap:20px;align-items:center">
           <!-- 雷达SVG，5边形，5条轴各自着色 -->
-          <svg width="160" height="160" viewBox="-10 -10 220 220" style="flex-shrink:0">
-            <!-- 背景网格 -->
-            <polygon points="100,5 187,52 187,148 100,195 13,148 13,52" fill="none" stroke="#1f2140" stroke-width="1"/>
-            <polygon points="100,28 167,60 167,140 100,172 33,140 33,60" fill="none" stroke="#1f2140" stroke-width="1"/>
-            <polygon points="100,51 148,68 148,132 100,149 52,132 52,68" fill="none" stroke="#1f2140" stroke-width="1"/>
-            <!-- 能力填充（5边形，彩色描边） -->
-            <polygon points="100,18 172,64 155,142 58,136 28,64" fill="rgba(108,92,231,0.12)" stroke="#6c5ce7" stroke-width="2"/>
+          <svg width="160" height="160" viewBox="-30 -30 260 260" style="flex-shrink:0">
+            <!-- 背景网格（半径50/80/110，对应r=0.45/0.73/1.0） -->
+            <polygon points="100,50 143,75 143,125 100,150 57,125 57,75" fill="none" stroke="#1f2140" stroke-width="1"/>
+            <polygon points="100,20 165,60 165,140 100,180 35,140 35,60" fill="none" stroke="#1f2140" stroke-width="1"/>
+            <polygon points="100,55 138,70 138,130 100,145 62,130 62,70" fill="none" stroke="#1f2140" stroke-width="1"/>
+            <!-- 能力填充（半径约r=0.78，对应坐标r=78） -->
+            <polygon points="100,22 163,60 153,138 63,133 37,60" fill="rgba(108,92,231,0.12)" stroke="#6c5ce7" stroke-width="2"/>
             <!-- 轴线，各用对应分类颜色 -->
-            <line x1="100" y1="100" x2="100" y2="5" stroke="#6c5ce7" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="187" y2="52" stroke="#a29bfe" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="187" y2="148" stroke="#00cec9" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="13" y2="148" stroke="#55efc4" stroke-width="1.5" opacity="0.7"/>
-            <line x1="100" y1="100" x2="13" y2="52" stroke="#fd79a8" stroke-width="1.5" opacity="0.7"/>
-            <!-- 轴标签 -->
-            <text x="100" y="0" text-anchor="middle" fill="#6c5ce7" font-size="9" font-weight="700">战略</text>
-            <text x="198" y="52" text-anchor="start" fill="#a29bfe" font-size="9" font-weight="700">管控</text>
-            <text x="198" y="155" text-anchor="start" fill="#00cec9" font-size="9" font-weight="700">人心</text>
-            <text x="2" y="155" text-anchor="end" fill="#55efc4" font-size="9" font-weight="700">知识</text>
-            <text x="2" y="52" text-anchor="end" fill="#fd79a8" font-size="9" font-weight="700">制度</text>
+            <line x1="100" y1="100" x2="100" y2="50" stroke="#6c5ce7" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="143" y2="75" stroke="#a29bfe" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="143" y2="125" stroke="#00cec9" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="57" y2="125" stroke="#55efc4" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="57" y2="75" stroke="#fd79a8" stroke-width="1.5" opacity="0.7"/>
+            <!-- 轴标签（全部在界内） -->
+            <text x="100" y="42" text-anchor="middle" fill="#6c5ce7" font-size="9" font-weight="700">战略</text>
+            <text x="150" y="72" text-anchor="start" fill="#a29bfe" font-size="9" font-weight="700">管控</text>
+            <text x="150" y="130" text-anchor="start" fill="#00cec9" font-size="9" font-weight="700">人心</text>
+            <text x="50" y="130" text-anchor="end" fill="#55efc4" font-size="9" font-weight="700">知识</text>
+            <text x="50" y="72" text-anchor="end" fill="#fd79a8" font-size="9" font-weight="700">制度</text>
           </svg>
           <div style="flex:1">
             <div style="font-size:12px;color:#7a7a90;margin-bottom:10px">五大分类能力分布</div>
