@@ -77,13 +77,13 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
 .case-metric .metric-lbl{font-size:12px}
 
 /* flow steps */
-.flow{display:flex;gap:40px;margin-top:40px}
-.flow-step{flex:1;background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:28px 20px;position:relative;transition:all 0.25s}
+.flow{display:flex;gap:20px;margin-top:40px}
+.flow-step{flex:1;background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:24px 16px;position:relative;transition:all 0.25s;min-width:0}
 .flow-step:hover{border-color:#3d4270}
-.flow-step:not(:last-child)::after{content:'→';position:absolute;right:-32px;top:50%;transform:translateY(-50%);color:#7c6cf0;font-size:22px;z-index:2}
-.flow-icon{font-size:26px;margin-bottom:14px}
-.flow-title{font-size:15px;font-weight:700;margin-bottom:8px}
-.flow-desc{font-size:13px;color:#7a7a90;line-height:1.7}
+.flow-step:not(:last-child)::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:#7c6cf0;font-size:18px;z-index:2}
+.flow-icon{font-size:22px;margin-bottom:12px}
+.flow-title{font-size:14px;font-weight:700;margin-bottom:6px}
+.flow-desc{font-size:12px;color:#7a7a90;line-height:1.6}
 
 /* cards grid */
 .cards2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
@@ -137,8 +137,9 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
 /* star rating */
 .star-demo{display:flex;align-items:center;gap:8px;margin-top:20px;background:#11121c;border:1px solid #1f2140;border-radius:12px;padding:16px 20px}
 .star-label{font-size:13px;color:#7a7a90;min-width:60px}
-.star-bar{flex:1;height:6px;background:#1f2140;border-radius:3px;overflow:hidden;max-width:200px}
-.star-fill{height:100%;border-radius:3px;transition:width 0.3s}
+.star-bar{flex:1;height:10px;background:#1f2140;border-radius:5px;overflow:hidden;max-width:280px;display:flex}
+.star-pos{flex:0 0 0;height:100%;background:#2dd4bf;border-radius:5px 0 0 5px;transition:width 0.5s}
+.star-neg{flex:0 0 0;height:100%;background:#f87171;border-radius:0 5px 5px 0;transition:width 0.5s}
 .star-val{font-size:14px;font-weight:700;min-width:40px;text-align:right}
 .star-plus{color:#2dd4bf}
 .star-minus{color:#f87171}
@@ -170,9 +171,21 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
 .badge-y{background:rgba(251,191,36,0.1);color:#fbbf24}
 .badge-r{background:rgba(248,113,113,0.1);color:#f87171}
 
-/* kbd hint */
-.kbd-hint{position:fixed;bottom:32px;right:24px;font-size:11px;color:#3d4270;z-index:100}
-kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6px;font-family:inherit}
+/* radar mini canvas */
+.radar-wrap{display:flex;align-items:center;gap:32px;margin-top:28px}
+.radar-canvas{border-radius:12px;background:#11121c;border:1px solid #1f2140}
+.radar-legend{min-width:200px}
+.radar-legend-item{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px}
+.radar-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.radar-legend .axis-name{color:#f0f0f5;font-weight:600}
+.radar-legend .axis-count{margin-left:auto;font-size:11px;color:#7a7a90}
+
+/* track mini chart */
+.track-mini{background:#11121c;border:1px solid #1f2140;border-radius:12px;padding:16px;margin-top:20px}
+.track-title{font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:12px}
+.track-chart{height:80px;position:relative}
+.track-line{position:absolute;inset:0}
+.track-meta{display:flex;gap:16px;margin-top:10px;font-size:12px;color:#7a7a90}
 </style>
 </head>
 <body>
@@ -231,12 +244,17 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
       <div class="flow-step">
         <div class="flow-icon">&#128196;</div>
         <div class="flow-title">拖入录音文本</div>
-        <div class="flow-desc">.txt 文件，支持会议记录<br>、述职自评、访谈等任意场景</div>
+        <div class="flow-desc">.txt 文件，会议记录、述职自评、访谈等任意场景</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">&#128287;</div>
+        <div class="flow-title">AI 预处理</div>
+        <div class="flow-desc">ASR纠错、语气词删减、断句修复，提升证据质量</div>
       </div>
       <div class="flow-step">
         <div class="flow-icon">&#129504;</div>
         <div class="flow-title">AI 行为分析</div>
-        <div class="flow-desc">识别已具备 / 待发展 / 盲区<br>每条结论附原文引用</div>
+        <div class="flow-desc">提取已具备 / 待发展 / 盲区，每条附原文引用</div>
       </div>
       <div class="flow-step">
         <div class="flow-icon">&#128200;</div>
@@ -275,34 +293,43 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
     <div class="sec-label">星级评分</div>
     <h2 class="sec-title">每条证据带极性，维度星级由行为决定</h2>
     <p class="sec-sub">不是主观打分，是从行为证据中量化累加。每条证据 +1（正面）或 -1（负面），星级反映真实行为倾向。</p>
-    <div style="margin-top:24px;background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:20px">
-      <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:4px">示例维度：战略与诊断</div>
-      <div style="font-size:12px;color:#7a7a90;margin-bottom:16px">基于 3 条录音分析得出</div>
-      <div class="star-demo">
-        <div class="star-label">证据 1</div>
-        <div style="font-size:12px;color:#7a7a90;flex:0 0 200px">主动预判供应商断供风险，提前备货</div>
-        <div class="star-bar"><div class="star-fill" style="width:100%;background:#2dd4bf"></div></div>
-        <div class="star-val star-plus">+1</div>
+    <div style="margin-top:20px;background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:20px">
+      <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:4px">示例：某管理者"战略与诊断"维度</div>
+      <div style="font-size:12px;color:#7a7a90;margin-bottom:18px">基于 3 条录音中涉及供应链风险讨论的行为提取</div>
+      <!-- 证据列表 -->
+      <div class="star-demo" style="padding:12px 16px">
+        <div style="font-size:12px;color:#7a7a90;min-width:60px">证据 1</div>
+        <div style="font-size:12px;color:#2dd4bf;flex:0 0 220px">"我已经让采购同步在找备选供应商了"</div>
+        <div class="star-bar"><div class="star-pos" style="width:66.7%"></div><div class="star-neg" style="width:33.3%"></div></div>
+        <div style="font-size:12px;font-weight:700;color:#2dd4bf">+1</div>
       </div>
-      <div class="star-demo" style="margin-top:8px">
-        <div class="star-label">证据 2</div>
-        <div style="font-size:12px;color:#7a7a90;flex:0 0 200px">提前识别渠道冲突，制定分货规则</div>
-        <div class="star-bar"><div class="star-fill" style="width:100%;background:#2dd4bf"></div></div>
-        <div class="star-val star-plus">+1</div>
+      <div class="star-demo" style="padding:12px 16px">
+        <div style="font-size:12px;color:#7a7a90;min-width:60px">证据 2</div>
+        <div style="font-size:12px;color:#2dd4bf;flex:0 0 220px">"提前识别了渠道冲突，制定了分货优先级"</div>
+        <div class="star-bar"><div class="star-pos" style="width:66.7%"></div><div class="star-neg" style="width:33.3%"></div></div>
+        <div style="font-size:12px;font-weight:700;color:#2dd4bf">+1</div>
       </div>
-      <div class="star-demo" style="margin-top:8px">
-        <div class="star-label">证据 3</div>
-        <div style="font-size:12px;color:#7a7a90;flex:0 0 200px">未识别物流瓶颈，导致爆仓事故</div>
-        <div class="star-bar"><div class="star-fill" style="width:100%;background:#f87171"></div></div>
-        <div class="star-val star-minus">-1</div>
+      <div class="star-demo" style="padding:12px 16px">
+        <div style="font-size:12px;color:#7a7a90;min-width:60px">证据 3</div>
+        <div style="font-size:12px;color:#f87171;flex:0 0 220px">"那批货爆了之后我才反应过来……"</div>
+        <div class="star-bar"><div class="star-pos" style="width:66.7%"></div><div class="star-neg" style="width:33.3%"></div></div>
+        <div style="font-size:12px;font-weight:700;color:#f87171">-1</div>
       </div>
+      <!-- 条形图图例说明 -->
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid #1f2140;display:flex;align-items:center;gap:16px;font-size:12px;color:#7a7a90">
+        <span>条形：</span>
+        <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:8px;background:#2dd4bf;border-radius:4px"></div>正面证据占比</div>
+        <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:8px;background:#f87171;border-radius:4px"></div>负面证据占比</div>
+      </div>
+      <!-- 综合星级 -->
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid #1f2140;display:flex;align-items:center;gap:12px">
         <div style="font-size:13px;color:#7a7a90">综合星级</div>
-        <div style="font-size:28px;font-weight:900;color:#2dd4bf">+1</div>
+        <div style="font-size:32px;font-weight:900;color:#2dd4bf">+1</div>
         <div style="font-size:13px;color:#2dd4bf;background:rgba(45,212,191,0.1);padding:2px 10px;border-radius:10px">已具备</div>
+        <div style="font-size:12px;color:#7a7a90;margin-left:auto">星级 = 0 时该维度不展示</div>
       </div>
     </div>
-    <p style="margin-top:16px;font-size:13px;color:#7a7a90">星级 = 0 时该维度不展示；支持自定义 Schema 模式，按预设维度打分</p>
+    <p style="margin-top:16px;font-size:13px;color:#7a7a90">支持自定义 Schema 模式，按预设维度打分；证据支持手动编辑与还原</p>
   </div>
 </div>
 
@@ -337,32 +364,43 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
     <div class="sec-label">录音预处理</div>
     <h2 class="sec-title">分析前先纠错，证据引用更准确</h2>
     <p class="sec-sub">录音转写的 ASR 错误、语气词、断句问题，都会影响证据质量。成长力场在分析前先做一轮 AI 预处理。</p>
-    <div class="pre-compare">
-      <div class="pre-box pre-before">
-        <h4 style="color:#7a7a90">预处理前</h4>
-        <ul>
-          <li>那个……就是说……嗯嗯……</li>
-          <li>我觉得我们可能应该大概需要</li>
-          <li>我觉得他就是那样的那样的那种人</li>
-          <li>战略和策论要分清楚不能混淆</li>
-        </ul>
+    <!-- 同一段对话的前后对比 -->
+    <div style="margin-top:24px;background:#11121c;border:1px solid #1f2140;border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid #1f2140;display:flex;gap:0">
+        <div style="flex:1;font-size:12px;font-weight:700;color:#7a7a90;text-align:center">预处理前</div>
+        <div style="width:2px;background:#1f2140"></div>
+        <div style="flex:1;font-size:12px;font-weight:700;color:#2dd4bf;text-align:center">预处理后</div>
       </div>
-      <div class="pre-box pre-after">
-        <h4 style="color:#2dd4bf">预处理后</h4>
-        <ul>
-          <li>我觉得我们可能需要……</li>
-          <li>我觉得他就是那种人</li>
-          <li>战略和策略要分清楚</li>
-        </ul>
+      <div style="display:flex">
+        <div style="flex:1;padding:16px 20px;border-right:1px solid #1f2140">
+          <div style="font-size:12px;color:#7a7a90;line-height:1.9;font-style:italic">
+            "那个……其实我觉得就是说……<br>
+            嗯嗯……战略和策论……<br>
+            应该要分清楚，不能混淆……<br>
+            就是说供应商那个问题……<br>
+            那个那种方案……<br>
+            我觉得我们应该大概需要<br>
+            再讨论一下……嗯嗯……"
+          </div>
+        </div>
+        <div style="flex:1;padding:16px 20px">
+          <div style="font-size:12px;color:#d8d4ff;line-height:1.9">
+            "战略和策略要分清楚，不能混淆。"
+          </div>
+          <div style="font-size:12px;color:#2dd4bf;line-height:1.9;margin-top:8px">
+            "供应商的问题，需要再讨论。"
+          </div>
+          <div style="font-size:12px;color:#7a7a90;line-height:1.7;margin-top:12px;padding-top:10px;border-top:1px dashed #1f2140">
+            &#10003; ASR错字修正 &nbsp;&#10003; 语气词删减<br>
+            &#10003; 断句修复 &nbsp;&#10003; 语义保留
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 20px;border-top:1px solid #1f2140;background:rgba(45,212,191,0.04)">
+        <div style="font-size:12px;color:#7a7a90">分析阶段基于净化后文本进行，极大提升证据引用的可读性与准确性</div>
       </div>
     </div>
-    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-      <div class="tag tag-p">&#9745; ASR 同音错字修正</div>
-      <div class="tag tag-p">&#9745; 语气词删减</div>
-      <div class="tag tag-p">&#9745; 重复句子合并</div>
-      <div class="tag tag-p">&#9745; 断句标点修正</div>
-    </div>
-    <p style="margin-top:16px;font-size:13px;color:#7a7a90">预处理不改变语义，只提升可读性。分析阶段仍基于净化后文本，保留说话人原始表达风格。</p>
+    <p style="margin-top:20px;font-size:13px;color:#7a7a90">预处理不改变语义，只提升可读性。额外消耗 1 次 LLM 调用，但证据质量显著提升。</p>
   </div>
 </div>
 
@@ -426,13 +464,13 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
     <div class="cards2">
       <div class="card">
         <div class="card-icon">&#128065;</div>
-        <h3>看见盲区</h3>
-        <p>基于行为模式推理"应该出现但你没意识到"的能力空白，用证据而非直觉。每次分析附原文，结论可追溯。</p>
+        <h3>感知盲区探测</h3>
+        <p>AI 基于行为模式反推"应该出现但未被提及"的能力空白，主动发现自我认知盲点。</p>
       </div>
       <div class="card">
         <div class="card-icon">&#9889;</div>
         <h3>核心组合识别</h3>
-        <p>不是罗列能力点，而是识别"1+1>2"的化学反应。命名组合（如"温度护城河"），让优势可传播。</p>
+        <p>识别"1+1>2"的化学反应。命名组合（如"温度护城河"），让优势可传播、可复制。</p>
       </div>
       <div class="card">
         <div class="card-icon">&#127793;</div>
@@ -447,18 +485,98 @@ kbd{background:#11121c;border:1px solid #2a2a40;border-radius:4px;padding:2px 6p
       <div class="card">
         <div class="card-icon">&#128200;</div>
         <h3>成长轨迹可视化</h3>
-        <p>五维能力折线图，hover 即可查看任意日期所有分类的已具备能力数量，直观对比成长趋势。</p>
+        <p>五维能力折线图，hover 查看任意日期各分类的已具备能力数量，直观对比成长趋势。</p>
       </div>
       <div class="card">
-        <div class="card-icon">&#128101;</div>
-        <h3>团队管理视角</h3>
-        <p>管理员可查看团队成员的成长轨迹折线图，无需切换账号，一个页面掌握团队成长动态。</p>
+        <div class="card-icon">&#9881;</div>
+        <h3>证据可编辑还原</h3>
+        <p>所有原文引用支持手动编辑、AI自动优化与原值还原，确保每条证据都准确可靠。</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- S10: 部署 -->
+<!-- S10: 雷达图与成长轨迹 -->
+<div class="slide" id="s_radar">
+  <div class="slide-bg" style="background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(45,212,191,0.05),transparent)"></div>
+  <div class="slide-content">
+    <div class="sec-label">可视化</div>
+    <h2 class="sec-title">五维能力，一眼看穿全局</h2>
+    <p class="sec-sub">雷达图快速定位强项与缺口，成长轨迹追踪能力变化趋势。</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px">
+      <!-- 雷达图示例 -->
+      <div style="background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:24px">
+        <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:16px">能力雷达图 · 某管理者</div>
+        <div style="display:flex;gap:20px;align-items:center">
+          <!-- 简化的雷达SVG -->
+          <svg width="160" height="160" viewBox="-10 -10 220 220" style="flex-shrink:0">
+            <!-- 背景网格 -->
+            <polygon points="100,5 187,52 187,148 100,195 13,148 13,52" fill="none" stroke="#1f2140" stroke-width="1"/>
+            <polygon points="100,28 167,60 167,140 100,172 33,140 33,60" fill="none" stroke="#1f2140" stroke-width="1"/>
+            <polygon points="100,51 148,68 148,132 100,149 52,132 52,68" fill="none" stroke="#1f2140" stroke-width="1"/>
+            <!-- 能力填充（5边形） -->
+            <polygon points="100,20 170,65 155,140 60,138 30,65" fill="rgba(45,212,191,0.15)" stroke="#2dd4bf" stroke-width="2"/>
+            <!-- 轴线 -->
+            <line x1="100" y1="100" x2="100" y2="5" stroke="#2a2a40" stroke-width="1"/>
+            <line x1="100" y1="100" x2="187" y2="52" stroke="#2a2a40" stroke-width="1"/>
+            <line x1="100" y1="100" x2="187" y2="148" stroke="#2a2a40" stroke-width="1"/>
+            <line x1="100" y1="100" x2="13" y2="148" stroke="#2a2a40" stroke-width="1"/>
+            <line x1="100" y1="100" x2="13" y2="52" stroke="#2a2a40" stroke-width="1"/>
+            <!-- 轴标签 -->
+            <text x="100" y="0" text-anchor="middle" fill="#7a7a90" font-size="9">战略</text>
+            <text x="198" y="52" text-anchor="start" fill="#7a7a90" font-size="9">管控</text>
+            <text x="198" y="155" text-anchor="start" fill="#7a7a90" font-size="9">人心</text>
+            <text x="2" y="155" text-anchor="end" fill="#7a7a90" font-size="9">知识</text>
+            <text x="2" y="52" text-anchor="end" fill="#7a7a90" font-size="9">制度</text>
+          </svg>
+          <div style="flex:1">
+            <div style="font-size:12px;color:#7a7a90;margin-bottom:10px">五大分类能力分布</div>
+            <div style="font-size:12px;color:#2dd4bf;margin-bottom:6px">&#9744; 战略与诊断 <span style="color:#2dd4bf;font-weight:700">强</span></div>
+            <div style="font-size:12px;color:#2dd4bf;margin-bottom:6px">&#9744; 人心与温度 <span style="color:#2dd4bf;font-weight:700">强</span></div>
+            <div style="font-size:12px;color:#fbbf24;margin-bottom:6px">&#9744; 管控与绩效 <span style="color:#fbbf24;font-weight:700">中</span></div>
+            <div style="font-size:12px;color:#fbbf24;margin-bottom:6px">&#9744; 知识与赋能 <span style="color:#fbbf24;font-weight:700">弱</span></div>
+            <div style="font-size:12px;color:#f87171">&#9744; 制度与设计 <span style="color:#f87171;font-weight:700">缺口</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 成长轨迹示例 -->
+      <div style="background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:24px">
+        <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:16px">成长轨迹 · 某维度</div>
+        <div style="position:relative;height:120px">
+          <!-- SVG折线图 -->
+          <svg width="100%" height="120" viewBox="0 0 280 120" preserveAspectRatio="none" style="position:absolute;inset:0">
+            <!-- 网格线 -->
+            <line x1="0" y1="40" x2="280" y2="40" stroke="#1f2140" stroke-width="1"/>
+            <line x1="0" y1="80" x2="280" y2="80" stroke="#1f2140" stroke-width="1"/>
+            <!-- 面积填充 -->
+            <path d="M0,100 L56,90 L112,75 L168,55 L224,35 L280,20 L280,120 L0,120 Z" fill="rgba(45,212,191,0.08)"/>
+            <!-- 折线 -->
+            <polyline points="0,100 56,90 112,75 168,55 224,35 280,20" fill="none" stroke="#2dd4bf" stroke-width="2.5"/>
+            <!-- 数据点 -->
+            <circle cx="0" cy="100" r="4" fill="#2dd4bf"/>
+            <circle cx="56" cy="90" r="4" fill="#2dd4bf"/>
+            <circle cx="112" cy="75" r="4" fill="#2dd4bf"/>
+            <circle cx="168" cy="55" r="4" fill="#2dd4bf"/>
+            <circle cx="224" cy="35" r="4" fill="#2dd4bf"/>
+            <circle cx="280" cy="20" r="5" fill="#2dd4bf" stroke="#fff" stroke-width="2"/>
+            <!-- X轴标签 -->
+            <text x="0" y="115" text-anchor="middle" fill="#3d4270" font-size="9">3月</text>
+            <text x="112" y="115" text-anchor="middle" fill="#3d4270" font-size="9">5月</text>
+            <text x="224" y="115" text-anchor="middle" fill="#3d4270" font-size="9">7月</text>
+          </svg>
+          <!-- Y轴标签 -->
+          <div style="position:absolute;left:0;top:0;font-size:9px;color:#3d4270;writing-mode:vertical-rl;transform:rotate(180deg)">已具备能力数量</div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:16px;font-size:11px;color:#7a7a90;justify-content:space-between">
+          <span>起点：2个</span><span>终点：5个</span><span style="color:#2dd4bf;font-weight:600">+3 成长</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:13px;color:#7a7a90">雷达图快速定位全局强项与短板；成长轨迹追踪维度能力变化，用证据记录每一次成长。</p>
+  </div>
+</div>
+
+<!-- S11: 部署 -->
 <div class="slide" id="s5">
   <div class="slide-bg"></div>
   <div class="slide-content">
