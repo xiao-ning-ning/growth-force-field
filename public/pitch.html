@@ -274,10 +274,10 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
     <p class="sec-sub">已具备 / 待发展 / 盲区，三类能力一目了然。每条证据附原文，可追溯、可编辑、可还原。</p>
     <div class="dim-preview">
       <div class="dim-pill dim-pill-possessed">&#128994; 战略与诊断：风险预见</div>
-      <div class="dim-pill dim-pill-possessed">&#128994; 人心与温度：跨部门协调</div>
-      <div class="dim-pill dim-pill-possessed">&#128994; 管控与绩效：结果追踪</div>
-      <div class="dim-pill dim-pill-developing">&#128993; 知识与赋能：经验萃取</div>
-      <div class="dim-pill dim-pill-developing">&#128993; 制度与设计：机制建设</div>
+      <div class="dim-pill" style="background:rgba(162,155,254,0.08);border-color:rgba(162,155,254,0.25);color:#a29bfe">&#128994; 管控与绩效：结果追踪</div>
+      <div class="dim-pill" style="background:rgba(0,206,201,0.08);border-color:rgba(0,206,201,0.25);color:#00cec9">&#128994; 人心与温度：跨部门协调</div>
+      <div class="dim-pill" style="background:rgba(85,239,196,0.08);border-color:rgba(85,239,196,0.25);color:#55efc4">&#128993; 知识与赋能：经验萃取</div>
+      <div class="dim-pill" style="background:rgba(253,121,168,0.08);border-color:rgba(253,121,168,0.25);color:#fd79a8">&#128993; 制度与设计：机制建设</div>
     </div>
     <div class="dim-preview" style="margin-top:16px">
       <div class="dim-pill" style="background:rgba(248,113,113,0.06);border-color:rgba(248,113,113,0.2);color:#f87171">&#128065; 盲区：主动寻求反馈</div>
@@ -508,34 +508,34 @@ body{font-family:'Noto Sans SC',sans-serif;background:#06070b;color:#f0f0f5;over
       <div style="background:#11121c;border:1px solid #1f2140;border-radius:14px;padding:24px">
         <div style="font-size:13px;font-weight:700;color:#f0f0f5;margin-bottom:16px">能力雷达图 · 某管理者</div>
         <div style="display:flex;gap:20px;align-items:center">
-          <!-- 简化的雷达SVG -->
+          <!-- 雷达SVG，5边形，5条轴各自着色 -->
           <svg width="160" height="160" viewBox="-10 -10 220 220" style="flex-shrink:0">
             <!-- 背景网格 -->
             <polygon points="100,5 187,52 187,148 100,195 13,148 13,52" fill="none" stroke="#1f2140" stroke-width="1"/>
             <polygon points="100,28 167,60 167,140 100,172 33,140 33,60" fill="none" stroke="#1f2140" stroke-width="1"/>
             <polygon points="100,51 148,68 148,132 100,149 52,132 52,68" fill="none" stroke="#1f2140" stroke-width="1"/>
-            <!-- 能力填充（5边形） -->
-            <polygon points="100,20 170,65 155,140 60,138 30,65" fill="rgba(45,212,191,0.15)" stroke="#2dd4bf" stroke-width="2"/>
-            <!-- 轴线 -->
-            <line x1="100" y1="100" x2="100" y2="5" stroke="#2a2a40" stroke-width="1"/>
-            <line x1="100" y1="100" x2="187" y2="52" stroke="#2a2a40" stroke-width="1"/>
-            <line x1="100" y1="100" x2="187" y2="148" stroke="#2a2a40" stroke-width="1"/>
-            <line x1="100" y1="100" x2="13" y2="148" stroke="#2a2a40" stroke-width="1"/>
-            <line x1="100" y1="100" x2="13" y2="52" stroke="#2a2a40" stroke-width="1"/>
+            <!-- 能力填充（5边形，彩色描边） -->
+            <polygon points="100,18 172,64 155,142 58,136 28,64" fill="rgba(108,92,231,0.12)" stroke="#6c5ce7" stroke-width="2"/>
+            <!-- 轴线，各用对应分类颜色 -->
+            <line x1="100" y1="100" x2="100" y2="5" stroke="#6c5ce7" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="187" y2="52" stroke="#a29bfe" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="187" y2="148" stroke="#00cec9" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="13" y2="148" stroke="#55efc4" stroke-width="1.5" opacity="0.7"/>
+            <line x1="100" y1="100" x2="13" y2="52" stroke="#fd79a8" stroke-width="1.5" opacity="0.7"/>
             <!-- 轴标签 -->
-            <text x="100" y="0" text-anchor="middle" fill="#7a7a90" font-size="9">战略</text>
-            <text x="198" y="52" text-anchor="start" fill="#7a7a90" font-size="9">管控</text>
-            <text x="198" y="155" text-anchor="start" fill="#7a7a90" font-size="9">人心</text>
-            <text x="2" y="155" text-anchor="end" fill="#7a7a90" font-size="9">知识</text>
-            <text x="2" y="52" text-anchor="end" fill="#7a7a90" font-size="9">制度</text>
+            <text x="100" y="0" text-anchor="middle" fill="#6c5ce7" font-size="9" font-weight="700">战略</text>
+            <text x="198" y="52" text-anchor="start" fill="#a29bfe" font-size="9" font-weight="700">管控</text>
+            <text x="198" y="155" text-anchor="start" fill="#00cec9" font-size="9" font-weight="700">人心</text>
+            <text x="2" y="155" text-anchor="end" fill="#55efc4" font-size="9" font-weight="700">知识</text>
+            <text x="2" y="52" text-anchor="end" fill="#fd79a8" font-size="9" font-weight="700">制度</text>
           </svg>
           <div style="flex:1">
             <div style="font-size:12px;color:#7a7a90;margin-bottom:10px">五大分类能力分布</div>
-            <div style="font-size:12px;color:#2dd4bf;margin-bottom:6px">&#9744; 战略与诊断 <span style="color:#2dd4bf;font-weight:700">强</span></div>
-            <div style="font-size:12px;color:#2dd4bf;margin-bottom:6px">&#9744; 人心与温度 <span style="color:#2dd4bf;font-weight:700">强</span></div>
-            <div style="font-size:12px;color:#fbbf24;margin-bottom:6px">&#9744; 管控与绩效 <span style="color:#fbbf24;font-weight:700">中</span></div>
-            <div style="font-size:12px;color:#fbbf24;margin-bottom:6px">&#9744; 知识与赋能 <span style="color:#fbbf24;font-weight:700">弱</span></div>
-            <div style="font-size:12px;color:#f87171">&#9744; 制度与设计 <span style="color:#f87171;font-weight:700">缺口</span></div>
+            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#6c5ce7;vertical-align:middle;margin-right:6px"></span>战略与诊断 <span style="color:#6c5ce7;font-weight:700">强</span></div>
+            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#a29bfe;vertical-align:middle;margin-right:6px"></span>管控与绩效 <span style="color:#a29bfe;font-weight:700">中</span></div>
+            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#00cec9;vertical-align:middle;margin-right:6px"></span>人心与温度 <span style="color:#00cec9;font-weight:700">强</span></div>
+            <div style="font-size:12px;margin-bottom:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#55efc4;vertical-align:middle;margin-right:6px"></span>知识与赋能 <span style="color:#55efc4;font-weight:700">弱</span></div>
+            <div style="font-size:12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#fd79a8;vertical-align:middle;margin-right:6px"></span>制度与设计 <span style="color:#fd79a8;font-weight:700">缺口</span></div>
           </div>
         </div>
       </div>
