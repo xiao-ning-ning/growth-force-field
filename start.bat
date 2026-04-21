@@ -7,4 +7,10 @@ for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3000 ^| findstr LISTENING') 
     taskkill /F /PID %%a >nul 2>&1
 )
 
+:: Install dependencies if node_modules is missing
+if not exist "node_modules" (
+    echo [INFO] Installing dependencies...
+    call npm install
+)
+
 node server\index.js --open
