@@ -35,20 +35,6 @@ if not exist "node_modules" (
     )
 )
 
-:: Check .env
-if not exist ".env" (
-    echo [ERROR] .env file not found.
-    echo.
-    echo Please create .env in the project root with at least:
-    echo   OPENAI_API_KEY=your-api-key
-    echo   ADMIN_PASSWORD=your-password^(min 8 chars^)
-    echo.
-    echo See README.md for details.
-    echo.
-    pause
-    exit /b
-)
-
 echo [OK] All ready. Starting server...
 node server\index.js --open
 pause

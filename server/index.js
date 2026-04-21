@@ -60,11 +60,7 @@ setTimeout(() => {
 
   if (!fs.existsSync(USERS_FILE)) {
     const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
-    const ADMIN_PWD = process.env.ADMIN_PASSWORD;
-    if (!ADMIN_PWD) {
-      console.error('[fatal] 首次启动需要配置 ADMIN_PASSWORD，请先编辑 .env 文件');
-      process.exit(1);
-    }
+    const ADMIN_PWD = process.env.ADMIN_PASSWORD || 'admin123456';
     const salt = crypto.randomBytes(16).toString('hex');
     const hash = crypto.scryptSync(ADMIN_PWD, salt, 64).toString('hex');
     const users = {
@@ -76,7 +72,7 @@ setTimeout(() => {
       }
     };
     fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf-8');
-    console.log(`\n  [auth] 管理员账号已创建: ${ADMIN_USER}`);
+    console.log(`\n  [auth] 管理员账号已创建: ${ADMIN_USER} / ${ADMIN_PWD}`);
     console.log('  [auth] 请妥善保管密码并定期更换\n');
   }
 }, 0);

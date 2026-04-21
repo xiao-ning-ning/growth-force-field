@@ -82,18 +82,16 @@ git clone https://github.com/xiao-ning-ning/growth-force-field.git
 自动检测 Node.js、安装依赖、启动服务。若遇报错，按提示操作（Node.js 未装请先安装 nodejs.org，.env 缺失请先创建）。
 
 ### 3. 配置 .env 文件
-首次启动前，先在项目根目录创建 `.env` 文件，填入以下内容：
+首次启动前，在项目根目录创建 `.env` 文件，填入以下内容：
 ```env
 OPENAI_API_KEY=sk-your-api-key
 OPENAI_BASE_URL=https://api.deepseek.com
 OPENAI_MODEL=deepseek-chat
-ADMIN_PASSWORD=你的管理员密码（至少8位）
 ```
-
-> **首次启动必须配置 `ADMIN_PASSWORD`**，否则服务会直接退出。SESSION_SECRET（session 加密密钥）会自动生成，无需手动配置。
+> `ADMIN_PASSWORD`（可选）：不填则默认账号为 `admin / admin123456`。SESSION_SECRET 会自动生成，无需手动配置。
 
 ### 4. 登录使用
-打开 http://localhost:3000，用管理员账号 `admin` + 你在 `ADMIN_PASSWORD` 中设置的密码登录。首次登录后建议修改密码。
+打开 http://localhost:3000，用管理员账号 `admin / admin123456`（或你在 `ADMIN_PASSWORD` 中设置的密码）登录。首次登录后建议修改密码。
 
 **模型推荐**：建议优先使用 **DeepSeek**（性价比高、中文理解好、JSON 输出稳定）。支持 OpenAI / DeepSeek / 月之暗面 / 本地 Ollama（任意 OpenAI 兼容接口均可）。
 
