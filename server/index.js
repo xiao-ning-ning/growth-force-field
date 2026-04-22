@@ -147,7 +147,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, HOST, () => {
-  console.log(`\n  成长力场已启动: http://${HOST}:${PORT}`);
+  console.log(`\n  成长透镜已启动: http://${HOST}:${PORT}`);
   console.log(`  局域网访问: http://<你的IP>:${PORT}\n`);
   // Auto-open browser when launched via bat
   if (process.argv.includes('--open')) {

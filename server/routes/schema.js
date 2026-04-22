@@ -80,7 +80,7 @@ router.get('/template', (req, res) => {
 
   // Sheet1：填写说明（aoa_to_sheet 需要数组的数组）
   const readmeData = [
-    ['成长力场 - 自定义能力维度模板'],
+    ['成长透镜 - 自定义能力维度模板'],
     [],
     ['使用说明'],
     ['1. 每一行填写一个子维度，同一"一级分类"下的维度会自动归类'],
@@ -124,7 +124,7 @@ router.get('/template', (req, res) => {
   const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
   // RFC 5987：filename 参数值必须是 ASCII，filename* 传非 ASCII
-  const encoded = encodeURIComponent('成长力场-能力维度模板.xlsx');
+  const encoded = encodeURIComponent('成长透镜-能力维度模板.xlsx');
   res.set({
     'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'Content-Disposition': `attachment; filename="schema-template.xlsx"; filename*=UTF-8''${encoded}`,

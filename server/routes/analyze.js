@@ -162,7 +162,7 @@ ${transcript}`;
     }
 
     // ========== 分支：AI 自由生成模式 ==========
-    const systemPrompt = `你是"成长力场"的分析引擎，专门从录音转写文本中提取人的行为特征和能力维度。
+    const systemPrompt = `你是"成长透镜"的分析引擎，专门从录音转写文本中提取人的行为特征和能力维度。
 
 核心信念：人对自己能力的认知往往存在盲区——有些能力每天都在用，但从未命名和显性化。
 
@@ -354,7 +354,7 @@ function buildSchemaPrompt(schema, transcript, speakerName, sourceName, date, ex
 判断标准-待发展：${d.indicatorDeveloping}`
   ).join('\n\n');
 
-  const systemPrompt = `你是"成长力场"的能力分析引擎，严格按照给定的维度定义从文本中提取行为证据。
+  const systemPrompt = `你是"成长透镜"的能力分析引擎，严格按照给定的维度定义从文本中提取行为证据。
 
 ## 星星评分机制（核心）
 
