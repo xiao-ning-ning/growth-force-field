@@ -1,4 +1,4 @@
-# Contributing to Growth Force Field
+# Contributing to GrowthLens
 
 We welcome contributions! Here's how to get started.
 
@@ -12,8 +12,8 @@ We welcome contributions! Here's how to get started.
 ## Development Setup
 
 ```bash
-git clone https://github.com/xiao-ning-ning/growth-force-field.git
-cd growth-force-field
+git clone https://github.com/xiao-ning-ning/growth-lens.git
+cd growth-lens
 # Install dependencies automatically handled by start.bat on Windows
 # or run: npm install
 node server/index.js

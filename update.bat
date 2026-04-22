@@ -1,11 +1,12 @@
 @echo off
 chcp 65001 >nul
-title Update - Growth Force Field
+title Update - GrowthLens
 
 echo ========================================
-echo        Growth Force Field - Updating
+echo        GrowthLens - Updating
 echo ========================================
 echo.
+
 echo [1/5] Stopping server...
 taskkill /F /IM node.exe >nul 2>&1
 timeout /t 1 /nobreak >nul
@@ -19,7 +20,7 @@ if exist "data" (
 )
 
 echo [3/5] Downloading latest from GitHub...
-powershell -Command "Invoke-WebRequest -Uri 'https://github.com/xiao-ning-ning/growth-force-field/archive/refs/heads/main.zip' -OutFile 'latest.zip'"
+powershell -Command "Invoke-WebRequest -Uri 'https://github.com/xiao-ning-ning/growth-lens/archive/refs/heads/main.zip' -OutFile 'latest.zip'"
 if errorlevel 1 (
     echo Download failed. Check network and try again.
     pause
@@ -28,8 +29,8 @@ if errorlevel 1 (
 
 echo [4/5] Extracting and updating...
 powershell -Command "Expand-Archive -Force -Path 'latest.zip' -DestinationPath '.'"
-xcopy /E /I /Y "growth-force-field-main" "." >nul 2>&1
-rd /S /Q "growth-force-field-main" >nul 2>&1
+xcopy /E /I /Y "growth-lens-main" "." >nul 2>&1
+rd /S /Q "growth-lens-main" >nul 2>&1
 del latest.zip >nul 2>&1
 
 echo [5/5] Restoring user data...
@@ -47,5 +48,5 @@ echo        Update Complete!
 echo ========================================
 echo.
 echo Starting server...
-start cmd /k "title Growth Force Field && node server/index.js --open"
+start cmd /k "title GrowthLens && node server/index.js --open"
 pause

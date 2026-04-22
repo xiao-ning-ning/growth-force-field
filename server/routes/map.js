@@ -56,7 +56,7 @@ router.post('/reset', async (req, res) => {
 router.get('/export', (req, res) => {
   try {
     const map = loadMap(req.userId);
-    const filename = `growth-force-field-${map.lastUpdated || 'backup'}.json`;
+    const filename = `growth-lens-${map.lastUpdated || 'backup'}.json`;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.json(map);

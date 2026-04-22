@@ -1,4 +1,4 @@
-# Growth Force Field
+# GrowthLens
 
 ### AI-Powered Capability Analysis for Managers
 
@@ -91,15 +91,15 @@ Heatmap overview of team capability distribution. Multi-user comparison charts â
 
 **Windows**:
 ```bash
-git clone https://github.com/xiao-ning-ning/growth-force-field.git
-cd growth-force-field
+git clone https://github.com/xiao-ning-ning/growth-lens.git
+cd growth-lens
 start.bat
 ```
 
 **macOS / Linux**:
 ```bash
-git clone https://github.com/xiao-ning-ning/growth-force-field.git
-cd growth-force-field
+git clone https://github.com/xiao-ning-ning/growth-lens.git
+cd growth-lens
 chmod +x start.sh && ./start.sh
 ```
 

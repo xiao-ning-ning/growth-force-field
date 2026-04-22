@@ -1,4 +1,4 @@
-# 成长力场 / Growth Force Field
+# 成长力场 / GrowthLens
 
 ### AI-Powered Capability Analysis for Managers
 
@@ -91,15 +91,15 @@ AI 基于行为模式反推"你应该有，但自己没意识到"的能力——
 
 **Windows**：
 ```bash
-git clone https://github.com/xiao-ning-ning/growth-force-field.git
-cd growth-force-field
+git clone https://github.com/xiao-ning-ning/growth-lens.git
+cd growth-lens
 start.bat
 ```
 
 **macOS / Linux**：
 ```bash
-git clone https://github.com/xiao-ning-ning/growth-force-field.git
-cd growth-force-field
+git clone https://github.com/xiao-ning-ning/growth-lens.git
+cd growth-lens
 chmod +x start.sh && ./start.sh
 ```
 

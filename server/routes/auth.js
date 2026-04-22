@@ -30,7 +30,7 @@ function hashPassword(password, salt) {
 }
 
 function hashWithUserSalt(password, user) {
-  return hashPassword(password, user.salt || 'growth-force-field-salt');
+  return hashPassword(password, user.salt || 'growth-lens-salt');
 }
 
 /**
