@@ -27,7 +27,7 @@ Three common dilemmas managers face:
 | Promotion Decisions | Scoring based on impressions — who's stronger in soft skills? Can't articulate why. |
 | Training ROI | Spent money on management training. What exactly changed? No evidence. |
 
-**Growth Force Field's approach**: Soft skills aren't assessed by asking — they're inferred by observing behavior. What you do and say is more truthful than what you claim about yourself.
+**GrowthLens's approach**: Soft skills aren't assessed by asking — they're inferred by observing behavior. What you do and say is more truthful than what you claim about yourself.
 
 ---
 
@@ -67,7 +67,7 @@ Heatmap overview of team capability distribution. Multi-user comparison charts �
 
 ## Differentiation
 
-| Dimension | Growth Force Field | Traditional Assessment | Online AI Platforms |
+| Dimension | GrowthLens | Traditional Assessment | Online AI Platforms |
 |:----------|:------------------|:--------------------|:-------------------|
 | Evidence Chain | **Original quotes for every conclusion** | None | None |
 | Data Storage | **Local**, stays within your company | Cloud or paper | Cloud |
