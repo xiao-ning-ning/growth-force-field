@@ -57,10 +57,13 @@ Minimum change, maximum leverage. No need to rebuild from scratch.
 ### 6. Growth Trajectory
 Five-dimension line chart tracking capability growth over time. Hover over any data point to see detailed breakdown.
 
-### 7. Custom Capability Dimensions (Admin)
+### 7. Deep Thinking
+Cognitive-level depth audit powered by a paradox-driven analytical framework. Delivers sharp, opinionated professional insights based on existing capability data. Includes a conversational module with genuine professional judgment, plus a real-time note-taking panel. All content auto-persisted.
+
+### 8. Custom Capability Dimensions (Admin)
 Upload an Excel file to define your own dimension framework. AI analyzes strictly against your definitions, unconstrained by generic models.
 
-### 8. Team Management View (Admin)
+### 9. Team Management View (Admin)
 Heatmap overview of team capability distribution. Multi-user comparison charts — no account switching needed to design personalized coaching strategies.
 
 ---
