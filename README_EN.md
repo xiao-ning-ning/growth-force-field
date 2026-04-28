@@ -1,12 +1,12 @@
 # GrowthLens
 
-### AI-Powered Capability Analysis for Managers
+### AI-Powered Capability Analysis & Behavioral Simulation for Managers
 
 > "Action is the starting point of knowledge; knowledge is the completion of action. Know your capabilities first, and you will know your direction."
 
-**Turn managers' soft skills from "gut feel" into evidence.**
+**Turn managers' soft skills from "gut feel" into evidence; turn team decision risks from guesswork into simulation.**
 
-Upload a meeting transcript → AI analyzes behavioral patterns → Quantifies capability dimensions → Designs actionable growth paths.
+Upload a meeting transcript → AI analyzes behavioral patterns → Quantifies capability dimensions → Designs actionable growth paths → Creates digital twins → Simulates team interaction risks.
 
 Open-source & free · Local data storage · No registration required
 
@@ -25,9 +25,9 @@ Three common dilemmas managers face:
 |:---------|:-----------|
 | Performance Review | Your direct report wrote 20 slides. Which are genuine capabilities and which are just rehearsed talking points? |
 | Promotion Decisions | Scoring based on impressions — who's stronger in soft skills? Can't articulate why. |
-| Training ROI | Spent money on management training. What exactly changed? No evidence. |
+| Team Decisions | Rolling out a new process — how will the team react? Who resists, who adapts first? Nobody knows. |
 
-**GrowthLens's approach**: Soft skills aren't assessed by asking — they're inferred by observing behavior. What you do and say is more truthful than what you claim about yourself.
+**GrowthLens's approach**: Soft skills aren't assessed by asking — they're inferred by observing behavior. What you do and say is more truthful than what you claim about yourself. Go further — when you turn behavioral patterns into parameterizable digital twins, you can see how your team might react before making real decisions.
 
 ---
 
@@ -40,8 +40,10 @@ Identify real behavioral patterns from meeting notes, self-assessments, and inte
 
 **Transcript Preprocessing**: Automatically corrects ASR errors, removes filler words, and fixes sentence boundaries before analysis — significantly improving evidence readability.
 
+**Evidence Editing**: Manually correct evidence quote text (original quote preserved for revert), giving fine control over star direction.
+
 ### 2. Capability Map
-Five-dimension overview showing the full capability landscape and relationships between dimensions.
+Five-dimension overview (Strategy & Diagnosis, Control & Performance, Heart & Warmth, Knowledge & Empowerment, System & Design) showing the full capability landscape and relationships between dimensions.
 
 ### 3. Core Combinations
 Bundle related capability fragments into a single explainable whole. Know how they work together, where you're strongest, and when to apply them.
@@ -55,16 +57,40 @@ For each developing dimension or blind spot, AI designs concrete action steps �
 Minimum change, maximum leverage. No need to rebuild from scratch.
 
 ### 6. Growth Trajectory
-Five-dimension line chart tracking capability growth over time. Hover over any data point to see detailed breakdown.
+Five-dimension line chart tracking capability growth over time. Admins can compare multiple users' curves. Hover over any data point to see detailed breakdown.
 
 ### 7. Deep Thinking
-Cognitive-level depth audit powered by a paradox-driven analytical framework. Delivers sharp, opinionated professional insights based on existing capability data. Includes a conversational module with genuine professional judgment, plus a real-time note-taking panel. All content auto-persisted.
+Cognitive-level depth audit based on existing capability data. Three-column layout: left for analysis reports, center for conversation, right for notes notebook.
 
-### 8. Custom Capability Dimensions (Admin)
-Upload an Excel file to define your own dimension framework. AI analyzes strictly against your definitions, unconstrained by generic models.
+**Deep Analysis Reports**:
+- Paradox-driven framework (default) and convergence framework (special case) auto-switch
+- Cognitive anchor → Paradox chain → Invisible structures & risks → Action & inquiry
+- Accompanied by an "accessible version" (one-line summary + concrete analogy + action highlights)
+- Report declaration (specifies concrete limitations of this analysis, no vague platitudes)
 
-### 9. Team Management View (Admin)
-Heatmap overview of team capability distribution. Multi-user comparison charts — no account switching needed to design personalized coaching strategies.
+**Conversation Module**: AI acts as a professional advisor (with judgment, willing to challenge, no pleasantries). Multi-turn dialogue with analysis context injected.
+
+**Notes Notebook**: Supports Markdown rendering and editing (format toolbar), auto-persisted in real-time.
+
+### 8. Digital Twins (Admin)
+From a user's capability dimension data, AI automatically extracts a complete persona portrait — including background, personality metaphor, core tendencies, paradoxes, blind spots, stance/tenets, behavioral reaction chains, three-layer motivation penetration, and growth direction. All parameters are manually editable for fine-tuning.
+
+### 9. Behavioral Prediction Simulation (Admin)
+Select multiple digital twins, define an event scenario with role configurations (including reporting relationships), and run multi-round interaction simulations.
+
+- Each round outputs every twin's internal reaction, external action, emotion, and driving force
+- System state and emerging risks
+- Final round outputs outcome summary, key findings, management risks, and recommendations
+- Simulation chat: converse with a twin in first-person, or discuss results with a behavioral analysis expert
+
+### 10. Custom Capability Dimensions (Admin)
+Upload an Excel file to define your own dimension framework (category, dimension name, definition, possessed/developing judgment criteria). AI analyzes strictly against your definitions, unconstrained by generic models. Delete anytime to restore AI free-generation mode.
+
+### 11. Team Management View (Admin)
+Admin tools contain three sub-tabs:
+- **Team Dashboard**: Heatmap overview of team capability distribution, multi-user comparison charts
+- **Digital Twins**: Create, view details, edit, delete twins
+- **Behavioral Prediction**: Launch simulations, view simulation history, simulation chat
 
 ---
 
@@ -76,6 +102,8 @@ Heatmap overview of team capability distribution. Multi-user comparison charts �
 | Data Storage | **Local**, stays within your company | Cloud or paper | Cloud |
 | Continuous Growth | **Incremental accumulation** | One-time | One-time |
 | Multi-user Management | **Supported** — admin views all team members | Not supported | Not supported |
+| Behavioral Simulation | **Digital twins + multi-agent simulation** | None | None |
+| Cognitive Depth | **Paradox-driven framework + accessible version** | Generic scoring | Generic scoring |
 
 ---
 
@@ -108,18 +136,23 @@ chmod +x start.sh && ./start.sh
 
 > Automatically detects port occupancy, kills stale processes, starts the server, and opens your browser.
 
-### Optional Configuration
+### Configuration (Optional)
 
 Create/edit `.env` in the project root:
 
 ```env
-OPENAI_API_KEY=sk-your-api-key
-OPENAI_BASE_URL=https://api.deepseek.com
-OPENAI_MODEL=deepseek-chat
-ADMIN_PASSWORD=your-password   # Optional, defaults to admin/admin123456
+OPENAI_API_KEY=sk-your-api-key        # Required, AI API key
+OPENAI_BASE_URL=https://api.deepseek.com  # Optional, default OpenAI official
+OPENAI_MODEL=deepseek-chat            # Optional, default gpt-4o
+OPENAI_TIMEOUT=300000                 # Optional, default 5 min (ms)
+ADMIN_USERNAME=admin                   # Optional, default admin
+ADMIN_PASSWORD=your-password           # Optional, default admin123456
+SESSION_SECRET=                        # Optional, auto-generated on first launch
+PORT=3000                              # Optional, default 3000
+HOST=0.0.0.0                           # Optional, default 0.0.0.0
 ```
 
-**Recommended model**: **DeepSeek** (best cost-performance, excellent Chinese understanding, stable JSON output). Supports OpenAI / DeepSeek / Moonshot / local Ollama (any OpenAI-compatible API).
+**Recommended model**: **DeepSeek** (best cost-performance, excellent Chinese understanding, stable JSON output). Supports OpenAI / DeepSeek / Moonshot / local Ollama (any OpenAI-compatible API). Reasoning models (DeepSeek-R1, MiniMax, etc.) automatically strip their thinking process.
 
 ---
 
