@@ -153,20 +153,10 @@ chmod +x start.sh && ./start.sh
 在项目根目录创建/编辑 `.env` 文件：
 
 ```env
-# AI API（必填）
 OPENAI_API_KEY=sk-your-api-key
 OPENAI_BASE_URL=https://api.deepseek.com     # 可选，默认 OpenAI 官方
 OPENAI_MODEL=deepseek-chat                    # 可选，默认 gpt-4o
 OPENAI_TIMEOUT=300000                         # 可选，默认 5 分钟（毫秒）
-
-# 管理员账号（可选，不填则默认 admin / admin123456）
-# ADMIN_USERNAME=admin
-# ADMIN_PASSWORD=your-password
-
-# 服务配置（可选）
-# PORT=3000
-# HOST=0.0.0.0
-# SESSION_SECRET=auto-generated               # 首次启动自动生成，无需手动设置
 ```
 
 **模型推荐**：优先使用 **DeepSeek**（性价比高、中文理解好、JSON 输出稳定）。支持 OpenAI / DeepSeek / 月之暗面 / MiniMax / 本地 Ollama（任意 OpenAI 兼容接口均可）。推理模型（DeepSeek-R1）的思考过程会自动剥离。

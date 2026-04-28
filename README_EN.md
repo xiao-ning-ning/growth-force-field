@@ -153,20 +153,10 @@ chmod +x start.sh && ./start.sh
 Create/edit `.env` in the project root:
 
 ```env
-# AI API (required)
 OPENAI_API_KEY=sk-your-api-key
 OPENAI_BASE_URL=https://api.deepseek.com     # Optional, default OpenAI official
 OPENAI_MODEL=deepseek-chat                    # Optional, default gpt-4o
 OPENAI_TIMEOUT=300000                         # Optional, default 5 minutes (ms)
-
-# Admin account (optional, defaults to admin / admin123456)
-# ADMIN_USERNAME=admin
-# ADMIN_PASSWORD=your-password
-
-# Server config (optional)
-# PORT=3000
-# HOST=0.0.0.0
-# SESSION_SECRET=auto-generated               # Auto-generated on first launch, no manual setup needed
 ```
 
 **Recommended model**: **DeepSeek** (best cost-performance, excellent Chinese understanding, stable JSON output). Supports OpenAI / DeepSeek / Moonshot / MiniMax / local Ollama (any OpenAI-compatible API). Reasoning models (DeepSeek-R1) automatically strip their thinking process.
