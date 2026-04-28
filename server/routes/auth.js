@@ -218,11 +218,39 @@ router.post('/users/delete', requireAdmin, (req, res) => {
   }
   delete users[username];
   saveUsers(users);
-  // Optionally delete user data directory
-  const userDir = path.join(__dirname, '..', '..', 'data', username);
+
+  const dataDir = path.join(__dirname, '..', '..', 'data');
+
+  // 1. 删除用户专属数据目录 (cognition-map, deepthink 等)
+  const userDir = path.join(dataDir, username);
   if (fs.existsSync(userDir)) {
     fs.rmSync(userDir, { recursive: true, force: true });
   }
+
+  // 2. 删除成长轨迹
+  const growthFile = path.join(dataDir, 'growth-records', username + '.json');
+  if (fs.existsSync(growthFile)) {
+    fs.unlinkSync(growthFile);
+  }
+
+  // 3. 删除里程碑目录
+  const milestonesDir = path.join(dataDir, 'milestones', username);
+  if (fs.existsSync(milestonesDir)) {
+    fs.rmSync(milestonesDir, { recursive: true, force: true });
+  }
+
+  // 4. 删除该用户创建的数字分身
+  const twinsFile = path.join(dataDir, 'twins', 'twins.json');
+  if (fs.existsSync(twinsFile)) {
+    try {
+      const twins = JSON.parse(fs.readFileSync(twinsFile, 'utf-8'));
+      const filtered = twins.filter(t => t.userId !== username);
+      if (filtered.length !== twins.length) {
+        fs.writeFileSync(twinsFile, JSON.stringify(filtered, null, 2), 'utf-8');
+      }
+    } catch (e) { console.error('[auth] Failed to clean twins for', username, e.message); }
+  }
+
   res.json({ success: true });
 });
 
