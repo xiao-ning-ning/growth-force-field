@@ -80,6 +80,12 @@ setTimeout(() => {
 // Auth routes (no authentication required)
 app.use('/api/auth', authRouter);
 
+// Public version endpoint (no auth required)
+app.get('/api/version', (req, res) => {
+  const pkg = require(path.join(__dirname, '..', 'package.json'));
+  res.json({ version: pkg.version });
+});
+
 // Authentication middleware for all other /api/* routes
 app.use('/api', (req, res, next) => {
   if (req.session.user) {
@@ -94,8 +100,10 @@ app.use('/api', (req, res, next) => {
 app.get('/api/status', (req, res) => {
   const apiKey = process.env.OPENAI_API_KEY;
   const configured = apiKey && apiKey !== 'sk-your-key-here';
+  const pkg = require(path.join(__dirname, '..', 'package.json'));
   res.json({
     configured,
+    version: pkg.version,
     model: process.env.OPENAI_MODEL || 'gpt-4o',
     baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
   });

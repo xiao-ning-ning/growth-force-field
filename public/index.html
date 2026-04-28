@@ -1987,7 +1987,7 @@ const mainAppHTML = `
       <div class="sidebar-queue-title"><span class="pulse" id="queuePulse"></span>工作队列</div>
       <div id="queueList"></div>
     </div>
-    <div class="sidebar-footer">v1.4 &middot; 本地运行</div>
+    <div class="sidebar-footer" id="sidebarVersion">v1.5 &middot; 本地运行</div>
   </div>
 
   <div class="main">
@@ -6612,6 +6612,11 @@ function initApp() {
   // Show admin nav-item only for admin users
   const adminNav = document.querySelector('.nav-admin-only');
   if (adminNav && currentUser?.role === 'admin') adminNav.style.display = '';
+  // Sync version from package.json via API
+  fetch('/api/version').then(r => r.json()).then(s => {
+    const vEl = document.getElementById('sidebarVersion');
+    if (vEl && s.version) vEl.textContent = 'v' + s.version.replace(/^(\d+\.\d+).*/, '$1') + ' · 本地运行';
+  }).catch(() => {});
   // Add logout button
   const footer = document.querySelector('.sidebar-footer');
   if (footer) {
