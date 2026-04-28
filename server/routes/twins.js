@@ -22,7 +22,22 @@ function loadTwins() {
   const file = getTwinsFile();
   if (!fs.existsSync(file)) return [];
   try { return JSON.parse(fs.readFileSync(file, 'utf-8')); }
-  catch { return []; }
+  catch (e) {
+    console.error('[twins] Failed to parse twins.json:', e.message);
+    // 尝试从备份恢复
+    const backupFile = file + '.backup_before_fix';
+    if (fs.existsSync(backupFile)) {
+      try {
+        const backupData = fs.readFileSync(backupFile, 'utf-8');
+        const parsed = JSON.parse(backupData);
+        console.warn('[twins] Restored from backup file');
+        return parsed;
+      } catch (backupErr) {
+        console.error('[twins] Backup also failed:', backupErr.message);
+      }
+    }
+    return [];
+  }
 }
 
 function saveTwins(twins) {
@@ -38,7 +53,10 @@ function loadSimulations() {
   const file = getSimulationsFile();
   if (!fs.existsSync(file)) return [];
   try { return JSON.parse(fs.readFileSync(file, 'utf-8')); }
-  catch { return []; }
+  catch (e) {
+    console.error('[twins] Failed to parse simulations.json:', e.message);
+    return [];
+  }
 }
 
 function saveSimulations(sims) {
