@@ -82,6 +82,22 @@ async function callLLMText(systemPrompt, userPrompt) {
   return response.choices[0].message.content;
 }
 
+/**
+ * 调用 LLM，使用完整的 messages 数组（支持多轮对话）
+ */
+async function callLLMChat(messages) {
+  const client = getClient();
+  const response = await client.chat.completions.create({
+    model: MODEL,
+    messages,
+    temperature: 0.7,
+  });
+  if (!response.choices || response.choices.length === 0) {
+    throw new Error('LLM 返回空响应（可能触发了安全过滤），请修改输入后重试');
+  }
+  return response.choices[0].message.content;
+}
+
 // ============ 数据管理 ============
 
 const BASE_DATA_DIR = path.join(__dirname, '..', 'data');
@@ -271,6 +287,7 @@ function syncBlindSpotsToRadarAxes(map) {
 module.exports = {
   callLLM,
   callLLMText,
+  callLLMChat,
   loadMap,
   saveMap,
   createEmptyMap,
