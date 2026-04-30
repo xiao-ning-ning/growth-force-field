@@ -239,7 +239,7 @@ router.post('/users/delete', requireAdmin, (req, res) => {
     fs.rmSync(milestonesDir, { recursive: true, force: true });
   }
 
-  // 4. 删除该用户创建的数字分身
+  // 4. 删除该用户创建的数字孪生
   const twinsFile = path.join(dataDir, 'twins', 'twins.json');
   if (fs.existsSync(twinsFile)) {
     try {

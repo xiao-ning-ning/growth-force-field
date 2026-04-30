@@ -3031,7 +3031,7 @@ function showDimDetail(dimId) {
   // Upgrade path for developing dimensions
   if (d.status === 'developing' && upgradePath) {
     html += `<div class="modal-upgrade">
-      <h4>&#127919; 升级路径</h4>
+      <h4>&#127919; 升级路径 <button class="btn" style="font-size:11px;padding:3px 10px;margin-left:8px;background:var(--orange);color:#000;border:none;border-radius:8px;cursor:pointer;font-weight:600" onclick="closeModal();goToPath('${enc(upgradePath.id)}')">查看修炼路径 &#10132;</button></h4>
       <p><strong>当前缺口：</strong>${esc(upgradePath.currentGap)}</p>
       <p style="margin-top:6px"><strong>预期变化：</strong>${esc(upgradePath.expectedOutcome)}</p>
       ${(() => { const validLevs = (upgradePath.leveragedFrom || []).filter(id => getDimById(id)); return validLevs.length > 0 ? `<p style="margin-top:6px"><strong>杠杆维度：</strong>${validLevs.map(id => `<span class="dim-link" style="font-size:12px;padding:2px 8px;border-radius:8px;background:var(--card2);border:1px solid var(--border);cursor:pointer;display:inline-block;margin:2px" onclick="showDimDetail('${enc(id)}')">${esc(getDimName(id))}</span>`).join(' ')}</p>` : ''; })()}
@@ -3497,7 +3497,7 @@ async function renderAdmin(el) {
 
   const tabs = [
     { id: 'dashboard', icon: '&#128202;', label: '团队看板' },
-    { id: 'twins', icon: '&#129504;', label: '数字分身' },
+    { id: 'twins', icon: '&#129504;', label: '数字孪生' },
     { id: 'predict', icon: '&#128300;', label: '行为预测' }
   ];
 
@@ -3558,7 +3558,7 @@ function renderAdminDashboard(container) {
   loadAdminUsers();
 }
 
-// ============ 数字分身 ============
+// ============ 数字孪生 ============
 let viewingTwinId = null;
 let editingTwinId = null;
 
@@ -3588,7 +3588,7 @@ function renderAdminTwins(container) {
         </div>
       </div>
     `).join('')
-    : '<div style="text-align:center;color:var(--text3);padding:40px">尚未创建数字分身。从下方选择用户开始创建。</div>';
+    : '<div style="text-align:center;color:var(--text3);padding:40px">尚未创建数字孪生。从下方选择用户开始创建。</div>';
 
   // 查看详情面板
   let detailPanel = '';
@@ -3605,7 +3605,7 @@ function renderAdminTwins(container) {
 
   container.innerHTML = `
     <div style="margin-bottom:24px">
-      <h3 style="margin:0 0 16px;font-size:16px">&#129504; 数字分身</h3>
+      <h3 style="margin:0 0 16px;font-size:16px">&#129504; 数字孪生</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">${twinCards}</div>
     </div>
     ${editPanel || detailPanel}
@@ -3926,7 +3926,7 @@ async function createTwin() {
 }
 
 async function deleteTwin(twinId) {
-  if (!confirm('确认删除此数字分身？')) return;
+  if (!confirm('确认删除此数字孪生？')) return;
   try {
     await api(`/api/twins/${twinId}`, 'DELETE');
     adminTwins = adminTwins.filter(t => t.id !== twinId);
@@ -3987,7 +3987,7 @@ function renderAdminPredict(container) {
     '<div style="margin-bottom:16px">' +
     '<label style="font-size:13px;color:var(--text2);margin-bottom:8px;display:block">选择参与分身</label>' +
     '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
-    (twinOptions || '<div style="color:var(--text3);font-size:13px">请先创建数字分身</div>') +
+    (twinOptions || '<div style="color:var(--text3);font-size:13px">请先创建数字孪生</div>') +
     '</div></div>' +
     '<div id="twinConfigPanel" style="display:none;margin-bottom:16px;padding:16px;background:var(--card2);border-radius:10px;border:1px solid var(--border)">' +
     '<div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:12px">&#128101; 角色关系配置</div>' +
